@@ -4,6 +4,8 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
 .horizontal-text-center{text-align: center;}
 .vertical-center{  position: absolute;  top: 50%;  left: 50%;  transform: translate(-50%, -50%);  }
 .hander{ cursor: pointer;}
+.fl{ float: left;}
+.fr{ float: right;}
 /*.big-title{text-shadow: 1px 1px 1px #FF0000;}*/
 /*.transform-red{*/
     /*background:yellow;*/
@@ -59,5 +61,35 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
 .login-window .forget-password{
     font-size: 12px;vertical-align: top;margin-left: 77px;color: #ffffff;
 }
-
-
+.my-nav{
+    left:150px;
+    position: absolute !important;
+    transition: left 1s;
+}
+.side-menu{
+    position: fixed;
+    top: 0;
+    left: 0px;
+    width: 150px;
+    height: 100%;
+    background-color: #151829;
+    z-index: -1;
+    -webkit-transition: right .3s;
+    transition: left 1s;
+}
+.panel-background{
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.side-menu .panel-group .panel .panel-collapse ul li.list-group-item{
+    border: none !important;
+    cursor: pointer;
+    padding: 10px 0px;
+}
+.side-menu .panel-group .panel .panel-collapse .panel-body{
+    padding:0;
+}
+.side-menu .panel-group .panel .panel-collapse .panel-body ul li span{
+    margin-left: 10px;
+    transition: left 1s;
+    padding-right: 10px;
+}

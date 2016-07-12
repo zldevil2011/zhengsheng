@@ -1,10 +1,71 @@
-<ul class="side-menu in">
-  <h2 class="title">Menu</h2>
-  <li class="link"><a href="http://www.htmleaf.com" target="_blank">jQuery之家</a></li>
-  <li class="link"><a href="http://www.htmleaf.com" target="_blank">jQuery之家</a></li>
-  <li class="link"><a href="http://www.htmleaf.com" target="_blank">jQuery之家</a></li>
-  <li class="link"><a href="http://www.htmleaf.com" target="_blank">jQuery之家</a></li>
-  <li class="link"><a href="http://www.htmleaf.com" target="_blank">jQuery之家</a></li>
-  <li class="link"><a href="http://www.htmleaf.com" target="_blank">jQuery之家</a></li>
-</ul>
-<div class="hander" name="slide-btn">TMPBTN</div>
+<div class="side-menu">
+    <div style="height:65px;line-height: 65px;">
+        <h2 class="title" style="display: inline;">Menu</h2>
+        <div class="hander" style="position: absolute; right: 0;top:-6px;">
+            <span name="slide-btn" class="icon-menu" style="padding: 0 10px"></span>
+        </div>
+    </div>
+
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-background">
+          <div class="panel-heading">
+              <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    第 1 部分
+                  </a>
+              </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <ul class="list-group panel-item">
+                    <li class="list-group-item"><span class="icon-user"></span><span>账户管理</span></li>
+                    <li class="list-group-item"><span class="icon-calendar"></span><span>工单管理</span></li>
+                    <li class="list-group-item"><span class="icon-mail"></span><span>设备管理</span></li>
+                    <li class="list-group-item"><span class="icon-information"></span><span>数据查询</span></li>
+                    <li class="list-group-item"><span class="icon-code"></span><span>条码管理</span></li>
+                </ul>
+              </div>
+          </div>
+        </div>
+        <div class="panel panel-background">
+          <div class="panel-heading">
+              <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                    第 2 部分
+                  </a>
+              </h4>
+          </div>
+          <div id="collapseTwo" class="panel-collapse collapse">
+              <div class="panel-body">
+                <ul class="list-group panel-item">
+                    <li class="list-group-item"><span class="icon-information"></span><span>温度信息</span></li>
+                    <li class="list-group-item"><span class="icon-heart"></span><span>健康监测</span></li>
+                    <li class="list-group-item"><span class="icon-export"></span><span>漏电监测</span></li>
+                    <li class="list-group-item"><span class="icon-headset"></span><span>心跳监测</span></li>
+                    <li class="list-group-item"><span class="icon-location"></span><span>设备定位</span></li>
+                </ul>
+              </div>
+          </div>
+      </div>
+        <div class="panel panel-background">
+          <div class="panel-heading">
+              <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                    第 3 部分
+                  </a>
+              </h4>
+          </div>
+          <div id="collapseThree" class="panel-collapse collapse">
+              <div class="panel-body">
+                <ul class="list-group panel-item">
+                    <li class="list-group-item"><span class="icon-download"></span><span>App下载</span></li>
+                    <li class="list-group-item"><span class="icon-search"></span><span>App设置</span></li>
+                    <li class="list-group-item"><span class="icon-user"></span><span>App用户</span></li>
+                </ul>
+              </div>
+          </div>
+      </div>
+
+    </div>
+</div>
+
