@@ -1,0 +1,63 @@
+body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei","Hiragino Sans GB","Hiragino Sans GB W3",FontAwesome,sans-serif;}
+.font-size-144{font-size: 14.4rem;}
+.horizontal-center{margin: 0 auto;}
+.horizontal-text-center{text-align: center;}
+.vertical-center{  position: absolute;  top: 50%;  left: 50%;  transform: translate(-50%, -50%);  }
+.hander{ cursor: pointer;}
+/*.big-title{text-shadow: 1px 1px 1px #FF0000;}*/
+/*.transform-red{*/
+    /*background:yellow;*/
+    /*transition:background 2s;*/
+    /*-moz-transition:background 2s; !* Firefox 4 *!*/
+    /*-webkit-transition:background 2s; !* Safari and Chrome *!*/
+    /*-o-transition:background 2s; !* Opera *!*/
+/*}*/
+.text-gradient{
+     background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(rgba(128, 0, 71, 1)), to(rgba(59, 92, 130, 1)));
+     -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent;
+    color: rgba(128, 0, 71, 1);
+}
+.text-gradient:hover{
+    color: rgba(64, 82, 28, 1);
+    background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(rgba(64, 82, 28, 1)), to(rgba(105, 65, 28, 1)));;
+}
+.name-list{  opacity:0;  }
+.index_nav{
+    margin-top:12rem;
+}
+.index_nav > div:not(:last-child){
+    border-right: dotted 1px black;
+}
+.index_nav > div h1, h2, h3, h4, h5, h6{
+    cursor: pointer;
+}
+.index_nav > div h4:hover{
+    color:rebeccapurple;
+    font-weight: bold;
+}
+.zl-footer{
+    width: 100%;
+    position: absolute;
+    bottom:0px;
+    background-color: rgba(0,0,0,0.75);
+    color:#999;
+}
+.login-window{
+    width: 24rem; height:auto;overflow: hidden;top:250px;right:190px;position:absolute; border-radius: 5px;
+    padding:22px 30px;background-color: rgba(0,0,0,0.2);color:#999;
+}
+.login-window .login-title{
+    padding-bottom: 10px;color: #ffffff;
+}
+.login-window .login-form-input{
+    margin-bottom:15px;font-size: 12px; line-height: 18px;
+}
+.login-window .remember-account{
+    font-size: 12px;line-height: 18px;vertical-align: top;color: #ffffff;
+}
+.login-window .forget-password{
+    font-size: 12px;vertical-align: top;margin-left: 77px;color: #ffffff;
+}
+
+

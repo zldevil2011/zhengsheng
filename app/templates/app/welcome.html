@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF8">
+    <title>欢迎使用征圣云平台</title>
+    <meta name = "viewport" content = "width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <link rel = "icon" href = "/site_media/images/web_icon.png">
+    <link rel="stylesheet" type="text/css"  href = "/site_media/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"  href = "/site_media/css/zhengsheng.css">
+    <link rel="stylesheet" type="text/css"  href = "/site_media/css/animate.min.css">
+</head>
+<body style="background: url(/site_media/images/cloud.jpg);">
+    <div class="vertical-center">
+        <div class="font-size-144 text-gradient hander name-list">
+            征圣云平台
+        </div>
+        <div class="horizontal-text-center" style="margin-top: 10rem;">
+            <input type="button" class="btn btn-lg btn-success img-rounded" value="登录管理"
+                   onclick="window.location.href='/admin_login/'" style="opacity: 0.8;width: 30%;" >
+        </div>
+    </div>
+    <!--JavaScript File -->
+    <script type = "text/javascript" src = "/site_media/js/jquery-2.2.1.min.js"></script>
+    <script type = "text/javascript" src = "/site_media/js/bootstrap.min.js"></script>
+    <script type = "text/javascript" src = "/site_media/js/jquery.transit.js"></script>
+    <script type = "text/javascript" src = "/site_media/js/zhengsheng.js"></script>
+    <!--[if lt IE 9]>
+        <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+        <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        $(".name-list").transition({ opacity: 1, scale: 1.0 }, 5000);
+        $(".name-list").on("mouseover", function(){
+           $(this).addClass('animated swing');
+        }).on("mouseout", function(){
+            $(this).removeClass('animated swing');
+        });
+    </script>
+</body>
+</html>

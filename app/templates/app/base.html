@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name = "viewport" content = "width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <link rel = "icon" href = "/site_media/images/web_icon.png">
+    <link rel="stylesheet" type="text/css"  href = "/site_media/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"  href = "/site_media/css/zhengsheng.css">
+    <link rel="stylesheet" type="text/css"  href = "/site_media/css/animate.min.css">
+    <link rel="stylesheet" type="text/css"  href = "/site_media/css/dripicon.css">
+    <link rel="stylesheet" type="text/css"  href = "/site_media/css/template_style.css">
+{#    <link rel="stylesheet" type="text/css"  href = "/site_media/css/jquery_slide_style.css">#}
+{#    <link rel="stylesheet" type="text/css"  href = "/site_media/css/entypo-icon.css">#}
+    <style>
+        ul.side-menu{
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #151829;
+            z-index: -1;
+            -webkit-transition: right .3s;
+            transition: right .3s;
+        }
+    </style>
+</head>
+<body style="background: url(/site_media/images/cloud.jpg);">
+    {% block head_nav %}
+        <nav class="navbar navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                     <span class="sr-only">Toggle navigation</span>
+                     <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                 </button>
+                <a class="navbar-brand" href="#">Brand</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                             <i style="font-size:20px;" class="glyphicon glyphicon-envelope"></i>
+                             <div class="noft-red">23</div>
+                         </a>
+                         <ul style="margin: 11px 0px 0px 9px; position: absolute; left: -10px; top: 53px;" role="menu" class="dropdown-menu dropdown-wrap">
+                            <li>
+                                <a href="#">
+                                    <img alt="" class="img-msg img-circle" src="">Jhon Doe <b>Just Now</b>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <img alt="" class="img-msg img-circle" src="">Jeniffer <b>3 Min Ago</b>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <img alt="" class="img-msg img-circle" src="">Dave <b>2 Hours Ago</b>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div>See All Messege</div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="">
+
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i style="font-size:19px;" class="glyphicon glyphicon-warning-sign" data-original-title="" title=""></i><div class="noft-green">5</div></a>
+                        <ul style="margin: 12px 0px 0px; position: absolute; left: -10px; top: 53px;" role="menu" class="dropdown-menu dropdown-wrap">
+                            <li>
+                                <a href="#">
+                                    <span style="background:#DF2135" class="noft-icon maki-bus"></span><i>From Station</i>  <b>01B</b>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <span style="background:#AB6DB0" class="noft-icon maki-ferry"></span><i>Departing at</i>  <b>9:00 AM</b>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <span style="background:#FFA200" class="noft-icon maki-aboveground-rail"></span><i>Delay for</i>  <b>09 Min</b>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <span style="background:#86C440" class="noft-icon maki-airport"></span><i>Take of</i>  <b>08:30 AM</b>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <span style="background:#0DB8DF" class="noft-icon maki-bicycle"></span><i>Take of</i>  <b>08:30 AM</b>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div>See All Notification</div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i data-toggle="tooltip" data-placement="bottom" title="" style="font-size:20px;"
+                               class="glyphicon glyphicon-dashboard" data-original-title="Help"></i>
+                        </a>
+                    </li>
+                </ul>
+                <div id="nt-title-container" class="navbar-left running-text visible-lg">
+                    <ul class="date-top">
+                        <li class="entypo-calendar" style="margin-right:5px"></li>
+                        <li id="Date">Wed,  13 July 2016</li>
+                    </ul>
+                    <ul id="digital-clock" class="digital">
+                        <li class="entypo-clock" style="margin-right:5px"></li>
+                        <li class="hour">7</li>
+                        <li>:</li>
+                        <li class="min">12</li>
+                        <li>:</li>
+                        <li class="sec">0</li>
+                        <li class="meridiem">AM</li>
+                    </ul>
+                    <ul id="nt-title" style="height: 18px; overflow: hidden;">
+                    <li style="margin-top: 0px;"><i class="wi-day-lightning"></i>&nbsp;&nbsp;Sttugart&nbsp;
+                            <b>85</b><i class="wi-fahrenheit"></i>&nbsp;; 15km/h
+                        </li><li style="margin-top: 0px;"><i class="wi-day-lightning"></i>&nbsp;&nbsp;Muchen&nbsp;
+                            <b>85</b><i class="wi-fahrenheit"></i>&nbsp;; 15km/h
+                        </li><li style="margin-top: 0px;"><i class="wi-day-lightning"></i>&nbsp;&nbsp;Frankurt&nbsp;
+                            <b>85</b><i class="wi-fahrenheit"></i>&nbsp;; 15km/h
+                        </li><li style="margin-top: 0px;"><i class="wi-day-lightning"></i>&nbsp;&nbsp;Berlin&nbsp;
+                            <b>85</b><i class="wi-fahrenheit"></i>&nbsp;; 15km/h
+                        </li><li style="margin-top: 0px;"><i class="wi-day-lightning"></i>&nbsp;&nbsp;Yogyakarta&nbsp;
+                            <b>85</b><i class="wi-fahrenheit"></i>&nbsp;; Tonight- 72 °F (22.2 °C)
+                        </li>
+                    </ul>
+                </div>
+                <ul style="margin-right:0;" class="nav navbar-nav navbar-right">
+                    <li>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <img alt="" class="admin-pic img-circle" src="">Hi, Dave Mattew <b class="caret"></b>
+                        </a>
+                        <ul style="margin-top:14px;" role="menu" class="dropdown-setting dropdown-menu">
+                            <li>
+                                <a href="#">
+                                    <span class="entypo-user"></span>&nbsp;&nbsp;My Profile</a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="entypo-vcard"></span>&nbsp;&nbsp;Account Setting</a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="entypo-lifebuoy"></span>&nbsp;&nbsp;Help</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="icon-gear"></span>&nbsp;&nbsp;Setting</a>
+                        <ul role="menu" class="dropdown-setting dropdown-menu">
+                            <li class="theme-bg">
+                                <div id="button-bg"></div>
+                                <div id="button-bg2"></div>
+                                <div id="button-bg3"></div>
+                                <div id="button-bg5"></div>
+                                <div id="button-bg6"></div>
+                                <div id="button-bg7"></div>
+                                <div id="button-bg8"></div>
+                                <div id="button-bg9"></div>
+                                <div id="button-bg10"></div>
+                                <div id="button-bg11"></div>
+                                <div id="button-bg12"></div>
+                                <div id="button-bg13"></div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="hidden-xs">
+                        <a class="toggle-left" href="#">
+                            <span style="font-size:20px;" class="entypo-list-add"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </nav>
+    {% endblock %}
+    {% block side_nav %}
+        {% include 'app/slide_menu.html' %}
+    {% endblock %}
+    {% block main_body %}
+        <div style="width: 100%;height:50%; margin: 0 auto;text-align: center;margin-top: 5%;">
+            <div class="font-size-144 text-gradient hander name-list">
+                征圣云平台
+            </div>
+        </div>
+        <div class="clearfix index_nav">
+            <div class="col-md-4 horizontal-text-center">
+                <h4>账户管理</h4>
+                <h4>工单管理</h4>
+                <h4>设备管理</h4>
+                <h4>数据查询</h4>
+                <h4>条码管理</h4>
+            </div>
+            <div class="col-md-4 horizontal-text-center">
+                <h4>温度信息</h4>
+                <h4>健康监测</h4>
+                <h4>漏电监测</h4>
+                <h4>心跳监测</h4>
+                <h4>设备定位</h4>
+            </div>
+            <div class="col-md-4 horizontal-text-center">
+                <h4>App下载</h4>
+                <h4>App设置</h4>
+                <h4>App用户</h4>
+            </div>
+        </div>
+    {% endblock %}
+    <div class="horizontal-text-center zl-footer">
+        <section>
+            <h4>友情链接</h4>
+            <p>
+                <a href="http://www.nmc.gov.cn/" target="_blank" rel="nofollow">中央气象台</a>
+                 |<a href="http://www.weather.com/" target="_blank" rel="nofollow">美国气象频道</a>
+                 |<a href="http://www.weather.com.cn/" target="_blank" rel="nofollow">中国天气网</a>
+                 |<a href="http://www.pm25.com/" target="_blank" rel="nofollow">绿色呼吸</a>
+                 |<a href="http://www.feeyo.com/" target="_blank" rel="nofollow">飞友网</a>
+                 |<a href="http://i.firefoxchina.cn/?www.firefoxchina.cn" target="_blank" rel="nofollow">火狐浏览器</a>
+                 |<a href="http://tianqitong.sina.cn/" target="_blank" rel="nofollow">天气通</a>
+                 |<a href="http://weather.mipang.com" target="_blank" rel="nofollow">米胖天气</a>
+                 |<a href="http://www.xn121.com/" target="_blank" rel="nofollow">兴农网</a>
+                 |<a href="http://www.mlogcn.com/" target="_blank" rel="nofollow">象辑科技</a>
+                 |<a href="http://www.tianqi.com/" target="_blank" rel="nofollow">天气网</a>
+            </p>
+        </section>
+        <section>
+            <p>关于我们|联系我们|批评建议</p>
+            <p>Copyright © 2016-2016 BNU, All Rights Reserved</p>
+            <p>北京师范大学 版权所有</p>
+        </section>
+    </div>
+
+    <!--JavaScript File -->
+    <script type = "text/javascript" src = "/site_media/js/jquery-2.2.1.min.js"></script>
+    <script type = "text/javascript" src = "/site_media/js/bootstrap.min.js"></script>
+    <script type = "text/javascript" src = "/site_media/js/jquery.transit.js"></script>
+    <script type = "text/javascript" src = "/site_media/js/zhengsheng.js"></script>
+{#    <script type = "text/javascript" src = "/site_media/js/jquery_slide.js"></script>#}
+    <!--[if lt IE 9]>
+        <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+        <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    {% block special_js %}
+    <script>
+        $(".name-list").transition({ opacity: 1, scale: 1.0 }, 5000);
+        $(".name-list").on("mouseover", function(){
+           $(this).addClass('animated swing');
+        }).on("mouseout", function(){
+            $(this).removeClass('animated swing');
+        });
+    </script>
+
+    {% endblock %}
+</body>
+</html>
