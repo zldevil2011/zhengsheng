@@ -113,3 +113,7 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     background-color: rgba(0,0,0,0.75);
     color:#999;
 }
+.breadcrumb-my{
+    margin:0 !important;
+    background-color: inherit !important;
+}
