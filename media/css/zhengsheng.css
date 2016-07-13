@@ -117,3 +117,11 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     margin:0 !important;
     background-color: inherit !important;
 }
+.account-pahination{
+    margin: 0;
+}
+.account-pahination li a{
+    background-color: #0C1220;
+    margin-left: 10px;
+    border-radius: 4px;
+}
