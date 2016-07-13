@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^admin_login/$', index.admin_login, name="admin_login"),
     url(r'^admin_index/$', index.admin_index, name="admin_index"),
     url(r'^admin_account/$', user.admin_account, name="admin_account"),
+    url(r'^admin_work_order/$', user.admin_work_order, name="admin_work_order"),
 ]

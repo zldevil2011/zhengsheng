@@ -1,0 +1,184 @@
+{% extends "app/base.html" %}
+{% block title %}工单管理{% endblock %}
+{% block main_body %}
+    <div class="main-body">
+{#        bread direction#}
+        <div style="margin: 10px 0;position: relative;background-color: rgba(40, 42, 55,0.75);padding: 10px 12px;">
+            <span class="glyphicon glyphicon-home" style="display: inline-block;"></span>
+            <ul class="breadcrumb breadcrumb-my" style="display: inline-block;">
+				<li>
+					 <a href="#">Home</a>
+				</li>
+				<li>
+					 <a href="#">user</a>
+				</li>
+				<li class="active">
+					work order
+				</li>
+			</ul>
+        </div>
+{#        account list#}
+        <div class="row clearfix" style="padding: 10px 30px;background-color: rgba(40, 42, 55,0.75);">
+            <hr>
+            <div class="form-group">
+                <form class="form-horizontal" role="form" onsubmit="return false;">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="" class="col-sm-4 control-label">工单编号</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">时间</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="" />
+                            </div>
+                            <label for="" class="col-sm-1 control-label">至</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">关键字</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="" />
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-block btn-success">查找</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-12 column" style="">
+                <table class="table">
+                    <thead>
+                        <tr style="background-color: rgba(39,25,25,0.35);">
+                            <th>
+                                工单编号
+                            </th>
+                            <th>
+                                内容
+                            </th>
+                            <th>
+                                工单类型
+                            </th>
+                            <th>
+                                分类
+                            </th>
+                            <th>
+                                提交时间
+                            </th>
+                            <th>
+                                状态
+                            </th>
+                            <th>
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
+                            <td>咨询</td>
+                            <td>活动咨询</td>
+                            <td>2016-05-27 21:13</td>
+                            <td>已关闭</td>
+                            <td>查看</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
+                            <td>咨询</td>
+                            <td>活动咨询</td>
+                            <td>2016-05-27 21:13</td>
+                            <td>已关闭</td>
+                            <td>查看</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
+                            <td>咨询</td>
+                            <td>活动咨询</td>
+                            <td>2016-05-27 21:13</td>
+                            <td>已关闭</td>
+                            <td>查看</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
+                            <td>咨询</td>
+                            <td>活动咨询</td>
+                            <td>2016-05-27 21:13</td>
+                            <td>已关闭</td>
+                            <td>查看</td>
+                        </tr><tr>
+                            <td>4</td>
+                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
+                            <td>咨询</td>
+                            <td>活动咨询</td>
+                            <td>2016-05-27 21:13</td>
+                            <td>已关闭</td>
+                            <td>查看</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
+                            <td>咨询</td>
+                            <td>活动咨询</td>
+                            <td>2016-05-27 21:13</td>
+                            <td>已关闭</td>
+                            <td>查看</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
+                            <td>咨询</td>
+                            <td>活动咨询</td>
+                            <td>2016-05-27 21:13</td>
+                            <td>已关闭</td>
+                            <td>查看</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
+                            <td>咨询</td>
+                            <td>活动咨询</td>
+                            <td>2016-05-27 21:13</td>
+                            <td>已关闭</td>
+                            <td>查看</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
+                            <td>咨询</td>
+                            <td>活动咨询</td>
+                            <td>2016-05-27 21:13</td>
+                            <td>已关闭</td>
+                            <td>查看</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
+                            <td>咨询</td>
+                            <td>活动咨询</td>
+                            <td>2016-05-27 21:13</td>
+                            <td>已关闭</td>
+                            <td>查看</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+{% block special_js %}
+
+{% endblock %}
