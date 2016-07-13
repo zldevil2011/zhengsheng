@@ -142,7 +142,6 @@
         var marker = new BMap.Marker(point);
         map.addOverlay(marker);
         marker.addEventListener("click", function(){
-            lushu.start();
            this.openInfoWindow(infoWindow);
            //图片加载完毕重绘infowindow
            document.getElementById('imgDemo').onload = function (){
