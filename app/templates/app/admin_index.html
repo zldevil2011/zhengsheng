@@ -2,33 +2,55 @@
 {% block title %}Account_admin{% endblock %}
 {% block main_body %}
     <div class="main-body">
-        <div id="map" style="width:1400px;height:400px; border: 1px solid rgba(0, 0, 0, 0.04); border-radius: 6px;"></div>
-        <div name="waiting-list" style="margin-top: 1rem;">
-            <div class="alert alert-white alert-dismissable" style="width: 22%; display: inline-block;margin-left: 20px;">
-				 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-				<h4>
-					注意!
-				</h4> <strong>Warning!</strong> Best check yo self, you're not looking too good. <a href="#" class="alert-link">alert link</a>
-			</div>
-			<div class="alert alert-white alert-dismissable" style="width: 22%; display: inline-block;margin-left: 20px;">
-				 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-				<h4>
-					注意!
-				</h4> <strong>Warning!</strong> Best check yo self, you're not looking too good. <a href="#" class="alert-link">alert link</a>
-			</div>
-            <div class="alert alert-white alert-dismissable" style="width: 22%; display: inline-block;margin-left: 20px;">
-				 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-				<h4>
-					注意!
-				</h4> <strong>Warning!</strong> Best check yo self, you're not looking too good. <a href="#" class="alert-link">alert link</a>
-			</div>
-            <div class="alert alert-white alert-dismissable" style="width: 22%; display: inline-block;margin-left: 20px;">
-				 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-				<h4>
-					注意!
-				</h4> <strong>Warning!</strong> Best check yo self, you're not looking too good. <a href="#" class="alert-link">alert link</a>
-			</div>
+         <div class="clearfix">
+             <div id="map" style="width:100%;height:400px; border: 1px solid rgba(0, 0, 0, 0.04); border-radius: 6px;"></div>
+         </div>
+
+        <div name="waiting-list" style="margin: 1rem 1rem;">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="alert alert-white alert-dismissable" style="">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4 style="background-color: #d58512; width: 50%; border-radius: 6px;text-align: center; color: white;">
+                            Cloud Speed
+                        </h4>
+                        <h1 style="text-align: center;color:#d58512; ">47Km/h</h1>
+                        <h6 style="text-align: center;"><span class="icon-download"></span>explanation</h6>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="alert alert-white alert-dismissable" style="">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4 style="background-color: #45b6b0; width: 50%; border-radius: 6px;text-align: center; color: white;">
+                            Train Speed
+                        </h4>
+                        <h1 style="text-align: center;color:#45b6b0; ">220Km/h</h1>
+                        <h6 style="text-align: center;"><span class="icon-download"></span>explanation</h6>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="alert alert-white alert-dismissable" style="">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4 style="background-color: #65c3df; width: 50%; border-radius: 6px;text-align: center; color: white;">
+                            PM2.5
+                        </h4>
+                        <h1 style="text-align: center;color:#65c3df; ">50/优</h1>
+                        <h6 style="text-align: center;"><span class="icon-download"></span>explanation</h6>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="alert alert-white alert-dismissable" style="">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4 style="background-color: #ff6b6b; width: 50%; border-radius: 6px;text-align: center; color: white;">
+                            Accident
+                        </h4>
+                        <h1 style="text-align: center;color:#ff6b6b; ">67%</h1>
+                        <h6 style="text-align: center;"><span class="icon-download"></span>explanation</h6>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div id="container" style="min-width:700px;height:400px"></div>
     </div>
 {% endblock %}
 {% block special_js %}
