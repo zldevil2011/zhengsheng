@@ -39,23 +39,22 @@ $(function () {
         Highcharts.setOptions({
             global: {
                 useUTC: false
-            }
+            },
+            colors: ['#FFFFFF', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
         });
-
-        var chart;
         $('#container').highcharts({
             chart: {
                 type: 'line',
                 animation: Highcharts.svg, // don't animate in old IE
                 marginRight: 10,
+                backgroundColor: '#45b6b0',
                 events: {
                     load: function() {
-
                         // set up the updating of the chart each second
                         var series = this.series[0];
                         setInterval(function() {
                             var x = (new Date()).getTime(), // current time
-                                y = Math.random();
+                                y = Math.random() * (20-19) + 19;
                             series.addPoint([x, y], true, true);
                         }, 500);
                     }
@@ -69,6 +68,8 @@ $(function () {
                 tickPixelInterval: 150
             },
             yAxis: {
+                max:25,
+                min:15,
                 title: {
                     text: 'Value'
                 },
@@ -87,6 +88,7 @@ $(function () {
             },
             legend: {
                 enabled: false
+
             },
             exporting: {
                 enabled: false
