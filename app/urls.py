@@ -1,7 +1,7 @@
 #coding=utf-8
 from django.conf.urls import url
 from django.views.generic import TemplateView
-from app.views import index, user, device
+from app.views import index, user, device, data
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name="app/welcome.html")),
     url(r'^admin_login/$', index.admin_login, name="admin_login"),
@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^admin_device/remove/$', device.admin_device_remove, name="admin_device_remove"),
     url(r'^admin_device/location/$', device.admin_device_location, name="admin_device_location"),
     url(r'^admin_device/maintain/$', device.admin_device_maintain, name="admin_device_maintain"),
+    url(r'^admin_data/$', data.admin_data, name="admin_data"),
 ]
