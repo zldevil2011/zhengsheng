@@ -16,3 +16,10 @@ def admin_device_add(request):
         return render(request, 'app/admin_deviceAdd.html', {})
     else:
         return HttpResponse("POST")
+
+
+def admin_device_remove(request):
+    if request.method == "GET":
+        return render(request, 'app/admin_deviceRemove.html', {})
+    else:
+        return HttpResponse("POST")
