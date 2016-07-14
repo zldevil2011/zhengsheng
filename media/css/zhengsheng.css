@@ -106,7 +106,7 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     position: fixed;
     right: 0;
     left: 0;
-    z-index: 1030;
+    z-index: 10;
     bottom: 0;
     margin-bottom: 0;
     border-width: 1px 0 0;
@@ -127,4 +127,7 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
 }
 .device-list tbody tr td{
     vertical-align: middle;
+}
+.childMenu{
+    margin-left: 10px;
 }
