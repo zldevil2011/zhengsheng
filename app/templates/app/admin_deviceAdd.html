@@ -1,0 +1,143 @@
+{% extends "app/base.html" %}
+{% block title %}设备添加{% endblock %}
+{% block main_body %}
+    <div class="main-body">
+{#        bread direction#}
+        <div style="margin: 10px 0;position: relative;background-color: rgba(40, 42, 55,0.75);padding: 10px 12px;">
+            <span class="glyphicon glyphicon-home" style="display: inline-block;"></span>
+            <ul class="breadcrumb breadcrumb-my" style="display: inline-block;">
+				<li>
+					 <a href="#">主页</a>
+				</li>
+				<li>
+					 <a href="#">设备</a>
+				</li>
+				<li class="active">
+					设备添加
+				</li>
+			</ul>
+        </div>
+        <div class="row" style="padding: 10px 30px;background-color: rgba(40, 42, 55,0.75);min-height: 500px;">
+            <hr>
+            <div class="device-add-head col-md-12">
+                <div class="col-md-2">
+                    设备类型
+                </div>
+                <div class="col-md-10">
+                    <div class="col-md-3">
+                        <div class="btn-group btn-block">
+                            <button type="button" class="btn btn-default" style="width:80%;;">一级类别</button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" style="width: 10%;">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" style="width: 80%;">
+                                <li><a href="#">电表</a></li>
+                                <li><a href="#">原件</a></li>
+                                <li><a href="#">配件</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="btn-group btn-block">
+                            <button type="button" class="btn btn-default" style="width:80%;;">二级类别</button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" style="width: 10%;">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" style="width: 80%;">
+                                <li><a href="#">电表</a></li>
+                                <li><a href="#">原件</a></li>
+                                <li><a href="#">配件</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="btn-group btn-block">
+                            <button type="button" class="btn btn-default" style="width:80%;;">三级类别</button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" style="width: 10%;">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" style="width: 80%;">
+                                <li><a href="#">电表</a></li>
+                                <li><a href="#">原件</a></li>
+                                <li><a href="#">配件</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="btn-group btn-block">
+                            <button type="button" class="btn btn-default" style="width:80%;;">四级类别</button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" style="width: 10%;">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" style="width: 80%;">
+                                <li><a href="#">电表</a></li>
+                                <li><a href="#">原件</a></li>
+                                <li><a href="#">配件</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" style="padding: 0;">
+                <hr>
+            </div>
+            <div class="col-md-12" style="margin-top: 10px;">
+                <form class="" role="form">
+                    <div class="col-md-4">
+                        <div class="form-group col-md-4" style="height: 30px; line-height: 30px;">
+                            设备编号
+                        </div>
+                        <div class="form-group col-md-8" style="height: 30px; ">
+                            <input type="text" class="form-control" id="" placeholder="IMGXXXXXX"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group col-md-4" style="height: 30px; line-height: 30px;">
+                            设备名称
+                        </div>
+                        <div class="form-group col-md-8" style="height: 30px; ">
+                            <input type="text" class="form-control" id=""  placeholder="设备名称"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group col-md-4" style="height: 30px; line-height: 30px;">
+                            安装时间
+                        </div>
+                        <div class="form-group col-md-8" style="height: 30px; ">
+                            <input type="text" class="form-control" id=""  placeholder="2016-xx-xx"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group col-md-4" style="height: 30px; line-height: 30px;">
+                            设备用户
+                        </div>
+                        <div class="form-group col-md-8" style="height: 30px; ">
+                            <input type="text" class="form-control" id=""  placeholder="张三"/>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group col-md-2" style="height: 30px; line-height: 30px;">
+                            设备地址
+                        </div>
+                        <div class="form-group col-md-10" style="height: 30px; ">
+                            <input type="text" class="form-control" id="" placeholder="XXX市XXX街道XXX小区XXX号楼XXX层XXX号"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}
+{% block special_js %}
+
+{% endblock %}

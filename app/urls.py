@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^admin_account/$', user.admin_account, name="admin_account"),
     url(r'^admin_work_order/$', user.admin_work_order, name="admin_work_order"),
     url(r'^admin_device/$', device.admin_device, name="admin_device"),
+    url(r'^admin_device/add/$', device.admin_device_add, name="admin_device_add"),
 ]
