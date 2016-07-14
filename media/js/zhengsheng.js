@@ -11,6 +11,8 @@ $(function(){
             console.log("0");
             $(".side-menu").css("left", "-120px");
             $(".my-nav").css("left", "30px");
+            $(".main-body").css("margin-left", "30px");
+
             $(".panel-item li").children(":first").addClass("fr");
             var mainClassification = $(".panel-item");
             mainClassification.each(function(){
@@ -23,6 +25,8 @@ $(function(){
             console.log("255");
             $(".side-menu").css("left", "0");
             $(".my-nav").css("left", "150px");
+            $(".main-body").css("margin-left", "150px");
+
             var mainClassification = $(".panel-item");
             mainClassification.each(function(){
                 var second = $(this).children();
