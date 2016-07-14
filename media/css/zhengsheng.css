@@ -96,7 +96,7 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
 .main-body{
     margin-top: 65px;
     margin-left: 150px;
-    margin-bottom: 200px;
+    /*margin-bottom: 200px;*/
     transition: 1s;
 }
 .alert-white{
@@ -104,7 +104,7 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     /*color: #FFFFFF!important;*/
 }
 .footer-fix-bottom{
-    position: fixed;
+    position: relative;
     right: 0;
     left: 0;
     z-index: 10;
