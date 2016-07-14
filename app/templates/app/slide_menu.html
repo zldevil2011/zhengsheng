@@ -20,7 +20,20 @@
                 <ul class="list-group panel-item">
                     <li class="list-group-item" onclick="window.location.href='/admin_account/'"><span class="icon-user"></span><span>账户管理</span></li>
                     <li class="list-group-item" onclick="window.location.href='/admin_work_order/'"><span class="icon-calendar"></span><span>工单管理</span></li>
-                    <li class="list-group-item"><span class="icon-mail"></span><span>设备管理</span></li>
+                    <li class="list-group-item">
+                        <span class="icon-menu"></span><span data-toggle="collapse" data-parent="" href="#deviceChild">设备管理</span>
+                        <div id="deviceChild" class="panel-collapse collapse">
+                          <div class="panel-body">
+                            <ul class="list-group panel-item">
+                                <li class="list-group-item"><span class="icon-information"></span><span>添加设备</span></li>
+                                <li class="list-group-item"><span class="icon-heart"></span><span>移除设备</span></li>
+                                <li class="list-group-item"><span class="icon-export"></span><span>设备定位</span></li>
+                                <li class="list-group-item"><span class="icon-headset"></span><span>设备入库</span></li>
+                                <li class="list-group-item"><span class="icon-location"></span><span>设备维修</span></li>
+                            </ul>
+                          </div>
+                        </div>
+                    </li>
                     <li class="list-group-item"><span class="icon-information"></span><span>数据查询</span></li>
                     <li class="list-group-item"><span class="icon-code"></span><span>条码管理</span></li>
                 </ul>
