@@ -23,3 +23,7 @@ def admin_device_remove(request):
         return render(request, 'app/admin_deviceRemove.html', {})
     else:
         return HttpResponse("POST")
+
+
+def admin_device_location(request):
+    return render(request, 'app/admin_deviceLocation.html', {})

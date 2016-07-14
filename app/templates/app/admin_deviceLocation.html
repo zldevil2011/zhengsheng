@@ -1,0 +1,297 @@
+{% extends "app/base.html" %}
+{% block title %}设备管理{% endblock %}
+{% block main_body %}
+    <div class="main-body">
+{#        bread direction#}
+        <div style="margin: 10px 0;position: relative;background-color: rgba(40, 42, 55,0.75);padding: 10px 12px;">
+            <span class="glyphicon glyphicon-home" style="display: inline-block;"></span>
+            <ul class="breadcrumb breadcrumb-my" style="display: inline-block;">
+				<li>
+					 <a href="#">主页</a>
+				</li>
+				<li>
+					 <a href="#">设备</a>
+				</li>
+				<li class="active">
+					设备定位
+				</li>
+			</ul>
+        </div>
+{#        account list#}
+        <div class="row" style="padding: 10px 30px;background-color: rgba(40, 42, 55,0.75);">
+            <hr>
+            <div class="col-md-12 column key-filter" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
+                <div class="clearfix" style="border-bottom: dotted 1px white; margin-bottom: 10px; padding-bottom: 10px;">
+                    <div class="col-md-1 filter-type">
+                        <b>地区</b>
+                    </div>
+                    <div class="col-md-11 filter-value">
+                        <div class="col-md-2"><span class="active">不限</span></div>
+                        <div class="col-md-2"><span>池州市</span></div>
+                        <div class="col-md-2"><span>贵池区</span></div>
+                        <div class="col-md-2"><span>东至县</span></div>
+                        <div class="col-md-2"><span>石台县</span></div>
+                        <div class="col-md-2"><span>青阳县</span></div>
+                        <div class="col-md-2"><span>不限</span></div>
+                        <div class="col-md-2"><span>池州市</span></div>
+                        <div class="col-md-2"><span>贵池区</span></div>
+                        <div class="col-md-2"><span>东至县</span></div>
+                        <div class="col-md-2"><span>石台县</span></div>
+                        <div class="col-md-2"><span>青阳县</span></div>
+                    </div>
+                </div>
+                <div class="clearfix" style="border-bottom: dotted 1px white; margin-bottom: 10px; padding-bottom: 10px;">
+                    <div class="col-md-1 filter-type">
+                        <b>街道</b>
+                    </div>
+                    <div class="col-md-11 filter-value">
+                        <div class="col-md-2"><span class="active">池阳街道</span></div>
+                        <div class="col-md-2"><span>秋浦街道</span></div>
+                        <div class="col-md-2"><span>江口街道</span></div>
+                        <div class="col-md-2"><span>里山街道</span></div>
+                        <div class="col-md-2"><span>马衙街道</span></div>
+                        <div class="col-md-2"><span>墩上街道</span></div>
+                        <div class="col-md-2"><span>梅龙街道</span></div>
+                        <div class="col-md-2"><span>秋江街道</span></div>
+                        <div class="col-md-2"><span>杏花村街道</span></div>
+                        <div class="col-md-2"><span>清溪街道</span></div>
+                        <div class="col-md-2"><span>牛头山镇</span></div>
+                        <div class="col-md-2"><span>殷汇镇</span></div>
+                        <div class="col-md-2"><span>涓桥镇</span></div>
+                    </div>
+                </div>
+                <div class="clearfix" style="border-bottom: dotted 1px white; margin-bottom: 10px; padding-bottom: 10px;">
+                    <div class="col-md-1 filter-type">
+                        <b>小区</b>
+                    </div>
+                    <div class="col-md-11 filter-value">
+                        <div class="col-md-2"><span class="active">江阳小区</span></div>
+                        <div class="col-md-2"><span>红色小区</span></div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="form-group">
+                <form class="form-horizontal" role="form" onsubmit="return false;">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="" class="col-sm-4 control-label">设备编号</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="" class="col-sm-3 control-label">安装时间</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="" />
+                            </div>
+                            <label for="" class="col-sm-1 control-label">至</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">关键字</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="" />
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-block btn-success">查找</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-12 column" style="">
+                <table class="table device-list">
+                    <thead>
+                        <tr style="background-color: rgba(39,25,25,0.35);">
+                            <th>
+                                设备编号
+                            </th>
+                            <th>
+                                设备名称
+                            </th>
+                            <th>
+                                缩略图
+                            </th>
+                            <th>
+                                设备类型
+                            </th>
+                            <th>
+                                设备地址
+                            </th>
+                            <th>
+                                设备状态
+                            </th>
+                            <th>
+                                设备所有者
+                            </th>
+                            <th>
+                                安装时间
+                            </th>
+                            <th>
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">定位</button></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">定位</button></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">定位</button></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">定位</button></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">定位</button></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">定位</button></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">定位</button></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">定位</button></td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">定位</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="col-md-12 column" style="text-align: right;">
+                    <ul class="pagination account-pagination" style="">
+                        <li>
+                             <a href="#">Prev</a>
+                        </li>
+                        <li>
+                             <a href="#">1</a>
+                        </li>
+                        <li>
+                             <a href="#">2</a>
+                        </li>
+                        <li>
+                             <a href="#">3</a>
+                        </li>
+                        <li>
+                             <a href="#">4</a>
+                        </li>
+                        <li>
+                             <a href="#">5</a>
+                        </li>
+                        <li>
+                             <a href="#">Next</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-12">
+                    <div class="clearfix">
+                        <div id="deviceLocation" style="width:100%;height:400px; border: 1px solid rgba(0, 0, 0, 0.04); border-radius: 6px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+{% block special_js %}
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WZVN4DbW3hfB9MSgMmwVQBHU8ZV8jRxW"></script>
+    <script async src="http://c.cnzz.com/core.php"></script>
+    <script>
+        var map = new BMap.Map("deviceLocation");          // 创建地图实例
+        var point = new BMap.Point(117.48, 30.67);  // 创建点坐标
+        var marker = new BMap.Marker(point);
+        map.addOverlay(marker);
+        map.addControl(new BMap.NavigationControl());
+        map.addControl(new BMap.ScaleControl());
+        map.addControl(new BMap.OverviewMapControl());
+        map.addControl(new BMap.MapTypeControl());
+        map.centerAndZoom(point, 15);                 // 初始化地图，设置中心点坐标和地图级别
+        map.enableScrollWheelZoom();
+        map.enableInertialDragging();
+        map.enableContinuousZoom();
+    </script>
+{% endblock %}

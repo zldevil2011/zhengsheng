@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^admin_device/$', device.admin_device, name="admin_device"),
     url(r'^admin_device/add/$', device.admin_device_add, name="admin_device_add"),
     url(r'^admin_device/remove/$', device.admin_device_remove, name="admin_device_remove"),
+    url(r'^admin_device/location/$', device.admin_device_location, name="admin_device_location"),
 ]
