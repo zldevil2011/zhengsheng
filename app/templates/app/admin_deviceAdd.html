@@ -90,7 +90,7 @@
                 <hr>
             </div>
             <div class="col-md-12" style="margin-top: 10px;">
-                <form class="" role="form">
+                <form class="" role="form" onsubmit="return false;">
                     <div class="col-md-4">
                         <div class="form-group col-md-4" style="height: 30px; line-height: 30px;">
                             设备编号
@@ -130,6 +130,22 @@
                         <div class="form-group col-md-10" style="height: 30px; ">
                             <input type="text" class="form-control" id="" placeholder="XXX市XXX街道XXX小区XXX号楼XXX层XXX号"/>
                         </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group col9-md-1" style="height: 30px; line-height: 30px;">
+                            设备图像
+                        </div>
+                        <div class="form-group col9-md-8" style="height: 30px;">
+                            <button class="btn btn-block btn-info" onclick="deviceFileSelect.click();">
+                                <input type="file" class="form-control" id=deviceFileSelect style="display: none;"/><span>选择文件</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-offset-10 col-md-2">
+                            <button class="btn btn-block btn-success">提交</button>
+                        </div>
+
                     </div>
                 </form>
             </div>

@@ -144,3 +144,18 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     background-color: #2bb8aa;
     color: #fff;
 }
+@media (min-width: 992px){
+    .col9-md-1, .col9-md-8{
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+        float: left;
+    }
+   .col9-md-1 {
+       width: 10.6111111%;
+   }
+    .col9-md-8 {
+       width: 89.3888889%;
+   }
+}
