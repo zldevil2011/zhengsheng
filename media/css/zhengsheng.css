@@ -144,6 +144,19 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     background-color: #2bb8aa;
     color: #fff;
 }
+.maintain-process div span{
+    text-align: center;
+    border: 2px solid #FFFFFF!important;
+    border-radius: 4px;
+    box-shadow: none !important;
+    color: #C7D5E0 !important;
+    font-size: 13px !important;
+    display: block;
+    width:100%;
+}
+.maintain-process span.active{
+    border: 2px solid #00CDAE!important;
+}
 @media (min-width: 992px){
     .col9-md-1, .col9-md-8{
         position: relative;
@@ -159,3 +172,4 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
        width: 89.3888889%;
    }
 }
+

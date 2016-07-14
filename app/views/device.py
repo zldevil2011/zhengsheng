@@ -27,3 +27,7 @@ def admin_device_remove(request):
 
 def admin_device_location(request):
     return render(request, 'app/admin_deviceLocation.html', {})
+
+
+def admin_device_maintain(request):
+    return render(request, 'app/admin_deviceMaintain.html', {})
