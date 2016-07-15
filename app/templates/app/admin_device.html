@@ -271,6 +271,7 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
 {% block special_js %}
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WZVN4DbW3hfB9MSgMmwVQBHU8ZV8jRxW"></script>
@@ -278,27 +279,49 @@
     <script>
         var map = new BMap.Map("device-list-page");          // 创建地图实例
         var point = new BMap.Point(117.48, 30.67);  // 创建点坐标
-        var sContent =
-        "<div><h4 style='margin:0 0 5px 0;padding:0.2em 0'>池州</h4>" +
-        "<img style='float:right;margin:4px' id='imgDemo' src='http://b.hiphotos.baidu.com/baike/pic/item/adaf2edda3cc7cd9645689f33101213fb80e91a5.jpg' width='139' height='104' title='天安门'/>" +
-        "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>节点1</p>" +
-        "</div>";
-        var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
-        var marker = new BMap.Marker(point);
-        map.addOverlay(marker);
-        marker.addEventListener("click", function(){
-            this.openInfoWindow(infoWindow);
-            //图片加载完毕重绘infowindow
-            document.getElementById('imgDemo').onload = function (){
-               infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
-            }
-        });
+        //创建多个覆盖点，同时绑定点击事件
+        var infoWindowArr = new Array();
+        var markerArr = new Array();
+        var X = 117.48, Y = 30.67;
+        var ArrX = new Array();
+        var ArrY = new Array();
+        var dirX = -1;
+        var dirY = -1;
+        for(var i = 0; i < 100; ++i){
+            X = X + dirX * (Math.random()*10 * 0.0001);
+            Y = Y + dirY * (Math.random()*10 * 0.0001);
+            ArrX.push(X);
+            ArrY.push(Y);
+            dirX *= -1;
+            dirY *= -1;
+        }
+        for(var i = 0; i < 100; ++i){
+            var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：正常</td></tr>' +
+                '<tr><td>温度：37℃</td><td>电压：220V</td></tr><tr><td>电流：2.0A</td><td>电话：18818881888</td></tr></table></div>';
+            infoWindowArr.push(new BMap.InfoWindow(sContent));
+            var marker = new BMap.Marker(new BMap.Point( ArrX[i], ArrY[i] ));
+            markerArr.push(marker);
+        }
+{#        console.log(markerArr);#}
+{#        console.log(infoWindowArr);#}
+        for(var i = 0; i < 100; ++i){
+            map.addOverlay(markerArr[i]);
+            markerArr[i].addEventListener("click", function(){
+                markerClick(this, i-1);
+            });
+        }
+        function markerClick(e, i){
+            console.log(e);
+            console.log(i);
+            e.openInfoWindow(infoWindowArr[i]);
+        }
+
 {#        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画#}
         map.addControl(new BMap.NavigationControl());
         map.addControl(new BMap.ScaleControl());
         map.addControl(new BMap.OverviewMapControl());
         map.addControl(new BMap.MapTypeControl());
-        map.centerAndZoom(point, 15);                 // 初始化地图，设置中心点坐标和地图级别
+        map.centerAndZoom(point, 19);                 // 初始化地图，设置中心点坐标和地图级别
         map.enableScrollWheelZoom();
 
         map.enableInertialDragging();
