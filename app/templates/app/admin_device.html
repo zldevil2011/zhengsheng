@@ -150,7 +150,7 @@
                             <td>正常</td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
-                            <td>查看</td>
+                            <td><button class="btn btn-success">查看</button></td>
                         </tr>
                         <tr>
                             <td>2</td>
@@ -161,7 +161,7 @@
                             <td>正常</td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
-                            <td>查看</td>
+                            <td><button class="btn btn-success">查看</button></td>
                         </tr>
                         <tr>
                             <td>3</td>
@@ -172,7 +172,7 @@
                             <td>正常</td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
-                            <td>查看</td>
+                            <td><button class="btn btn-success">查看</button></td>
                         </tr>
                         <tr>
                             <td>4</td>
@@ -183,7 +183,7 @@
                             <td>正常</td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
-                            <td>查看</td>
+                            <td><button class="btn btn-success">查看</button></td>
                         </tr>
                         <tr>
                             <td>5</td>
@@ -194,7 +194,7 @@
                             <td>正常</td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
-                            <td>查看</td>
+                            <td><button class="btn btn-success">查看</button></td>
                         </tr>
                         <tr>
                             <td>6</td>
@@ -205,7 +205,7 @@
                             <td>正常</td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
-                            <td>查看</td>
+                            <td><button class="btn btn-success">查看</button></td>
                         </tr>
                         <tr>
                             <td>7</td>
@@ -216,7 +216,7 @@
                             <td>正常</td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
-                            <td>查看</td>
+                            <td><button class="btn btn-success">查看</button></td>
                         </tr>
                         <tr>
                             <td>8</td>
@@ -227,7 +227,7 @@
                             <td>正常</td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
-                            <td>查看</td>
+                            <td><button class="btn btn-success">查看</button></td>
                         </tr>
                         <tr>
                             <td>9</td>
@@ -238,7 +238,7 @@
                             <td>正常</td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
-                            <td>查看</td>
+                            <td><button class="btn btn-success">查看</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -267,11 +267,41 @@
                         </li>
                     </ul>
                 </div>
+                <div id="device-list-page" style="width: 100%; height: 400px;"></div>
             </div>
         </div>
-
     </div>
 {% endblock %}
 {% block special_js %}
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WZVN4DbW3hfB9MSgMmwVQBHU8ZV8jRxW"></script>
+    <script async src="http://c.cnzz.com/core.php"></script>
+    <script>
+        var map = new BMap.Map("device-list-page");          // 创建地图实例
+        var point = new BMap.Point(117.48, 30.67);  // 创建点坐标
+        var sContent =
+        "<div><h4 style='margin:0 0 5px 0;padding:0.2em 0'>池州</h4>" +
+        "<img style='float:right;margin:4px' id='imgDemo' src='http://b.hiphotos.baidu.com/baike/pic/item/adaf2edda3cc7cd9645689f33101213fb80e91a5.jpg' width='139' height='104' title='天安门'/>" +
+        "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>节点1</p>" +
+        "</div>";
+        var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+        var marker = new BMap.Marker(point);
+        map.addOverlay(marker);
+        marker.addEventListener("click", function(){
+            this.openInfoWindow(infoWindow);
+            //图片加载完毕重绘infowindow
+            document.getElementById('imgDemo').onload = function (){
+               infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
+            }
+        });
+{#        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画#}
+        map.addControl(new BMap.NavigationControl());
+        map.addControl(new BMap.ScaleControl());
+        map.addControl(new BMap.OverviewMapControl());
+        map.addControl(new BMap.MapTypeControl());
+        map.centerAndZoom(point, 15);                 // 初始化地图，设置中心点坐标和地图级别
+        map.enableScrollWheelZoom();
 
+        map.enableInertialDragging();
+        map.enableContinuousZoom();
+    </script>
 {% endblock %}
