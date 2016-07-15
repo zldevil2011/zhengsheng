@@ -299,7 +299,7 @@
         for(var i = 0; i < 100; ++i){
             indexArr.push(i);
             var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：正常</td></tr>' +
-                '<tr><td>温度：37℃</td><td>电压：220V</td></tr><tr><td>电流：2.0A</td><td>电话：18818881888</td></tr></table></div>';
+                '<tr><td>温度：' + i + '℃</td><td>电压：220V</td></tr><tr><td>电流：'+ i + 'A</td><td>电话：' + i*10000000 + '</td></tr></table></div>';
             infoWindowArr.push(new BMap.InfoWindow(sContent));
             var marker = new BMap.Marker(new BMap.Point( ArrX[i], ArrY[i] ));
             markerArr.push(marker);
