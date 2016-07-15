@@ -280,6 +280,7 @@
         var map = new BMap.Map("device-list-page");          // 创建地图实例
         var point = new BMap.Point(117.48, 30.67);  // 创建点坐标
         //创建多个覆盖点，同时绑定点击事件
+        var indexArr = new Array();
         var infoWindowArr = new Array();
         var markerArr = new Array();
         var X = 117.48, Y = 30.67;
@@ -296,6 +297,7 @@
             dirY *= -1;
         }
         for(var i = 0; i < 100; ++i){
+            indexArr.push(i);
             var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：正常</td></tr>' +
                 '<tr><td>温度：37℃</td><td>电压：220V</td></tr><tr><td>电流：2.0A</td><td>电话：18818881888</td></tr></table></div>';
             infoWindowArr.push(new BMap.InfoWindow(sContent));
@@ -306,15 +308,17 @@
 {#        console.log(infoWindowArr);#}
         for(var i = 0; i < 100; ++i){
             map.addOverlay(markerArr[i]);
-            markerArr[i].addEventListener("click", function(){
-                markerClick(this, i-1);
-            });
+            var P = indexArr[i];
+            var ope = new markerClick(i);
+            markerArr[i].addEventListener("click", ope.clickFunc);
         }
-        function markerClick(e, i){
-            console.log(e);
-            console.log(i);
-            e.openInfoWindow(infoWindowArr[i]);
+        function markerClick(i){
+            this.clickFunc = function() {
+                console.log(i);
+                this.openInfoWindow(infoWindowArr[i]);
+            }
         }
+
 
 {#        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画#}
         map.addControl(new BMap.NavigationControl());
