@@ -118,3 +118,381 @@ $(function () {
     });
 
 });
+
+//数据查询界面的表格绘制
+$(function(){
+    try{
+        AllUser24Hour();
+        AllUserMonth();
+        AllUserYearCompare();
+        User24Hour();
+        UserMonth();
+    }catch(e){
+
+    }
+});
+function AllUser24Hour(){
+    $('#AllUser24Hour').highcharts({
+        chart: {
+            type: 'line',
+            backgroundColor: 'rgba(80,81,95,0.1)',
+        },
+        title: {
+            text: '该地区用户24小时用电量统计',
+            style: {
+                color: '#FFFFFF',
+            }
+        },
+        subtitle: {
+            text: '数据来源：电表箱',
+            style: {
+                color: '#FFFFFF',
+            }
+        },
+        xAxis: {
+            categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12','13','14','15','16','17','18','19','20','21','22','23','24'],
+            style: {
+                color: '#FFFFFF',
+            },
+            labels: {
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif',
+                    color:'#FFFFFF',
+                }
+            }
+        },
+        yAxis: {
+            title: {
+                text: '用电量 (Kwh)',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            labels: {
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif',
+                    color:'#FFFFFF',
+                }
+            }
+        },
+        tooltip: {
+            enabled: false,
+            formatter: function() {
+                return '<b>'+ this.series.name +'</b><br/>'+this.x +': '+ this.y +'°C';
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Tokyo',
+            data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6,7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+        }]
+    });
+}
+function AllUserMonth(){
+    $('#AllUserMonth').highcharts({
+        chart: {
+            type: 'column',
+            margin: [ 50, 50, 100, 80],
+            backgroundColor: 'rgba(80,81,95,0.1)',
+        },
+        title: {
+            text: '该地区一年用电量',
+            style: {
+                color: '#FFFFFF',
+            }
+        },
+        xAxis: {
+            categories: [
+                '1月',
+                '2月',
+                '3月',
+                '4月',
+                '5月',
+                '6月',
+                '7月',
+                '8月',
+                '9月',
+                '10月',
+                '11月',
+                '12月',
+            ],
+            labels: {
+                rotation: -45,
+                align: 'right',
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif',
+                    color:'#FFFFFF',
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: '用电量(Kwh)',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            labels: {
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif',
+                    color:'#FFFFFF',
+                }
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'Population in 2008: <b>{point.y:.1f} millions</b>',
+        },
+        series: [{
+            name: 'Population',
+            data: [34.4, 21.8, 20.1, 20, 19.6, 19.5, 19.1, 18.4, 18,
+                17.3, 16.8, 15],
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                x: 4,
+                y: 10,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif',
+                    textShadow: '0 0 3px black'
+                }
+            }
+        }]
+    });
+}
+function AllUserYearCompare(){
+    var chart,
+        categories = ['1月', '2月', '3月', '4月',
+            '5月', '6月', '7月', '8月', '9月',
+            '10月', '11月', '12月'];
+    $(document).ready(function() {
+        $('#AllUserYearCompare').highcharts({
+            chart: {
+                type: 'bar',
+                backgroundColor: 'rgba(80,81,95,0.1)',
+            },
+            title: {
+                text: '近两年月度用电量对比',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            subtitle: {
+                text: '数据来源：电力公司',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            xAxis: [{
+                categories: categories,
+                reversed: false
+            }, { // mirror axis on right side
+                opposite: true,
+                reversed: false,
+                categories: categories,
+                linkedTo: 0,
+            }],
+            yAxis: {
+                title: {
+                    text: null
+                },
+                labels: {
+                    formatter: function(){
+                        return (Math.abs(this.value) / 1000000) + 'M';
+                    },
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                },
+                min: -4000000,
+                max: 4000000,
+
+            },
+
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+
+            tooltip: {
+                formatter: function(){
+                    return '<b>'+ this.series.name +', age '+ this.point.category +'</b><br/>'+
+                        'Population: '+ Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                }
+            },
+
+            series: [{
+                name: '上一年',
+                data: [-1746181, -1884428, -2089758, -2222362, -2537431, -2507081, -2443179,
+                    -2664537, -3556505, -3680231, -3143062, -2721122]
+            }, {
+                name: '今年',
+                data: [1656154, 1787564, 1981671, 2108575, 2403438, 2366003, 2301402, 2519874,
+                    3360596, 3493473, 3050775, 2759560]
+            }]
+        });
+    });
+}
+function User24Hour(){
+    $('#User24Hour').highcharts({
+        chart: {
+            type: 'line',
+            backgroundColor: 'rgba(80,81,95,0.1)',
+        },
+        title: {
+            text: '该用户24小时用电量',
+            style: {
+                color: '#FFFFFF',
+            }
+        },
+        subtitle: {
+            text: '数据来源：电表箱',
+            style: {
+                color: '#FFFFFF',
+            }
+        },
+        xAxis: {
+            categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12','13','14','15','16','17','18','19','20','21','22','23','24'],
+            labels: {
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif',
+                    color:'#FFFFFF',
+                }
+            }
+        },
+        yAxis: {
+            title: {
+                text: '用电量(Kwh)',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            labels: {
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif',
+                    color:'#FFFFFF',
+                }
+            }
+        },
+        tooltip: {
+            enabled: false,
+            formatter: function() {
+                return '<b>'+ this.series.name +'</b><br/>'+this.x +': '+ this.y +'°C';
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Tokyo',
+            data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6,7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+        }]
+    });
+}
+function UserMonth(){
+    $('#UserMonth').highcharts({
+        chart: {
+            type: 'column',
+            margin: [ 50, 50, 100, 80],
+            backgroundColor: 'rgba(80,81,95,0.1)',
+        },
+        title: {
+            text: '该用户一年用电量',
+            style: {
+                color: '#FFFFFF',
+            }
+        },
+        xAxis: {
+            categories: [
+                '1月',
+                '2月',
+                '3月',
+                '4月',
+                '5月',
+                '6月',
+                '7月',
+                '8月',
+                '9月',
+                '10月',
+                '11月',
+                '12月',
+            ],
+            labels: {
+                rotation: -45,
+                align: 'right',
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif',
+                    color:'#FFFFFF',
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: '用电量(Kwh)',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            labels: {
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif',
+                    color:'#FFFFFF',
+                }
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'Population in 2008: <b>{point.y:.1f} millions</b>',
+        },
+        series: [{
+            name: 'Population',
+            data: [34.4, 21.8, 20.1, 20, 19.6, 19.5, 19.1, 18.4, 18,
+                17.3, 16.8, 15],
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                x: 4,
+                y: 10,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif',
+                    textShadow: '0 0 3px black'
+                }
+            }
+        }]
+    });
+}
