@@ -75,7 +75,7 @@
                                 设备地址
                             </th>
                             <th>
-                                设备状态
+                                设备温度
                             </th>
                             <th>
                                 设备所有者
@@ -88,14 +88,14 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="temperature-test">
                         <tr>
                             <td>1</td>
                             <td>IMG98电箱</td>
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td>正常</td>
+                            <td><span class="normal">28℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -106,7 +106,7 @@
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td>正常</td>
+                            <td><span class="danger">37℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -117,7 +117,7 @@
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td>正常</td>
+                            <td><span class="normal">28℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -128,7 +128,7 @@
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td>正常</td>
+                            <td><span class="warning">30℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -139,7 +139,7 @@
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td>正常</td>
+                            <td><span class="warning">31℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -150,7 +150,7 @@
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td>正常</td>
+                            <td><span class="danger">38℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -161,7 +161,7 @@
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td>正常</td>
+                            <td><span class="normal">28℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -172,7 +172,7 @@
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td>正常</td>
+                            <td><span class="normal">28℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -183,7 +183,7 @@
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td>正常</td>
+                            <td><span class="warning">31℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -224,6 +224,23 @@
 {% block special_js %}
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WZVN4DbW3hfB9MSgMmwVQBHU8ZV8jRxW"></script>
     <script async src="http://c.cnzz.com/core.php"></script>
+    <script>
+{#            console.log(e.parent().prev().prev().prev().prev().prev().html());#}
+{#            console.log(e);#}
+{#            console.log(e.hasClass("danger"));#}
+        $(".temperature-test tr td span").each(function(){
+            flush($(this));
+        });
+        function flush(e){
+            setInterval(function(){
+               if(e.hasClass("danger")){
+                   e.removeClass("danger");
+               }else if(e.attr("class") == []){
+                   e.addClass("danger");
+               }
+            }, 300);
+        }
+    </script>
     <script>
         var map = new BMap.Map("device-list-page");          // 创建地图实例
         var point = new BMap.Point(117.48, 30.67);  // 创建点坐标
