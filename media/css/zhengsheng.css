@@ -132,14 +132,14 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
 .childMenu{
     margin-left: 10px;
 }
-.key-filter > div{
+.location-filter > div{
     text-align: center;
 }
-.key-filter .filter-value div span{
+.location-filter .filter-value div span{
     display: inline-block;
     width:50%;
 }
-.key-filter .filter-value div span.active{
+.location-filter .filter-value div span.active{
     border-radius: 2px;
     background-color: #2bb8aa;
     color: #fff;
