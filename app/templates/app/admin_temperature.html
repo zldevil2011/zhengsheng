@@ -106,7 +106,7 @@
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td><span class="danger">37℃</span></td>
+                            <td><span class="danger-tag danger">37℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -128,7 +128,7 @@
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td><span class="warning">30℃</span></td>
+                            <td><span class="warning-tag warning">30℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -139,7 +139,7 @@
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td><span class="warning">31℃</span></td>
+                            <td><span class="warning-tag warning">31℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -150,7 +150,7 @@
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td><span class="danger">38℃</span></td>
+                            <td><span class="danger-tag danger">38℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -183,7 +183,7 @@
                             <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
                             <td>电箱</td>
                             <td>阳光路12号3301</td>
-                            <td><span class="warning">31℃</span></td>
+                            <td><span class="warning-tag warning">31℃</span></td>
                             <td>李三</td>
                             <td>2016-07-14 14:06:59</td>
                             <td><button class="btn btn-success">查看</button></td>
@@ -232,13 +232,24 @@
             flush($(this));
         });
         function flush(e){
-            setInterval(function(){
-               if(e.hasClass("danger")){
-                   e.removeClass("danger");
-               }else if(e.attr("class") == []){
-                   e.addClass("danger");
-               }
-            }, 300);
+            if(e.hasClass("danger-tag")){
+                setInterval(function(){
+                    if(e.hasClass("danger")){
+                        e.removeClass("danger");
+                    }else{
+                        e.addClass("danger");
+                    }
+                }, 300);
+            }else if(e.hasClass("warning-tag")){
+                setInterval(function(){
+                    if(e.hasClass("warning")){
+                        e.removeClass("warning");
+                    }else{
+                        e.addClass("warning");
+                    }
+                }, 1000);
+            }
+
         }
     </script>
     <script>
@@ -266,6 +277,8 @@
             var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：正常</td></tr>' +
                 '<tr><td>温度：' + i + '℃</td><td>电压：220V</td></tr><tr><td>电流：'+ i + 'A</td><td>电话：' + i*10000000 + '</td></tr></table></div>';
             infoWindowArr.push(new BMap.InfoWindow(sContent));
+{#            var myIcon = new BMap.Icon("/site_media/images/drop-icon.png", new BMap.Size(300,157), {anchor:new BMap.Size(10,30)});#}
+{#            var marker = new BMap.Marker(new BMap.Point( ArrX[i], ArrY[i] ),{icon:myIcon});#}
             var marker = new BMap.Marker(new BMap.Point( ArrX[i], ArrY[i] ));
             markerArr.push(marker);
         }
@@ -284,6 +297,10 @@
             }
         }
 
+        var pt = new BMap.Point(117.49, 30.67);
+        var myIcon = new BMap.Icon("/site_media/images/drop-icon2.png", new BMap.Size(300,157), {anchor:new BMap.Size(10,30)});
+        var marker2 = new BMap.Marker(pt,{icon:myIcon});  // 创建标注
+        map.addOverlay(marker2);              // 将标注添加到地图中
 
 {#        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画#}
         map.addControl(new BMap.NavigationControl());
