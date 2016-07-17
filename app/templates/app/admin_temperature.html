@@ -274,12 +274,22 @@
         }
         for(var i = 0; i < 100; ++i){
             indexArr.push(i);
-            var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：正常</td></tr>' +
+            if(i%3 == 0){
+                var myIconT = new BMap.Icon("/site_media/images/normal.png", new BMap.Size(20,32), {anchor:new BMap.Size(10,30)});
+                var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：<span style="color:green;">正常</span></td></tr>' +
                 '<tr><td>温度：' + i + '℃</td><td>电压：220V</td></tr><tr><td>电流：'+ i + 'A</td><td>电话：' + i*10000000 + '</td></tr></table></div>';
+            }else if(i%3==1){
+                var myIconT = new BMap.Icon("/site_media/images/danger.png", new BMap.Size(20,32), {anchor:new BMap.Size(10,30)});
+                var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：<span style="color:red;">过热</span></td></tr>' +
+                '<tr><td>温度：' + i + '℃</td><td>电压：220V</td></tr><tr><td>电流：'+ i + 'A</td><td>电话：' + i*10000000 + '</td></tr></table></div>';
+            }else{
+                var myIconT = new BMap.Icon("/site_media/images/warning.png", new BMap.Size(20,32), {anchor:new BMap.Size(10,30)});
+                var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：<span style="color:#fcab46;">略热</span></td></tr>' +
+                '<tr><td>温度：' + i + '℃</td><td>电压：220V</td></tr><tr><td>电流：'+ i + 'A</td><td>电话：' + i*10000000 + '</td></tr></table></div>';
+            }
             infoWindowArr.push(new BMap.InfoWindow(sContent));
-{#            var myIcon = new BMap.Icon("/site_media/images/drop-icon.png", new BMap.Size(300,157), {anchor:new BMap.Size(10,30)});#}
-{#            var marker = new BMap.Marker(new BMap.Point( ArrX[i], ArrY[i] ),{icon:myIcon});#}
-            var marker = new BMap.Marker(new BMap.Point( ArrX[i], ArrY[i] ));
+            var marker = new BMap.Marker(new BMap.Point( ArrX[i], ArrY[i] ),{icon:myIconT});
+{#            var marker = new BMap.Marker(new BMap.Point( ArrX[i], ArrY[i] ));#}
             markerArr.push(marker);
         }
 {#        console.log(markerArr);#}
@@ -296,13 +306,17 @@
                 this.openInfoWindow(infoWindowArr[i]);
             }
         }
-
+        var sContent_danger ='<div"><table class="table"><tr><td>XXX989000</td><td>状态：<span style="color:red">过热</span></td></tr>' +
+                '<tr><td>温度：' + 38 + '℃</td><td>电压：220V</td></tr><tr><td>电流：4A</td><td>电话：188888888</td></tr></table></div>';
         var pt = new BMap.Point(117.49, 30.67);
-        var myIcon = new BMap.Icon("/site_media/images/drop-icon2.png", new BMap.Size(300,157), {anchor:new BMap.Size(10,30)});
+        var myIcon = new BMap.Icon("/site_media/images/danger.png", new BMap.Size(20,32), {anchor:new BMap.Size(10,30)});
         var marker2 = new BMap.Marker(pt,{icon:myIcon});  // 创建标注
+        marker2.addEventListener("click", function(){
+            this.openInfoWindow(new BMap.InfoWindow(sContent_danger));
+        });
         map.addOverlay(marker2);              // 将标注添加到地图中
 
-{#        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画#}
+        marker2.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
         map.addControl(new BMap.NavigationControl());
         map.addControl(new BMap.ScaleControl());
         map.addControl(new BMap.OverviewMapControl());
