@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 from app.views import index, user, device, data
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name="app/welcome.html")),
+    url(r'^building/$', TemplateView.as_view(template_name="app/building.html")),
     url(r'^admin_login/$', index.admin_login, name="admin_login"),
     url(r'^admin_index/$', index.admin_index, name="admin_index"),
     url(r'^admin_account/$', user.admin_account, name="admin_account"),
