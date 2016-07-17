@@ -19,13 +19,14 @@
         }
     </style>
 </head>
-<body>
+<body onmousemove="onMouseMove(event)">
     <input type="number" style="z-index:1000;" id = "xv" value="0">
     <input type="number" style="z-index:1000;" id = "yv" value="0">
     <input type="number" style="z-index:1000;" id = "zv" value="400">
 {#    <div id="canvas-frame"></div>#}
 </body>
 <script>
+    window.onmousewheel=document.onmousewheel=scrollFunc;
     var camera, scene, renderer;
     var mesh;
 
@@ -160,17 +161,69 @@
         var x = document.getElementById("xv").value;
         var y = document.getElementById("yv").value;
         var z = document.getElementById("zv").value;
-        console.log(x);
-        console.log(y);
-        console.log(z);
+{#        console.log(x);#}
+{#        console.log(y);#}
+{#        console.log(z);#}
 {#        camera.position.x = x;#}
         camera.position.y = y;
         camera.position.z = z;
         camera.lookAt({x:x,y:0,z:0});
+
         requestAnimationFrame( animate );
         renderer.render( scene, camera );
     }
+    var MouseX = 0, MouseY = 0;
+    function onMouseMove(ev){
+        ev = ev || window.event;
+        var x = parseInt(document.getElementById("xv").value);
+        var y = document.getElementById("yv").value;
+        var z = document.getElementById("zv").value;
+{#        console.log(x);#}
+{#        console.log(y);#}
+{#        console.log(z);#}
+{#        camera.position.x = x;#}
+{#        ev = window.event;#}
+        var xx = ev.screenX;
+        var yy = ev.screenY;
 
+        var screenW = window.innerWidth;
+        if(xx < MouseX){
+            x -= 2;
+        }else{
+            x += 2;
+        }
+        MouseX = xx;
+        document.getElementById("xv").value = x;
+        camera.position.y = y;
+        camera.position.z = z;
+        camera.lookAt({x:x,y:0,z:0});
 
+        requestAnimationFrame( animate );
+        renderer.render( scene, camera );
+    }
+    function scrollFunc(e){
+        var z = parseInt(document.getElementById("zv").value);
+        var x = parseInt(document.getElementById("xv").value);
+        var direct=0;
+        e=e || window.event;
+        if(e.wheelDelta){//IE/Opera/Chrome
+            console.log(e.wheelDelta);
+            direct = e.wheelDelta;
+        }else if(e.detail){//Firefox
+            console.log(e.detail);
+            direct = e.detail;
+        }
+        if(direct > 0){
+            z -=2;
+        }else{
+            z += 2;
+        }
+        document.getElementById("zv").value = z;
+        camera.position.z = z;
+        camera.lookAt({x:x,y:0,z:z});
+
+        requestAnimationFrame( animate );
+        renderer.render( scene, camera );
+    }
 </script>
 </html>
