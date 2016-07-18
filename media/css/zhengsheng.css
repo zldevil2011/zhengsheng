@@ -14,6 +14,10 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     /*-webkit-transition:background 2s; !* Safari and Chrome *!*/
     /*-o-transition:background 2s; !* Opera *!*/
 /*}*/
+.bg-color{
+    /*background-color: rgba(15, 17, 140,0.75);*/
+    background-color: rgba(40, 42, 55,0.75);
+}
 .text-gradient{
      background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(rgba(128, 0, 71, 1)), to(rgba(59, 92, 130, 1)));
      -webkit-background-clip: text;
