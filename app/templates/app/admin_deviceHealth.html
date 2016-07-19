@@ -17,7 +17,7 @@
 				</li>
 			</ul>
         </div>
-{#        account list#}
+
         <div class="row bg-color" style="padding: 10px 30px;">
             {% include 'app/location_filter.html' %}
             <div class="form-group">
@@ -217,6 +217,44 @@
                 </div>
             </div>
         </div>
+
+        <div class="row bg-color device-health-info" style="padding: 10px 30px; border:1px solid #ff0000;">
+            <div class="col-md-12 column">
+                <div class="col-md-6">
+                    <div class="col-md-6">设备编号</div>
+                    <div class="col-md-6">IMG0988001</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-md-6">设备地址</div>
+                    <div class="col-md-6">新街口外大街19号</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-md-6">设备温度</div>
+                    <div class="col-md-6">20℃</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-md-6">联系电话</div>
+                    <div class="col-md-6">12345678910</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-md-6">设备电压</div>
+                    <div class="col-md-6">220V</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-md-6">设备电流</div>
+                    <div class="col-md-6">10A</div>
+                </div>
+                <div class="col-md-6" style="height: 50px; line-height: 30px;">
+                    <div class="col-md-6">设置设备温度阈值</div>
+                    <div class="col-md-6"><input type="text" class="form-control"></div>
+                </div>
+                <div class="col-md-6" style="height: 50px; line-height: 30px;">
+                    <div class="col-md-6 horizontal-text-center"><button class="btn btn-success btn-block" style="width: 80%;">提交</button></div>
+                    <div class="col-md-6 horizontal-text-center"><button class="btn btn-danger btn-block" style="width: 80%;">取消</button> </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 {% endblock %}

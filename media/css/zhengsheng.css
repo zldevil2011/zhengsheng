@@ -173,6 +173,13 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
 .temperature-test .danger{
     border: 1px solid #ff0000;
 }
+.device-health-info > div > div{
+    border-bottom: 1px dotted #ffffff;
+    padding: 10px;
+}
+.device-health-info > div > div > div:not(:last-child){
+    border-right: 1px solid #ffffff;
+}
 @media (min-width: 992px){
     .col9-md-1, .col9-md-8{
         position: relative;
