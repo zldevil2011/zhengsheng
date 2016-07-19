@@ -35,3 +35,7 @@ def admin_device_maintain(request):
 
 def admin_device_temperature(request):
     return render(request, 'app/admin_temperature.html', {})
+
+
+def admin_device_health(request):
+    return render(request, 'app/admin_deviceHealth.html', {})

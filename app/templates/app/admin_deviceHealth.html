@@ -1,0 +1,225 @@
+{% extends "app/base.html" %}
+{% block title %}设备管理{% endblock %}
+{% block main_body %}
+    <div class="main-body">
+{#        bread direction#}
+        <div class="bg-color" style="margin: 10px 0;position: relative;padding: 10px 12px;">
+            <span class="glyphicon glyphicon-home" style="display: inline-block;"></span>
+            <ul class="breadcrumb breadcrumb-my" style="display: inline-block;">
+				<li>
+					 <a href="#">主页</a>
+				</li>
+				<li>
+					 <a href="#">设备</a>
+				</li>
+				<li class="active">
+					健康监测
+				</li>
+			</ul>
+        </div>
+{#        account list#}
+        <div class="row bg-color" style="padding: 10px 30px;">
+            {% include 'app/location_filter.html' %}
+            <div class="form-group">
+                <form class="form-horizontal" role="form" onsubmit="return false;">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="" class="col-sm-4 control-label">设备编号</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="" class="col-sm-3 control-label">安装时间</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="" />
+                            </div>
+                            <label for="" class="col-sm-1 control-label">至</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">关键字</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="" />
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-block btn-success">查找</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-12 column" style="">
+                <table class="table device-list">
+                    <thead>
+                        <tr style="background-color: rgba(39,25,25,0.35);">
+                            <th>
+                                设备编号
+                            </th>
+                            <th>
+                                设备名称
+                            </th>
+                            <th>
+                                缩略图
+                            </th>
+                            <th>
+                                设备类型
+                            </th>
+                            <th>
+                                设备地址
+                            </th>
+                            <th>
+                                设备状态
+                            </th>
+                            <th>
+                                设备所有者
+                            </th>
+                            <th>
+                                安装时间
+                            </th>
+                            <th>
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">查看</button></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">查看</button></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">查看</button></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">查看</button></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">查看</button></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">查看</button></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">查看</button></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">查看</button></td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>IMG98电箱</td>
+                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
+                            <td>电箱</td>
+                            <td>阳光路12号3301</td>
+                            <td>正常</td>
+                            <td>李三</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">查看</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="col-md-12 column" style="text-align: right;">
+                    <ul class="pagination account-pagination" style="">
+                        <li>
+                             <a href="#">Prev</a>
+                        </li>
+                        <li>
+                             <a href="#">1</a>
+                        </li>
+                        <li>
+                             <a href="#">2</a>
+                        </li>
+                        <li>
+                             <a href="#">3</a>
+                        </li>
+                        <li>
+                             <a href="#">4</a>
+                        </li>
+                        <li>
+                             <a href="#">5</a>
+                        </li>
+                        <li>
+                             <a href="#">Next</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block special_js %}
+
+{% endblock %}
