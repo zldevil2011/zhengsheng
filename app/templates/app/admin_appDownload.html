@@ -1,0 +1,30 @@
+{% extends "app/base.html" %}
+{% block title %}设备管理{% endblock %}
+{% block main_body %}
+    <div class="main-body">
+{#        bread direction#}
+        <div class="bg-color" style="margin: 10px 0;position: relative;padding: 10px 12px;">
+            <span class="glyphicon glyphicon-home" style="display: inline-block;"></span>
+            <ul class="breadcrumb breadcrumb-my" style="display: inline-block;">
+				<li>
+					 <a href="#">主页</a>
+				</li>
+				<li>
+					 <a href="#">App</a>
+				</li>
+				<li class="active">
+					App下载
+				</li>
+			</ul>
+        </div>
+        <div class="row bg-color" style="padding: 10px 30px;">
+            <div class="col-md-12 column" style="">
+                <div class="col-md-6 horizontal-text-center"><img src="/site_media/images/developer.png"></div>
+                <div class="col-md-6 horizontal-text-center"><img src="/site_media/images/developer.png"></div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block special_js %}
+{% endblock %}
