@@ -180,6 +180,20 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
 .device-health-info > div > div > div:not(:last-child){
     border-right: 1px solid #ffffff;
 }
+.leakage-list .start, .processing, .finish{
+    border: 1px solid #FFFFFF;
+    border-radius: 6px;
+    padding: 5px;
+}
+.leakage-list .start{
+    border: 1px solid #00FF00;
+}
+.leakage-list .processing{
+    border: 1px solid red;
+}
+.leakage-list .finish{
+    border: 1px solid #00CDAE;
+}
 @media (min-width: 992px){
     .col9-md-1, .col9-md-8{
         position: relative;

@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^admin_device/maintain/$', device.admin_device_maintain, name="admin_device_maintain"),
     url(r'^admin_device/temperature/$', device.admin_device_temperature, name="admin_device_temperature"),
     url(r'^admin_device/health/$', device.admin_device_health, name="admin_device_health"),
+    url(r'^admin_device/leakage/$', device.admin_device_leakage, name="admin_device_leakage"),
     url(r'^admin_data/$', data.admin_data, name="admin_data"),
 ]

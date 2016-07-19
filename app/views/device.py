@@ -39,3 +39,7 @@ def admin_device_temperature(request):
 
 def admin_device_health(request):
     return render(request, 'app/admin_deviceHealth.html', {})
+
+
+def admin_device_leakage(request):
+    return render(request, 'app/admin_leakage.html', {})
