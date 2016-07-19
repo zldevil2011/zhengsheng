@@ -13,3 +13,7 @@ def admin_account(request):
 
 def admin_work_order(request):
     return render(request, 'app/admin_workOrder.html', {})
+
+
+def admin_app_user(request):
+    return render(request, 'app/admin_appUser.html', {})
