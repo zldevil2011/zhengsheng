@@ -246,7 +246,13 @@
                 </div>
                 <div class="col-md-6" style="height: 50px; line-height: 30px;">
                     <div class="col-md-6">设置设备温度阈值</div>
-                    <div class="col-md-6"><input type="text" class="form-control"></div>
+                    <div class="col-md-6 temperatureBar">
+                        <div class = "taskBoxLinks">
+                            <h3 style="width:10%;"></h3>
+                            <h4></h4>
+                        </div>
+                        温度：<span>60</span>
+                    </div>
                 </div>
                 <div class="col-md-6" style="height: 50px; line-height: 30px;">
                     <div class="col-md-6 horizontal-text-center"><button class="btn btn-success btn-block" style="width: 80%;">提交</button></div>
@@ -259,5 +265,30 @@
 
 {% endblock %}
 {% block special_js %}
-
+    <script>
+        $(".taskBoxLinks").on("mousemove", function(e){
+            var $mouse = e.pageX - $(this).offset().left;
+            var $span = Math.round($mouse/2);
+            $(this).find('h4').stop().animate({width:$span + '%'}, 50);
+            $(this).next('span').text($span);
+        }).on('mouseleave', function(){
+            $(this).find('h4').stop().animate({width:'10%'}, 50);
+            var $mousex = $(this).find('h3').width();
+            var $spanx = Math.round($mousex/2);  //var $spanx = Math.round($mousex/2)*1;
+            if($spanx >= 40){
+                $(this).next('span').text("过热");
+            }else{
+                $(this).next('span').text($spanx);
+            }
+        }).on("click", function(e){
+            var $mouse = e.pageX - $(this).offset().left;
+            var $span = Math.round($mouse/22.5)*10;
+            $(this).find('h3').stop().animate({width:$span+'%'}, 100);
+            if($span >= 40){
+                $(this).next('span').css("color","red").text('过热');
+            }else{
+                $(this).next('span').css("color","white").text($span);
+            }
+        });
+    </script>
 {% endblock %}
