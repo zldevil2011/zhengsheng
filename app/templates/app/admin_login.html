@@ -32,13 +32,13 @@
             <h3 class="login-title">用户平台登录</h3>
             <div style="display:none;">您输入的密码不正确，请重新输入</div>
             <div class="login-form-input">
-              <input type="text" class="form-control" placeholder="用户名/手机号/密码">
+              <input type="text" class="form-control" placeholder="用户名/手机号/密码" name="zhengsheng_username">
             </div>
             <div class="login-form-input">
-              <input type="password" class="form-control" placeholder="请输入密码">
+              <input type="password" class="form-control" placeholder="请输入密码" name="zhengsheng_password">
             </div>
             <div>
-                <input type="checkbox">
+                <input type="checkbox" name="remember-account">
                 <a class="remember-account">记住账号</a>
                 <a class="forget-password">忘记密码?</a>
             </div>
@@ -78,10 +78,28 @@
     <script type = "text/javascript" src = "/site_media/js/bootstrap.min.js"></script>
     <script type = "text/javascript" src = "/site_media/js/jquery.transit.js"></script>
     <script type = "text/javascript" src = "/site_media/js/zhengsheng.js"></script>
+    <script type = "text/javascript" src = "/site_media/js/jquery.md5.js"></script>
     <!--[if lt IE 9]>
         <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
         <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
+        $(function(){
+            if(window.localStorage){
+                var storage = window.localStorage;
+                if(storage.getItem("zhengsheng_username") && storage.getItem("zhengsheng_password")){
+                    var username = storage.getItem("zhengsheng_username");
+                    var password = storage.getItem("zhengsheng_password");
+                    password = password.substr(10);
+                    password = password.substring(0, password.length - 4);
+                    console.log(username + " : " + password);
+                    $("[name=zhengsheng_username]").val(username);
+                    $("[name=zhengsheng_password]").val(password);
+                    $("[name=remember-account]").attr("checked", "checked");
+                }
+            }
+        });
 
+    </script>
 </body>
 </html>
