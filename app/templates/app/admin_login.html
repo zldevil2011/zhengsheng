@@ -113,9 +113,34 @@
                 $("[name=password-tip]").css("display", "block");
                 return;
             }
+            var remember_account_status = $("[name=remember-account]").is(':checked');
+            if(remember_account_status == true){
+                var storage = window.localStorage;
+                storage.setItem("zhengsheng_username", username);
+                storage.setItem("zhengsheng_password", "zhengsheng" + password + "3037");
+            }
+            loginAjax();
         }
         function username_focus(){ $("[name=username-tip]").css("display", "none"); }
         function password_focus(){ $("[name=password-tip]").css("display", "none"); }
+        function loginAjax(){
+            var username = $("[name=zhengsheng_username]").val();
+            var password = $("[name=zhengsheng_password]").val();
+            var info = { username: username, password: $.md5(password) };
+            var targetUrl = "/admin_user/login/";
+            $.post(
+                targetUrl,
+                info,
+                function (data) {
+                    if(data == "success"){
+                        window.location.href='/admin_index/';
+                    }else{
+                        alert(data);
+                        return false;
+                    }
+                }
+            );
+        }
     </script>
 </body>
 </html>

@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^admin_data/$', data.admin_data, name="admin_data"),
     url(r'^admin_app/user/$', app.admin_app_user, name="admin_app_user"),
     url(r'^admin_app/download/$', app.admin_app_download, name="admin_app_download"),
+    url(r'^admin_user/login/$', user.login, name="login"),
 ]

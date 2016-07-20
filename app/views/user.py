@@ -7,6 +7,11 @@ from django.contrib.auth.hashers import check_password
 
 
 @csrf_exempt
+def login(request):
+    return HttpResponse("success")
+
+
+@csrf_exempt
 def admin_account(request):
     return render(request, 'app/admin_account.html', {})
 
