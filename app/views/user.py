@@ -22,7 +22,7 @@ def login(request):
 @csrf_exempt
 def logout(request):
     try:
-        user = User.objects.get(username=request.session['username'])
+        user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     del request.session['username']
