@@ -7,11 +7,11 @@ from django.contrib.auth.hashers import check_password
 
 
 @csrf_exempt
-def admin_app_user(request):
+def admin_mobile_user(request):
     return render(request, 'app/admin_appUser.html', {})
 
 
-def admin_app_download(request):
+def admin_mobile_download(request):
     return render(request, 'app/admin_appDownload.html', {})
 
 
