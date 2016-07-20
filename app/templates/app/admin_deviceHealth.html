@@ -282,7 +282,7 @@
             }
         }).on("click", function(e){
             var $mouse = e.pageX - $(this).offset().left;
-            var $span = Math.round($mouse/22.5)*10;
+            var $span = Math.round($mouse/2);
             $(this).find('h3').stop().animate({width:$span+'%'}, 100);
             if($span >= 40){
                 $(this).next('span').css("color","red").text('过热');
