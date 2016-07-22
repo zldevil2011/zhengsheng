@@ -1,0 +1,187 @@
+{% extends "app/base.html" %}
+{% block title %}设备管理{% endblock %}
+{% block main_body %}
+    <div class="main-body">
+{#        bread direction#}
+        <div class="bg-color" style="margin: 10px 0;position: relative;padding: 10px 12px;">
+            <span class="glyphicon glyphicon-home" style="display: inline-block;"></span>
+            <ul class="breadcrumb breadcrumb-my" style="display: inline-block;">
+				<li>
+					 <a href="#">主页</a>
+				</li>
+				<li>
+					 <a href="#">管理信息</a>
+				</li>
+				<li class="active">
+					管理员列表
+				</li>
+			</ul>
+        </div>
+{#        account list#}
+        <div class="row bg-color" style="padding: 10px 30px;">
+{#            {% include 'app/location_filter.html' %}#}
+            <div class="form-group">
+                <form class="form-horizontal" role="form" onsubmit="return false;">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="" class="col-sm-4 control-label">管理员姓名</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="" class="col-sm-3 control-label">注册时间</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="" />
+                            </div>
+                            <label for="" class="col-sm-1 control-label">至</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">关键字</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="" />
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-block btn-success">查找</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-12 column" style="">
+                <table class="table device-list">
+                    <thead>
+                        <tr style="background-color: rgba(39,25,25,0.35);">
+                            <th>
+                                编号
+                            </th>
+                            <th>
+                                名称
+                            </th>
+                            <th>
+                                手机号
+                            </th>
+                            <th>
+                                邮箱
+                            </th>
+                            <th>
+                                地址
+                            </th>
+                            <th>
+                                注册时间
+                            </th>
+                            <th>
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>管理员</td>
+                            <td>1234567890</td>
+                            <td>email@email.com</td>
+                            <td>黑河路12号3栋东户</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">查看信息</button><button class="btn btn-danger" style="margin-left: 10px;">发送邮件</button></td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>管理员</td>
+                            <td>1234567890</td>
+                            <td>email@email.com</td>
+                            <td>黑河路12号3栋东户</td>
+                            <td>2016-07-14 14:06:59</td>
+                            <td><button class="btn btn-success">查看信息</button><button class="btn btn-danger" style="margin-left: 10px;">发送邮件</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="col-md-12 column" style="text-align: right;">
+                    <ul class="pagination account-pagination" style="">
+                        <li>
+                             <a href="#">Prev</a>
+                        </li>
+                        <li>
+                             <a href="#">1</a>
+                        </li>
+                        <li>
+                             <a href="#">2</a>
+                        </li>
+                        <li>
+                             <a href="#">3</a>
+                        </li>
+                        <li>
+                             <a href="#">4</a>
+                        </li>
+                        <li>
+                             <a href="#">5</a>
+                        </li>
+                        <li>
+                             <a href="#">Next</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <hr>
+            </div>
+            <div class="col-md-12 column" style="">
+                <div class="col-md-12">
+                    <h4 style="margin-top: 0;">管理员信息</h4>
+                </div>
+                <div class="col-md-12 column">
+                    <form class="form-horizontal" role="form">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-2 control-label">姓名</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-2 control-label">手机</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" id="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-2 control-label">邮箱</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-sm-2 control-label">地址</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-12 column">
+                    <div class="col-md-offset-6 col-md-6">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block special_js %}
+{% endblock %}
