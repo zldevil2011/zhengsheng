@@ -209,6 +209,7 @@
     <script>
         $("[name=deleteArea]").on("click", deleteAreaFunc);
         $("[name=saveArea]").on("click", saveAreaFunc);
+        $(".close").on("click", deleteAreaItemFunc);
         function deleteAreaFunc(){
             var areaTypeVal = $("[name=areaType]").val();
             console.log(areaTypeVal);
@@ -217,6 +218,9 @@
         }
         function saveAreaFunc(){
             $(".close").css("display", "none");
+        }
+        function deleteAreaItemFunc(){
+            $(this).parent().parent().css("display", "none");
         }
     </script>
 {% endblock %}
