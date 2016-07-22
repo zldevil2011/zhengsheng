@@ -1,7 +1,7 @@
 #coding=utf-8
 from django.conf.urls import url
 from django.views.generic import TemplateView
-from app.views import index, user, device, data, mobile
+from app.views import index, user, device, data, mobile, installArea
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name="app/welcome.html")),
     url(r'^building/$', TemplateView.as_view(template_name="app/building.html")),
@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^admin_mobile/download/$', mobile.admin_mobile_download, name="admin_mobile_download"),
     url(r'^admin_user/login/$', user.login, name="login"),
     url(r'^admin_user/logout/$', user.logout, name="logout"),
+    url(r'^admin_area/list/$', installArea.area_list, name="area_list"),
 ]

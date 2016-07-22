@@ -107,6 +107,15 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     background-color: rgba(255, 255, 255, 0.8)!important;
     /*color: #FFFFFF!important;*/
 }
+.area-list-item{
+    padding-top:0;padding-bottom: 0;margin-bottom: 0; width: 120px;
+}
+.area-list-item .close{
+    display: none;
+}
+.mb10{
+    margin-bottom: 10px;
+}
 .footer-fix-bottom{
     position: relative;
     right: 0;
