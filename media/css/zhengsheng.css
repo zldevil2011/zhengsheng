@@ -107,6 +107,10 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     background-color: rgba(255, 255, 255, 0.8)!important;
     /*color: #FFFFFF!important;*/
 }
+.alert-blankRed{
+    background-color: rgba(31, 16, 16, 1)!important;
+    color: #FFFFFF!important;
+}
 .area-list-item{
     padding-top:0;padding-bottom: 0;margin-bottom: 0; width: 120px;
 }
