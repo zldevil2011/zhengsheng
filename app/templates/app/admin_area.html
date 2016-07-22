@@ -142,6 +142,54 @@
                 </div>
             </div>
         </div>
+        <div class="bg-color" style="margin: 10px 0;position: relative;padding: 10px 12px;">
+            <div class="clearfix">
+                <div class="col-md-3 horizontal-text-center">
+                    <select class="btn btn-info" style="width: 80%;">
+                        <option value ="1">编辑地级市列表</option>
+                        <option value ="2">编辑街道列表</option>
+                        <option value="3">编辑小区列表</option>
+                    </select>
+                </div>
+                <div class="col-md-3 horizontal-text-center">
+                    <button class="btn btn-success" style="width: 80%;">添加</button>
+                </div>
+                <div class="col-md-3 horizontal-text-center">
+                    <button class="btn btn-danger" style="width: 80%;">删除</button>
+                </div>
+                <div class="col-md-3 horizontal-text-center">
+                    <button class="btn btn-warning" style="width: 80%;">保存</button>
+                </div>
+            </div>
+            <div class="clearfix" style="margin-top: 20px;">
+                <div class="clearfix" style="margin-bottom: 10px;">
+                    <div class="col-md-2"><span style="height: 100%;line-height: 100%;">添加地级市</span></div>
+                    <div class="col-md-10"><input type="text" class="form-control"></div>
+                </div>
+                <div class="clearfix" style="margin-bottom: 10px;">
+                    <div class="col-md-2"><span style="height: 100%;line-height: 100%;">添加街道</span></div>
+                    <div class="col-md-2">
+                        <select class="btn" style="width: 80%;">
+                            <option value ="1">选择上一级地级市</option>
+                            <option value ="2">池州市</option>
+                            <option value="3">池州市1</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8"><input type="text" class="form-control"></div>
+                </div>
+                <div class="clearfix" style="margin-bottom: 10px;">
+                    <div class="col-md-2"><span style="height: 100%;line-height: 100%;">添加小区</span></div>
+                    <div class="col-md-2">
+                        <select class="btn" style="width: 80%;">
+                            <option value ="1">选择上一级街道</option>
+                            <option value ="2">街道1</option>
+                            <option value="3">街道2</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8"><input type="text" class="form-control"></div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block special_js %}
