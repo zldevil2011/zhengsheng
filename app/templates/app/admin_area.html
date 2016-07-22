@@ -189,6 +189,19 @@
                     <div class="col-md-8"><input type="text" class="form-control"></div>
                 </div>
             </div>
+            <div class="clearfix" style="margin-top: 20px;">
+                <div class="col-md-4">
+                    <div class="btn-danger btn-primary" style="width: 50%;text-align: center;margin: 0 auto;padding: 5px; border-radius: 4px;">选择文件：</div>
+                </div>
+                <div class="col-md-4 horizontal-text-center">
+                    <button class="btn btn-block" onclick="uploadAreaFile.click();" style="width: 50%;">
+                        <input id = "uploadAreaFile" type="file" style="display: none;"><span>选择上传的文件</span>
+                    </button>
+                </div>
+                <div class="col-md-4 horizontal-text-center">
+                    <button class="btn btn-success btn-block" style="width: 50%;">上传</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
