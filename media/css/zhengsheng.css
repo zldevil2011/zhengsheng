@@ -255,4 +255,23 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
        width: 89.3888889%;
    }
 }
-
+.terminal-head{
+    height: 72px;
+    background-color: #5d686b;
+    position: relative;
+    margin: 0 auto;
+    width: 80%;
+}
+.head_nav{
+    height: 40px;
+    background-color: #907f96;
+    position: relative;
+    margin: 0 auto;
+    width: 80%;
+}
+.inline{
+    display: inline;
+}
+.inline-block{
+    display: inline-block;
+}

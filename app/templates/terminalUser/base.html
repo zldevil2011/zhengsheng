@@ -19,10 +19,31 @@
 </head>
 <body style="background: url(/site_media/images/cloud.jpg);-moz-background-size: cover;-ms-background-size: cover;-webkit-background-size: cover;background-size: cover;">
     {% block head %}
-
+        <div class="terminal-head">
+            <div class="inline"><img src="/site_media/images/zhengsheng_icon.jpg"></div>
+            <div style="position: absolute;right: 0;bottom: 0;">
+                |<span style="padding: 0 10px;">欢迎你：张三</span>|<span style="padding: 0 10px;">退出</span>|<span style="padding: 0 10px;"></span>
+            </div>
+        </div>
     {% endblock %}
     {% block head_nav %}
-
+        <nav>
+            <div class="head_nav">
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <span class="glyphicon glyphicon-home" style="position: absolute;top:10px;"></span>
+                        <ul class="nav nav-pills pull-right">
+                            <li class="active"><a href="#">我的资料</a></li>
+                            <li><a href="#">用电信息</a></li>
+                            <li><a href="#">充值记录</a></li>
+                            <li><a href="#">用电明细</a></li>
+                            <li><a href="#">月账单</a></li>
+                            <li><a href="#">故障报修</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
     {% endblock %}
     {% block main_body %}
     {% endblock %}
