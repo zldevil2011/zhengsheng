@@ -121,7 +121,7 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     margin-bottom: 10px;
 }
 .footer-fix-bottom{
-    position: relative;
+    position: fixed;
     right: 0;
     left: 0;
     z-index: 10;
@@ -264,14 +264,35 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
 }
 .head_nav{
     height: 40px;
-    background-color: #907f96;
+    background-color: #003870;
     position: relative;
     margin: 0 auto;
     width: 80%;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
 }
 .inline{
     display: inline;
 }
 .inline-block{
     display: inline-block;
+}
+.terminal-main-body{
+    background-color:rgba(255,255,255,0.75);
+    width: 80%;
+    margin:0 auto;
+    margin-top:10px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    color:#000;
+}
+.save-btn{
+    width: 100px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius:6px;
+    margin-right: 10px;
+    padding: 5px 10px;
 }

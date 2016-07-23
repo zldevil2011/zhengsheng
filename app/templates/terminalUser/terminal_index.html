@@ -1,0 +1,45 @@
+{% extends "terminalUser/base.html" %}
+{% block title %}账户管理{% endblock %}
+{% block main_body %}
+    <div class="terminal-main-body">
+        <div class="clearfix">
+            <div class="col-md-12" style="background: #3a73ad; border-radius: 4px;padding: 10px 0;padding-left: 10px;
+            font-family: '微软雅黑', '宋体', Arial;">
+                用户资料
+            </div>
+            <div class="clearfix">
+                <div class="col-md-12" style="margin-top: 10px;">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr><td>用户名</td><td colspan="3">张三</td><td>地区</td><td colspan="3">海淀区学院南路12号</td></tr>
+                            <tr><td>密码</td><td colspan="3"><input></td><td>确认密码</td><td colspan="3"><input></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-12" style="background: #3a73ad; border-radius: 4px;padding: 10px 0;padding-left: 10px;
+            font-family: '微软雅黑', '宋体', Arial;">
+                基本资料
+            </div>
+            <div class="clearfix">
+                <div class="col-md-12" style="margin-top: 10px;">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr><td>姓名</td><td colspan="3">张三</td><td>性别</td><td colspan="3">男</td></tr>
+                            <tr><td>固定电话</td><td colspan="3">8446281</td><td>手机</td><td colspan="3">12345678910</td></tr>
+                            <tr><td>用户地址</td><td colspan="3">海淀区学院南路12号</td><td>邮箱</td><td colspan="3">12345678910</td></tr>
+                            <tr><td>布线数据</td><td colspan="7"></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-12" style="background: #3a73ad; border-radius: 4px;padding: 10px 0;padding-left: 10px;
+            font-family: '微软雅黑', '宋体', Arial;text-align: right;">
+                <button class="btn-success save-btn">保存</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block special_js %}
+
+{% endblock %}
