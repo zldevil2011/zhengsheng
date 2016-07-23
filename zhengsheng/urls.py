@@ -19,6 +19,7 @@ import settings
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('app.urls')),
+    url(r'^terminal/', include('app.terminal_urls')),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 
