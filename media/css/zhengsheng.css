@@ -311,3 +311,7 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     padding-left: 10px;
     font-family: '微软雅黑', '宋体', Arial;
 }
+.save-btn-green{
+    background: #3a73ad; border-radius: 4px;padding: 10px 0;padding-left: 10px;
+    font-family: '微软雅黑', '宋体', Arial;text-align: right;
+}
