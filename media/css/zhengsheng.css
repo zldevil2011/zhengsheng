@@ -257,7 +257,7 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
 }
 .terminal-head{
     height: 72px;
-    background-color: #5d686b;
+    /*background-color: #5d686b;*/
     position: relative;
     margin: 0 auto;
     width: 80%;
@@ -319,4 +319,22 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     border-radius: 4px;padding-left: 10px;
     padding-bottom: 10px;
     font-family: '微软雅黑', '宋体', Arial;text-align: right;
+}
+.terminal-name{
+    height: 500px; line-height: 500px;
+}
+.terminal-login-window{
+    position: relative;color: white;
+}
+.terminal-login-window .login-form{
+    position: relative;top: 180px;border-radius: 4px; padding: 20px 20px;background-color: rgba(0,0,0,0.2);
+}
+.terminal-login-window .login-form .login-form-input{
+    margin-top: 10px;
+}
+.terminal-login-window .login-form .login-tool-tip{
+    text-align: left;padding: 10px 0;
+}
+.login-tool-tip a{
+    color: #ffffff;vertical-align: top;
 }

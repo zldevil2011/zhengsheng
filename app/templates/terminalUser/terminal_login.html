@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:display="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>用户登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge, Chrome=1"/>
+    <meta http-equiv="x-ua-compatible" content="IE=9"/>
+    <link rel="icon" href="/site_media/images/web_icon.png">
+    <link rel="stylesheet" type="text/css" href="/site_media/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/site_media/css/zhengsheng.css">
+</head>
+<body style="background: url(/site_media/images/cloud.jpg);-moz-background-size: cover;-ms-background-size: cover;-webkit-background-size: cover;background-size: cover;">
+    <div class="terminal-head">
+        <div class="inline"><img src="/site_media/images/zhengsheng_icon.jpg"></div>
+    </div>
+    <div class="terminal-login" style="min-height: 550px;width: 80%;margin: 0 auto;text-align: center;">
+        <div class="clearfix">
+            <div class="col-md-9"><h1 class="terminal-name">征圣云平台自主管理系统</h1></div>
+            <div class="col-md-3 terminal-login-window">
+                <div class="login-form">
+                    <span style="display:none; color:red;">用户名或密码不正确</span>
+                    <span style="display:none; color:red;">请输入用户名</span>
+                    <div class="login-form-input">
+                      <input type="text" class="form-control" placeholder="用户名/手机号/密码" name="zhengsheng_username" onchange="username_focus();">
+                    </div>
+                    <span style="display:none;color:red;">请输入密码</span>
+                    <div class="login-form-input">
+                      <input type="password" class="form-control" placeholder="请输入密码" name="zhengsheng_password" onchange="password_focus();">
+                    </div>
+                    <div class ="login-tool-tip">
+                        <input type="checkbox" name="remember-account">
+                        <a>记住账号</a>
+                        <a style="float: right;">忘记密码?</a>
+                    </div>
+                    <div class="horizontal-text-center">
+                        <a class="btn btn-success btn-block" onclick="window.location.href='/terminal/index/'"> 立即登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="horizontal-text-center footer-fix-bottom">
+        <section>
+            <h4>友情链接</h4>
+            <p>
+                <a href="http://www.nmc.gov.cn/" target="_blank" rel="nofollow">中央气象台</a>
+                 |<a href="http://www.weather.com/" target="_blank" rel="nofollow">美国气象频道</a>
+                 |<a href="http://www.weather.com.cn/" target="_blank" rel="nofollow">中国天气网</a>
+                 |<a href="http://www.pm25.com/" target="_blank" rel="nofollow">绿色呼吸</a>
+                 |<a href="http://www.feeyo.com/" target="_blank" rel="nofollow">飞友网</a>
+                 |<a href="http://i.firefoxchina.cn/?www.firefoxchina.cn" target="_blank" rel="nofollow">火狐浏览器</a>
+                 |<a href="http://tianqitong.sina.cn/" target="_blank" rel="nofollow">天气通</a>
+                 |<a href="http://weather.mipang.com" target="_blank" rel="nofollow">米胖天气</a>
+                 |<a href="http://www.xn121.com/" target="_blank" rel="nofollow">兴农网</a>
+                 |<a href="http://www.mlogcn.com/" target="_blank" rel="nofollow">象辑科技</a>
+                 |<a href="http://www.tianqi.com/" target="_blank" rel="nofollow">天气网</a>
+            </p>
+        </section>
+        <section>
+            <p>关于我们|联系我们|批评建议</p>
+            <p>Copyright © 2016-2016 BNU, All Rights Reserved</p>
+            <p>北京师范大学 版权所有</p>
+        </section>
+    </div>
+    <script type="text/javascript" src="/site_media/js/jquery-2.2.1.min.js"></script>
+    <script type="text/javascript" src="/site_media/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/site_media/js/zhengsheng_terminal.js"></script>
+    <!--[if lt IE 9]>
+        <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+        <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</body>
+</html>
