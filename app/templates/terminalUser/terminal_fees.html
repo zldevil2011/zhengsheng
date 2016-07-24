@@ -1,57 +1,35 @@
 {% extends "terminalUser/base.html" %}
-{% block title %}我的状态{% endblock %}
+{% block title %}费用查询{% endblock %}
 {% block main_body %}
     <div class="terminal-main-body">
         <div class="clearfix">
             <div class="col-md-12 tab-tip tab-blue">
-                我的状态
+                充值记录
             </div>
             <div class="clearfix">
                 <div class="col-md-12" style="margin-top: 10px;">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>用户名</th>
+                                <th>编号</th>
+                                <th>充值类型</th>
+                                <th>充值金额</th>
+                                <th>上期余额</th>
+                                <th>充值日期</th>
                                 <th>状态</th>
-                                <th>今日入电量</th>
-                                <th>电压</th>
-                                <th>电流</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>张三</td>
-                                <td>正常</td>
-                                <td>100kw</td>
-                                <td>200V</td>
-                                <td>2.0A</td>
+                                <td>1</td>
+                                <td>续费</td>
+                                <td>100</td>
+                                <td>10</td>
+                                <td>2016-07-24 14:00:37</td>
+                                <td>成功</td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
-            </div>
-            <div class="col-md-12 tab-tip tab-blue">
-                今日数据
-            </div>
-            <div class="clearfix">
-                <div class="col-md-12" style="margin-top: 10px;">
-                    <div id="today-data" style="height: 400px; width: 100%"></div>
-                </div>
-            </div>
-            <div class="col-md-12 tab-tip tab-blue">
-                本月数据
-            </div>
-            <div class="clearfix">
-                <div class="col-md-12" style="margin-top: 10px;">
-                    <div id="month-data" style="height: 400px; width: 100%"></div>
-                </div>
-            </div>
-             <div class="col-md-12 tab-tip tab-blue">
-                一年数据
-            </div>
-            <div class="clearfix">
-                <div class="col-md-12" style="margin-top: 10px;">
-                    <div id="year-data" style="height: 400px; width: 100%"></div>
                 </div>
             </div>
         </div>

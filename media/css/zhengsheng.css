@@ -289,6 +289,11 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     color:#000;
     min-height: 600px;
 }
+@media (max-width:600px){
+  .terminal-main-body{
+    width: 100%;
+  }
+}
 .save-btn{
     width: 100px;
     -moz-border-radius: 6px;
@@ -296,4 +301,13 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     border-radius:6px;
     margin-right: 10px;
     padding: 5px 10px;
+}
+.tab-blue{
+    background: #3a73ad;
+}
+.tab-tip{
+    border-radius: 4px;
+    padding: 10px 0;
+    padding-left: 10px;
+    font-family: '微软雅黑', '宋体', Arial;
 }
