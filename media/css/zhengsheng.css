@@ -315,3 +315,8 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
     background: #3a73ad; border-radius: 4px;padding: 10px 0;padding-left: 10px;
     font-family: '微软雅黑', '宋体', Arial;text-align: right;
 }
+.submit-btn-green{
+    border-radius: 4px;padding-left: 10px;
+    padding-bottom: 10px;
+    font-family: '微软雅黑', '宋体', Arial;text-align: right;
+}

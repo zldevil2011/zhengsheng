@@ -1,0 +1,87 @@
+{% extends "terminalUser/base.html" %}
+{% block title %}工单列表{% endblock %}
+{% block main_body %}
+    <div class="terminal-main-body">
+        <div class="clearfix">
+            <div class="col-md-12 tab-tip tab-blue">
+                工单列表
+            </div>
+            <div class="clearfix">
+                <div class="col-md-12 column" style="text-align: right;margin-top: 10px;">
+                    <button class="btn btn-info" style="padding: 6px 25px !important;">新建工单</button>
+                </div>
+                <div class="col-md-12" style="margin-top: 10px;">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>工单日期</th>
+                                <th>处理进度</th>
+                                <th>操作员</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>2016-08-01</td>
+                                <td>正在处理</td>
+                                <td>System</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 column" style="text-align: right;">
+                    <ul class="pagination account-pagination" style="">
+                        <li>
+                             <a href="#">Prev</a>
+                        </li>
+                        <li>
+                             <a href="#">1</a>
+                        </li>
+                        <li>
+                             <a href="#">2</a>
+                        </li>
+                        <li>
+                             <a href="#">3</a>
+                        </li>
+                        <li>
+                             <a href="#">4</a>
+                        </li>
+                        <li>
+                             <a href="#">5</a>
+                        </li>
+                        <li>
+                             <a href="#">Next</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-12 tab-tip tab-blue">
+                新建工单
+            </div>
+            <div class="clearfix">
+                <div class="col-md-12" style="margin-top: 10px;">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr><td colspan="4">基本信息</td></tr>
+                            <tr><td>姓名</td><td><input></td><td>手机</td><td><input></td></tr>
+                            <tr><td>邮箱</td><td><input></td><td>用户地址</td><td><input></td></tr>
+                            <tr><td colspan="4">问题描述</td></tr>
+                            <tr>
+                                <td colspan="4">
+                                    <textarea rows="10" style="width:100%;"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-12 submit-btn-green">
+                <button class="btn-success save-btn">提交</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block special_js %}
+
+{% endblock %}
