@@ -1,0 +1,68 @@
+{% extends "terminalUser/base.html" %}
+{% block title %}用电明细{% endblock %}
+{% block main_body %}
+    <div class="terminal-main-body">
+        <div class="clearfix">
+            <div class="col-md-12 tab-tip tab-blue">
+                当月总计
+            </div>
+            <div class="clearfix">
+                <div class="col-md-12" style="margin-top: 10px;">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>日期</th>
+                                <th>用电量</th>
+                                <th>费用</th>
+                                <th>余额</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>2016-07</td>
+                                <td>100kw</td>
+                                <td>12</td>
+                                <td>88</td>
+                                <td>正常</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-12 tab-tip tab-blue">
+                用电明细
+            </div>
+            <div class="clearfix">
+                <div class="col-md-12" style="margin-top: 10px;">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>日期</th>
+                                <th>用电量</th>
+                                <th>费用</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>2016-07-24</td>
+                                <td>100kw</td>
+                                <td>12</td>
+                                <td>正常</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block special_js %}
+
+{% endblock %}
