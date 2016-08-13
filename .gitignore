@@ -74,7 +74,7 @@ monitor/*.png
 
 
 # settings
-golf/settings.py
+zhengsheng/settings.py
 
 app/migrations/
 
