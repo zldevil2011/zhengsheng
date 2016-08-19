@@ -1,5 +1,5 @@
 body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei","Hiragino Sans GB","Hiragino Sans GB W3",FontAwesome,sans-serif;}
-.font-size-144{font-size: 14.4rem;}
+.font-size-144{font-size: 10rem;}
 .horizontal-center{margin: 0 auto;}
 .horizontal-text-center{text-align: center;}
 .vertical-center{  position: absolute;  top: 50%;  left: 50%;  transform: translate(-50%, -50%);  }
@@ -44,8 +44,9 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
 }
 .zl-footer{
     width: 100%;
-    position: absolute;
-    bottom:0px;
+    position: fixed;
+    top:557px;
+    /*bottom:0;*/
     background-color: rgba(0,0,0,0.75);
     color:#999;
 }
