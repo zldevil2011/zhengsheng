@@ -1,0 +1,83 @@
+{% extends "terminalUser/base.html" %}
+{% block title %}我的设备{% endblock %}
+{% block main_body %}
+    <div class="terminal-main-body">
+        <div class="clearfix">
+            <div class="col-md-12 tab-tip tab-blue">
+                我的设备
+            </div>
+            <div class="clearfix">
+                <div class="col-md-12 device-info" style="margin-top: 10px;">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="2" align="center"><img src="/site_media/images/web_icon.png"></td>
+                                <td>设备编号</td>
+                                <td>MX00030889</td>
+                                <td>设备状态</td>
+                                <td>正常</td>
+                            </tr>
+                            <tr>
+                                <td>电压</td>
+                                <td>30V</td>
+                                <td>电流</td>
+                                <td>1</td>
+                                <td>频率</td>
+                                <td>1000Hz</td>
+                            </tr>
+                            <tr>
+                                <td>温度</td>
+                                <td>30℃</td>
+                                <td>瞬时电压</td>
+                                <td>30</td>
+                                <td>瞬时电流</td>
+                                <td>1A</td>
+                            </tr>
+                            <tr>
+                                <td>总电量</td>
+                                <td>10000kwh</td>
+                                <td colspan="4"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix">
+            <div class="col-md-12 tab-tip tab-blue">
+                设备控制
+            </div>
+            <div class="clearfix">
+                <div class="col-md-12 device-info" style="margin-top: 10px;">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td>开关</td>
+                                <td>ON/OFF</td>
+                                <td>阈值</td>
+                                <td>50℃</td>
+                            </tr>
+                            <tr>
+                                <td>设定</td>
+                                <td colspan="3">
+                                    <div class="progress progress-striped active">
+                                        <div class="progress-bar progress-success">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-12 save-btn-green">
+                <button class="btn-success save-btn">保存</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block special_js %}
+    <script>
+
+    </script>
+{% endblock %}

@@ -7,7 +7,10 @@ from django.contrib.auth.models import User
 class AppUser(models.Model):
     user = models.OneToOneField(User)
     username = models.CharField(max_length=200)
+    sex = models.IntegerField(default=0)
+    home_phone = models.CharField(max_length=20, null=True)
     phone = models.CharField(max_length=20, null=True)
+    email = models.CharField(max_length=200, null=True)
     location = models.CharField(max_length=200, null=True)
     password = models.CharField(max_length=100)
     register_date = models.DateField(auto_now_add=True)

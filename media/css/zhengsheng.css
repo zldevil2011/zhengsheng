@@ -147,6 +147,9 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
 .device-list tbody tr td{
     vertical-align: middle;
 }
+.device-info tbody tr td{
+    vertical-align: middle;
+}
 .childMenu{
     margin-left: 10px;
 }
