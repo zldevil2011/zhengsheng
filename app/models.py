@@ -27,4 +27,16 @@ class Node(models.Model):
     lopsidedVoltage = models.FloatField(default=0.0, null=True)   # 三相电压不平衡
     lopsidedElectricity = models.FloatField(default=0.0, null=True)   # 三相电流不平衡
     # 负序电压 负序电流 功率因数
+
+
+# 工单
+class WorkOrder(models.Model):
+    order_num = models.CharField(max_length=200, null=True)
+    order_content = models.CharField(max_length=200, null=True)
+    order_type = models.CharField(max_length=200, null=True)
+    order_classification = models.CharField(max_length=200, null=True)
+    order_time = models.DateTimeField(auto_now_add=True)
+    order_status = models.CharField(max_length=200, null=True)
+    order_user = models.ForeignKey(AppUser, related_name='appuser')
+
 # Create your models here.
