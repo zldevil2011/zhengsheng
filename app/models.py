@@ -29,14 +29,38 @@ class Node(models.Model):
     # 负序电压 负序电流 功率因数
 
 
+# 设备信息，对应一个节点node
+class Device(models.Model):
+    name = models.CharField(max_length=200, null=True)
+    image = models.CharField(max_length=200, null=True)
+    location = models.CharField(max_length=200, null=True)
+    status = models.CharField(max_length=200, null=True)
+    user = models.ForeignKey(AppUser, related_name='device_appuser')
+    time = models.DateTimeField(auto_now_add=True)
+    node = models.ForeignKey(Node, related_name='device_node')
+    temperature = models.CharField(max_length=200, null=True)
+
+
+class District(models.Model):
+    level0 = models.CharField(max_length=200, null=True)
+    level1 = models.CharField(max_length=200, null=True)
+    level2 = models.CharField(max_length=200, null=True)
+
+
 # 工单
 class WorkOrder(models.Model):
-    order_num = models.CharField(max_length=200, null=True)
-    order_content = models.CharField(max_length=200, null=True)
-    order_type = models.CharField(max_length=200, null=True)
-    order_classification = models.CharField(max_length=200, null=True)
-    order_time = models.DateTimeField(auto_now_add=True)
-    order_status = models.CharField(max_length=200, null=True)
-    order_user = models.ForeignKey(AppUser, related_name='appuser')
+    num = models.CharField(max_length=200, null=True)
+    content = models.CharField(max_length=200, null=True)
+    type = models.CharField(max_length=200, null=True)
+    classification = models.CharField(max_length=200, null=True)
+    time = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=200, null=True)
+    user = models.ForeignKey(AppUser, related_name='appuser')
 
+
+# adminer的信息
+class Adminer(models.Model):
+    name = models.CharField(max_length=200, null=True)
+    email = models.CharField(max_length=200, null=True)
+    register_time = models.DateTimeField(auto_now_add = True)
 # Create your models here.
