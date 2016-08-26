@@ -1,5 +1,12 @@
 {% extends "terminalUser/base.html" %}
 {% block title %}工单列表{% endblock %}
+{% block special_css %}
+    <style>
+        input.ng-invalid {
+            background-color: lightblue;
+        }
+    </style>
+{% endblock %}
 {% block main_body %}
     <div class="terminal-main-body">
         <div class="clearfix">
@@ -61,27 +68,88 @@
             </div>
             <div class="clearfix">
                 <div class="col-md-12" style="margin-top: 10px;">
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr><td colspan="4">基本信息</td></tr>
-                            <tr><td>姓名</td><td><input></td><td>手机</td><td><input></td></tr>
-                            <tr><td>邮箱</td><td><input></td><td>用户地址</td><td><input></td></tr>
-                            <tr><td colspan="4">问题描述</td></tr>
-                            <tr>
-                                <td colspan="4">
-                                    <textarea rows="10" style="width:100%;"></textarea>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <form ng-app="validationApp" name="workOrder" ng-controller="mainController" ng-submit="submitForm(workOrder.$valid)">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr><td colspan="4">基本信息</td></tr>
+                                <tr>
+                                    <td>姓名</td>
+                                    <td>
+                                        <input name="username" ng-model="user.username" required>
+                                        <span class="error" ng-show="workOrder.username.$dirty && workOrder.username.$invalid" style="display: block">请填写用户名</span>
+                                    </td>
+                                    <td>手机</td>
+                                    <td>
+                                        <input type="number" name="phone" ng-model="user.phone" required>
+                                        <span class="error" ng-show="workOrder.phone.$dirty && workOrder.phone.$invalid" style="display: block">请填写电话</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>邮箱</td>
+                                    <td>
+                                        <input type="email" name="userEmail" ng-model="user.userEmail" required>
+                                        <span ng-show="workOrder.userEmail.$error.email" style="display: block">请输入合法邮箱</span>
+                                    </td>
+                                    <td>用户地址</td>
+                                    <td>
+                                        <input name="address" ng-model="user.address" required>
+                                        <span class="error" ng-show="workOrder.address.$dirty && workOrder.address.$invalid" style="display: block">请填写地址</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>类型</td>
+                                    <td>
+                                        <select id="type" name="workOrderType">
+                                            <option value="consult">咨询类</option>
+                                            <option value="technology">技术服务类</option>
+                                        </select>
+                                    </td>
+                                    <td>分类</td>
+                                    <td>
+                                        <select id="consult" name="workOrderClassification">
+                                            <option>产品咨询</option>
+                                            <option>其他咨询</option>
+                                        </select>
+                                        <select id="technology" style="display: none;"  name="workOrderClassification">
+                                            <option>设备问题</option>
+                                            <option>其他问题</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr><td colspan="4">问题描述</td></tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <textarea name = "description" rows="10" style="width:100%;"></textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-md-12 submit-btn-green">
+                            <button type="submit" class="btn-success save-btn" name="submitWorkOrder">提交</button>
+                        </div>
+                    </form>
                 </div>
-            </div>
-            <div class="col-md-12 submit-btn-green">
-                <button class="btn-success save-btn">提交</button>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block special_js %}
-
+    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+    <script>
+        $("#type").on("change", function () {
+           var value = $(this).val();
+            $("#" + value).siblings().css("display", "none");
+            $("#" + value).css("display", "block");
+        });
+        var validationApp = angular.module('validationApp', []);
+        validationApp.controller('mainController', function($scope) {
+            $scope.submitForm = function(isValid) {
+                if (isValid) {
+                    alert('our form is amazing');
+                }else{
+                    alert('请填写要求的内容');
+                }
+            };
+        });
+    </script>
 {% endblock %}

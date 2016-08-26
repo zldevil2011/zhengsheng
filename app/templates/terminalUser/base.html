@@ -14,8 +14,8 @@
 <link rel="stylesheet" type="text/css"  href = "/site_media/css/zhengsheng.css">
 {#    <link rel="stylesheet" type="text/css"  href = "/site_media/css/jquery_slide_style.css">#}
 {#    <link rel="stylesheet" type="text/css"  href = "/site_media/css/entypo-icon.css">#}
-    <style>
-    </style>
+    {% block special_css %}
+    {% endblock %}
 </head>
 <body style="background: url(/site_media/images/cloud.jpg);-moz-background-size: cover;-ms-background-size: cover;-webkit-background-size: cover;background-size: cover;">
     {% block head %}

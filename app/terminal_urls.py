@@ -3,7 +3,7 @@ from django.conf.urls import url
 from django.views.generic import TemplateView
 from app.terminalView import index, month_fees, user_work_order
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name="terminalUser/base.html")),
+    url(r'^$', TemplateView.as_view(template_name="terminalUser/terminal_login.html")),
     url(r'login/$', TemplateView.as_view(template_name="terminalUser/terminal_login.html")),
     url(r'electricity_info/$', TemplateView.as_view(template_name="terminalUser/terminal_electricity_info.html")),
     url(r'device_info/$', TemplateView.as_view(template_name="terminalUser/terminal_device_info.html")),
