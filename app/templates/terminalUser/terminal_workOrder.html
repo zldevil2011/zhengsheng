@@ -145,7 +145,18 @@
         validationApp.controller('mainController', function($scope) {
             $scope.submitForm = function(isValid) {
                 if (isValid) {
-                    alert('our form is amazing');
+                    var username = $scope.user.username;
+                    var phone = $scope.user.phone;
+                    var userEmail = $scope.user.userEmail;
+                    var address = $scope.user.address;
+                    var workOrderType = $("[name=workOrderType]").find("option:selected").text();
+                    var workOrderClassification = $("[name=workOrderClassification]").val();
+                    console.log(username);
+                    console.log(phone);
+                    console.log(userEmail);
+                    console.log(address);
+                    console.log(workOrderType);
+                    console.log(workOrderClassification);
                 }else{
                     alert('请填写要求的内容');
                 }
