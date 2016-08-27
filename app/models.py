@@ -15,6 +15,9 @@ class AppUser(models.Model):
     password = models.CharField(max_length=100)
     register_date = models.DateField(auto_now_add=True)
 
+    def __unicode__(self):
+        return self.username
+
 
 # 节点数据表
 class Node(models.Model):
@@ -53,7 +56,7 @@ class WorkOrder(models.Model):
     content = models.CharField(max_length=200, null=True)
     type = models.CharField(max_length=200, null=True)
     classification = models.CharField(max_length=200, null=True)
-    time = models.DateTimeField(auto_now_add=True)
+    workOrderTime = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=200, null=True)
     user = models.ForeignKey(AppUser, related_name='appuser')
 

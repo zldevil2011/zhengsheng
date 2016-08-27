@@ -15,7 +15,7 @@
             </div>
             <div class="clearfix">
                 <div class="col-md-12 column" style="text-align: right;margin-top: 10px;">
-                    <button class="btn btn-info" style="padding: 6px 25px !important;">新建工单</button>
+                    <button name = "addWorkOrder" class="btn btn-info" style="padding: 6px 25px !important;">新建工单</button>
                 </div>
                 <div class="col-md-12" style="margin-top: 10px;">
                     <table class="table table-bordered">
@@ -63,10 +63,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-12 tab-tip tab-blue">
+            <div class="col-md-12 tab-tip tab-blue new-workOrder hide">
                 新建工单
             </div>
-            <div class="clearfix">
+            <div class="clearfix new-workOrder hide">
                 <div class="col-md-12" style="margin-top: 10px;">
                     <form ng-app="validationApp" name="workOrder" ng-controller="mainController" ng-submit="submitForm(workOrder.$valid)">
                         <table class="table table-bordered">
@@ -75,24 +75,25 @@
                                 <tr>
                                     <td>姓名</td>
                                     <td>
-                                        <input name="username" ng-model="user.username" required>
-                                        <span class="error" ng-show="workOrder.username.$dirty && workOrder.username.$invalid" style="display: block">请填写用户名</span>
+                                        <input name="username" ng-model="order.username" required>
+                                        <span class="error" ng-show="workOrder.username.$dirty && workOrder.username.$invalid"
+                                              style="display: block">请填写用户名</span>
                                     </td>
                                     <td>手机</td>
                                     <td>
-                                        <input type="number" name="phone" ng-model="user.phone" required>
+                                        <input type="number" name="phone" ng-model="order.phone" required>
                                         <span class="error" ng-show="workOrder.phone.$dirty && workOrder.phone.$invalid" style="display: block">请填写电话</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>邮箱</td>
                                     <td>
-                                        <input type="email" name="userEmail" ng-model="user.userEmail" required>
+                                        <input type="email" name="userEmail" ng-model="order.userEmail" required>
                                         <span ng-show="workOrder.userEmail.$error.email" style="display: block">请输入合法邮箱</span>
                                     </td>
                                     <td>用户地址</td>
                                     <td>
-                                        <input name="address" ng-model="user.address" required>
+                                        <input name="address" ng-model="order.address" required>
                                         <span class="error" ng-show="workOrder.address.$dirty && workOrder.address.$invalid" style="display: block">请填写地址</span>
                                     </td>
                                 </tr>
@@ -136,27 +137,75 @@
 {% block special_js %}
     <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
     <script>
+        $("[name=addWorkOrder]").on("click", function(){
+            console.log("xxx");
+            if($(".new-workOrder").hasClass("hide")){
+                $(".new-workOrder").removeClass("hide");
+            }else{
+                $(".new-workOrder").css("display", "block");
+            }
+        });
+    </script>
+    <script>
         $("#type").on("change", function () {
            var value = $(this).val();
             $("#" + value).siblings().css("display", "none");
-            $("#" + value).css("display", "block");
+            $("#" + value).css("display", "inline-block");
         });
+        var username = '{{ user.username }}';
+        var phone = parseInt('{{ user.phone }}');
+        var email = '{{ user.email }}';
+        var locationX = "{{ user.location }}";
+
+{#        console.log(username);#}
+{#        console.log(phone);#}
+{#        console.log(email);#}
+{#        console.log(locationX);#}
         var validationApp = angular.module('validationApp', []);
         validationApp.controller('mainController', function($scope) {
+            $scope.master = {username:username, phone:phone, userEmail:email, address:locationX};
+            $scope.reset = function() {
+                $scope.order = angular.copy($scope.master);
+            };
+            $scope.reset();
             $scope.submitForm = function(isValid) {
                 if (isValid) {
-                    var username = $scope.user.username;
-                    var phone = $scope.user.phone;
-                    var userEmail = $scope.user.userEmail;
-                    var address = $scope.user.address;
-                    var workOrderType = $("[name=workOrderType]").find("option:selected").text();
-                    var workOrderClassification = $("[name=workOrderClassification]").val();
+                    var username = $scope.order.username;
+                    var phone = $scope.order.phone;
+                    var userEmail = $scope.order.userEmail;
+                    var address = $scope.order.address;
                     console.log(username);
                     console.log(phone);
                     console.log(userEmail);
                     console.log(address);
+
+                    var workOrderType = $("[name=workOrderType]").find("option:selected").text();
+                    var workOrderClassification = $("[name=workOrderClassification]").val();
+                    var description = $("[name=description]").val();
                     console.log(workOrderType);
                     console.log(workOrderClassification);
+                    var formdata = new FormData();
+                    formdata.append("workOrderType", workOrderType);
+                    formdata.append("workOrderClassification", workOrderClassification);
+                    formdata.append("description", description);
+                    $.ajax({
+                        url:'/terminal/work_order/add/',
+                        type:'POST',
+                        data:formdata,
+                        cache:false,
+                        processData : false,
+                        contentType : false
+                    }).done(function(res){
+                        if(res == "success"){
+                            alert("提交成功");
+                            $("[name=description]").val("");
+                            $(".new-workOrder").hide();
+                        }else{
+                            alert("请检查信息是否正确");
+                        }
+                    }).fail(function (res) {
+                        alert("服务器开小差了，提交失败，请稍后再试");
+                    });
                 }else{
                     alert('请填写要求的内容');
                 }

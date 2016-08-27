@@ -15,7 +15,7 @@ class DistrictAdmin(admin.ModelAdmin):
     list_display = ('id', 'level0', 'level0', 'level0')
 
 class WorkOrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'num', 'type', 'classification')
+    list_display = ('id', 'num', 'type', 'classification', 'status')
 
 class AdminerAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'email')
