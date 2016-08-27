@@ -83,120 +83,39 @@
                         </tr>
                     </thead>
                     <tbody>
+                    {% for workOrder in work_order_list %}
                         <tr>
-                            <td>1</td>
-                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
-                            <td>咨询</td>
-                            <td>活动咨询</td>
-                            <td>2016-05-27 21:13</td>
-                            <td>已关闭</td>
+                            <td>{{ workOrder.num }}</td>
+                            <td>{{ workOrder.content }}</td>
+                            <td>{{ workOrder.type }}</td>
+                            <td>{{ workOrder.classification }}</td>
+                            <td>{{ workOrder.workOrderTime }}</td>
+                            <td>{{ workOrder.status }}</td>
                             <td><button class="btn btn-success">查看</button></td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
-                            <td>咨询</td>
-                            <td>活动咨询</td>
-                            <td>2016-05-27 21:13</td>
-                            <td>已关闭</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
-                            <td>咨询</td>
-                            <td>活动咨询</td>
-                            <td>2016-05-27 21:13</td>
-                            <td>已关闭</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
-                            <td>咨询</td>
-                            <td>活动咨询</td>
-                            <td>2016-05-27 21:13</td>
-                            <td>已关闭</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr><tr>
-                            <td>4</td>
-                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
-                            <td>咨询</td>
-                            <td>活动咨询</td>
-                            <td>2016-05-27 21:13</td>
-                            <td>已关闭</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
-                            <td>咨询</td>
-                            <td>活动咨询</td>
-                            <td>2016-05-27 21:13</td>
-                            <td>已关闭</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
-                            <td>咨询</td>
-                            <td>活动咨询</td>
-                            <td>2016-05-27 21:13</td>
-                            <td>已关闭</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
-                            <td>咨询</td>
-                            <td>活动咨询</td>
-                            <td>2016-05-27 21:13</td>
-                            <td>已关闭</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
-                            <td>咨询</td>
-                            <td>活动咨询</td>
-                            <td>2016-05-27 21:13</td>
-                            <td>已关闭</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>您好 我选择的云翼计划的服务器 为什么现在续费是40多一个月</td>
-                            <td>咨询</td>
-                            <td>活动咨询</td>
-                            <td>2016-05-27 21:13</td>
-                            <td>已关闭</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
             <div class="col-md-12 column" style="text-align: right;">
                 <ul class="pagination account-pagination" style="">
                     <li>
-                         <a href="#">Prev</a>
+                         <a href="#">上一页</a>
                     </li>
                     <li>
-                         <a href="#">1</a>
+                         <a href="#">第{{ page }}页/共{{ total_page }}页</a>
                     </li>
                     <li>
-                         <a href="#">2</a>
+                         <a href="#">下一页</a>
                     </li>
                     <li>
-                         <a href="#">3</a>
+                         <a href="#">跳转至</a>
                     </li>
                     <li>
-                         <a href="#">4</a>
+                         <input type="number" style="width: 50px;margin-left: 10px;line-height: 1.8571;border-radius: 4px; float: left;">
                     </li>
                     <li>
-                         <a href="#">5</a>
-                    </li>
-                    <li>
-                         <a href="#">Next</a>
+                         <a href="#" class="">确定</a>
                     </li>
                 </ul>
             </div>
