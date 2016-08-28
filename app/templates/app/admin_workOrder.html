@@ -22,34 +22,26 @@
             <hr>
             <div class="form-group">
                 <form class="form-horizontal" role="form" onsubmit="return false;">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="" class="col-sm-4 control-label">工单编号</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="" class="col-sm-2 control-label">时间</label>
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" id="" />
+                                <input type="date" class="form-control" id="startTime" />
                             </div>
                             <label for="" class="col-sm-1 control-label">至</label>
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" id="" />
+                                <input type="date" class="form-control" id="endTime" />
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="" class="col-sm-2 control-label">关键字</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="" />
+                                <input type="text" class="form-control" id="filterKey" />
                             </div>
                             <div class="col-sm-4">
-                                <button class="btn btn-block btn-success">查找</button>
+                                <button name = "workOrderFilter" class="btn btn-block btn-success">查找</button>
                             </div>
                         </div>
                     </div>
@@ -82,7 +74,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="workOrderList">
                     {% for workOrder in work_order_list %}
                         <tr>
                             <td>{{ workOrder.num }}</td>
@@ -103,7 +95,7 @@
                          <a href="#">上一页</a>
                     </li>
                     <li>
-                         <a href="#">第{{ page }}页/共{{ total_page }}页</a>
+                         <a href="#" name="pageInfo">第{{ page }}页/共{{ total_page }}页</a>
                     </li>
                     <li>
                          <a href="#">下一页</a>
@@ -124,5 +116,57 @@
     </div>
 {% endblock %}
 {% block special_js %}
-
+    <script>
+        function updateData(key, page, startTime, endTime){
+            var formdata = new FormData();
+            formdata.append("key", key);
+            formdata.append("page", page);
+            formdata.append("startTime", startTime);
+            formdata.append("endTime", endTime);
+            var targetUrl = "/admin_work_order/query/";
+            $.ajax({
+                url:targetUrl,
+                type:'POST',
+                data:formdata,
+                cache:false,
+                processData : false,
+                contentType : false
+            }).done(function (res) {
+                if(res != "error"){
+                    var ret_data = eval(res);
+                    console.log(ret_data);
+                    var page = ret_data["page"];
+                    var total_page = ret_data["total_page"];
+                    var data = ret_data["data"];
+                    var workOrderList = eval(data);
+                    var listLen = workOrderList.length;
+                    var innerHtml = "";
+                    for(var i = 0; i < listLen; ++i){
+                        var pk = workOrderList[i].id;
+                        var workOrder = workOrderList[i];
+                        innerHtml += '<tr><td>'+ workOrder.num + '</td><td>' + workOrder.content + '</td>' +
+                                '<td>' + workOrder.type + '</td><td>' + workOrder.classification + '</td>' +
+                                '<td>' + workOrder.workOrderTime+'</td><td>' + workOrder.status + '</td>' +
+                                '<td><button class="btn btn-success" id="'+pk+'">查看</button></td></tr>';
+                    }
+                    $(".workOrderList").html(innerHtml);
+                }else{
+                    alert("未查询到结果")
+                }
+            }).fail(function(res){
+                alert(res);
+            })
+        }
+        $("[name=workOrderFilter]").on("click", function(){
+            var startTime = $("#startTime").val();
+            var endTime = $("#endTime").val();
+            var filterKey = $("#filterKey").val();
+            var page = 1;
+{#            console.log(startTime);#}
+{#            console.log(endTime);#}
+{#            console.log(filterKey);#}
+{#            console.log(page);#}
+            updateData(filterKey, page, startTime, endTime)
+        });
+    </script>
 {% endblock %}
