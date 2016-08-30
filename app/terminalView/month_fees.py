@@ -8,8 +8,8 @@ from django.contrib.auth.hashers import check_password
 
 @csrf_exempt
 def index(request):
-    try:
-        user = AppUser.objects.get(username=request.session['username'])
-    except:
-        return HttpResponseRedirect("/terminal/login/")
+    # try:
+    #     user = AppUser.objects.get(username=request.session['username'])
+    # except:
+    #     return HttpResponseRedirect("/terminal/login/")
     return render(request, 'terminalUser/terminal_month_fees.html', {})
