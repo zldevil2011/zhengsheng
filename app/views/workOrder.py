@@ -28,8 +28,7 @@ def index(request):
 @csrf_exempt
 def work_order_filter(request):
     try:
-        user = AppUser.objects.get(username='zhengsheng')
-        # user = AppUser.objects.get(username=request.session['username'])
+        user = AppUser.objects.get(username=request.session['username'])
     except AppUser.DoesNotExist:
         return HttpResponseRedirect("/admin_login/")
     try:

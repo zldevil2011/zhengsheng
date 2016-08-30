@@ -21,10 +21,11 @@ def index(request):
 @csrf_exempt
 def add_work_order(request):
     # return HttpResponse("success")
-    # try:
-    #     user = AppUser.objects.get(username=request.session['username'])
-    # except AppUser.DoseNotExsit:
-    #     return HttpResponseRedirect("/terminal/login/")
+    try:
+        user = AppUser.objects.get(username='zhengsheng')
+        # user = AppUser.objects.get(username=request.session['username'])
+    except AppUser.DoseNotExsit:
+        return HttpResponseRedirect("/terminal/login/")
     # username = request.POST.get("username", None)
     # phone = request.POST.get("phone", None)
     # user_email = request.POST.get("userEmail", None)
