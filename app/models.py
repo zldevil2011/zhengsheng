@@ -7,20 +7,43 @@ from django.contrib.auth.models import User
 class AppUser(models.Model):
     user = models.OneToOneField(User)
     username = models.CharField(max_length=200)
-    sex = models.IntegerField(default=0)
-    home_phone = models.CharField(max_length=20, null=True)
+    sex = models.CharField(max_length=100)
+    address = models.CharField(max_length=500)
+    device = models.ForeignKey(Device, related_name='device', null=True)
+    register_time = models.DateTimeField(auto_created=True)
+    money = models.FloatField(default=0.0)
+    telephone = models.CharField(max_length=20, null=True)
     phone = models.CharField(max_length=20, null=True)
-    email = models.CharField(max_length=200, null=True)
-    location = models.CharField(max_length=200, null=True)
+    email = models.CharField(max_length=100, null=True)
     password = models.CharField(max_length=100)
-    register_date = models.DateField(auto_now_add=True)
 
     def __unicode__(self):
         return self.username
 
 
+# 设备信息，包括终端，配电箱，网关
+class Device(models.Model):
+    device_id = models.CharField(max_length=100)
+    name = models.CharField(max_length=200, null=True)
+    address = models.CharField(max_length=500, null=True)
+    longitude = models.FloatField(default=0.0)
+    latitude = models.FloatField(default=0.0)
+    status = models.CharField(max_length=200, null=True)
+    appuser = models.ForeignKey(AppUser, related_name='appuser')
+    install_time = models.DateTimeField(auto_created=True)
+    type = models.CharField(max_length=100, null=True)
+    data = models.ForeignKey(Node, related_name='data')
+
+    def __unicode__(self):
+        return self.name
+
+
 # 节点数据表
-class Node(models.Model):
+class Data(models.Model):
+    voltage = models.FloatField(default=0.0)
+    electricity = models.FloatField(default=0.0)
+    power = models.FloatField(default=0.0)
+    total_power = models.FloatField(default=0.0)
     temperature = models.FloatField(default=0.0)      # 节点温度
     instantVoltage = models.FloatField(default=0.0, null=True)   # 瞬时电压
     instantElectricity = models.FloatField(default=0.0, null=True)   # 瞬时电流
@@ -31,39 +54,54 @@ class Node(models.Model):
     lopsidedElectricity = models.FloatField(default=0.0, null=True)   # 三相电流不平衡
     # 负序电压 负序电流 功率因数
 
-
-# 设备信息，对应一个节点node
-class Device(models.Model):
-    name = models.CharField(max_length=200, null=True)
-    image = models.CharField(max_length=200, null=True)
-    location = models.CharField(max_length=200, null=True)
-    status = models.CharField(max_length=200, null=True)
-    user = models.ForeignKey(AppUser, related_name='device_appuser')
-    time = models.DateTimeField(auto_now_add=True)
-    node = models.ForeignKey(Node, related_name='device_node')
-    temperature = models.CharField(max_length=200, null=True)
-
-
-class District(models.Model):
-    level0 = models.CharField(max_length=200, null=True)
-    level1 = models.CharField(max_length=200, null=True)
-    level2 = models.CharField(max_length=200, null=True)
+    def __unicode__(self):
+        return str(self.id)
 
 
 # 工单
 class WorkOrder(models.Model):
     num = models.CharField(max_length=200, null=True)
-    content = models.CharField(max_length=200, null=True)
-    type = models.CharField(max_length=200, null=True)
-    classification = models.CharField(max_length=200, null=True)
-    workOrderTime = models.DateTimeField(auto_now_add=True)
+    type = models.CharField(max_length=100, null=True)
+    appuser = models.ForeignKey(AppUser, related_name='appuser')
+    content = models.CharField(max_length=1000, null=True)
     status = models.CharField(max_length=200, null=True)
-    user = models.ForeignKey(AppUser, related_name='appuser')
+    time = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.num
+
+
+# 维修
+class Repairing(models.Model):
+    num = models.CharField(max_length=100, null=True)
+    device = models.ForeignKey(Device, related_name='device')
+    status = models.CharField(max_length=100, null=True)
+    time = models.DateTimeField(auto_created=True)
+
+    def __unicode__(self):
+        return self.num
 
 
 # adminer的信息
 class Adminer(models.Model):
-    name = models.CharField(max_length=200, null=True)
-    email = models.CharField(max_length=200, null=True)
-    register_time = models.DateTimeField(auto_now_add = True)
+    name = models.CharField(max_length=100)
+    telephone = models.CharField(max_length=100)
+    area = models.CharField(max_length=200)
+    time = models.DateTimeField(auto_created=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+# 区域
+class Area(models.Model):
+    city = models.CharField(max_length=100, null=True)
+    street = models.CharField(max_length=100, null=True)
+    village = models.CharField(max_length=100, null=True)
+
+
+
+
+
+
 # Create your models here.
