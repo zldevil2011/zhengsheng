@@ -28,12 +28,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>2016-08-01</td>
-                                <td>正在处理</td>
-                                <td>System</td>
-                            </tr>
+                            {% for wo in wo_list %}
+                                <tr>
+                                    <td>{{ wo.num }}</td>
+                                    <td>{{ wo.workOrderTime }}</td>
+                                    <td>{{ wo.status }}</td>
+                                    <td>System</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -200,6 +202,7 @@
                             alert("提交成功");
                             $("[name=description]").val("");
                             $(".new-workOrder").hide();
+                            location.reload();
                         }else{
                             alert("请检查信息是否正确");
                         }

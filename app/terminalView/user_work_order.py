@@ -9,12 +9,13 @@ import time
 @csrf_exempt
 def index(request):
     try:
-        user = AppUser.objects.get(username='zhengsheng')
-        # user = AppUser.objects.get(username=request.session['username'])
+        user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/terminal/login/")
+    wo_list = WorkOrder.objects.filter(user=user)
     return render(request, 'terminalUser/terminal_workOrder.html', {
         'user': user,
+        'wo_list': wo_list,
     })
 
 

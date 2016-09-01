@@ -19,12 +19,13 @@
             <div class="col-md-9"><h1 class="terminal-name">征圣云平台自主管理系统</h1></div>
             <div class="col-md-3 terminal-login-window">
                 <div class="login-form">
-                    <span style="display:none; color:red;">用户名或密码不正确</span>
-                    <span style="display:none; color:red;">请输入用户名</span>
+                    <form>
+                    <span name = "loginErrorTip" style="display:none; color:red;">用户名或密码不正确</span>
+                    <span name = "usernameTip" style="display:none; color:red;">请输入用户名</span>
                     <div class="login-form-input">
                       <input type="text" class="form-control" placeholder="用户名/手机号/密码" name="zhengsheng_username" onchange="username_focus();">
                     </div>
-                    <span style="display:none;color:red;">请输入密码</span>
+                    <span  name = "passwordTip" style="display:none;color:red;">请输入密码</span>
                     <div class="login-form-input">
                       <input type="password" class="form-control" placeholder="请输入密码" name="zhengsheng_password" onchange="password_focus();">
                     </div>
@@ -34,13 +35,14 @@
                         <a style="float: right;">忘记密码?</a>
                     </div>
                     <div class="horizontal-text-center">
-                        <a class="btn btn-success btn-block" onclick="window.location.href='/terminal/index/'"> 立即登录</a>
+                        <a class="btn btn-success btn-block" onclick="loginCheck();"> 立即登录</a>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <div class="horizontal-text-center footer-fix-bottom">
+    <div class="horizontal-text-center footer-fix-bottom" style="position: fixed;">
         <section>
             <h4>友情链接</h4>
             <p>
@@ -70,5 +72,45 @@
         <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
         <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
+        function username_focus(){
+            $("[name=usernameTip]").css("display", "none");
+        }
+        function password_focus(){
+            $("[name=passwordTip]").css("display", "none");
+        }
+        function loginCheck(){
+            var username = $("[name=zhengsheng_username]").val(), password = $("[name=zhengsheng_password]").val();
+            if(username == ""){
+                $("[name=usernameTip]").css("display", "block");
+                return;
+            }
+            if(password == ""){
+                $("[name=passwordTip]").css("display", "block");
+                return;
+            }
+            var formdata = new FormData();
+            formdata.append("username", username);
+            formdata.append("password", password);
+            var targetUrl = "/terminal/user/login/";
+            $.ajax({
+                url:targetUrl,
+                type:'POST',
+                data:formdata,
+                cache:false,
+                processData : false,
+                contentType : false
+            }).done(function(res){
+                if(res == "success"){
+                    window.location.href='/terminal/index/';
+                }else{
+                    $("[name=loginErrorTip]").css("display", "block");
+                    return;
+                }
+            }).fail(function(res){
+                alert("服务器开小差了，请稍后再试");
+            });
+        }
+    </script>
 </body>
 </html>

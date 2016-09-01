@@ -7,9 +7,20 @@ from django.contrib.auth.hashers import check_password
 
 
 @csrf_exempt
-def index(request):
-    try:
-        user = AppUser.objects.get(username=request.session['username'])
-    except:
-        return HttpResponseRedirect("/terminal/login/")
-    return render(request, 'terminalUser/terminal_index.html', {})
+def login(request):
+    print "xxxx"
+    if request.method == "GET":
+        return render(request, "terminalUser/terminal_login.html", {})
+    else:
+        username = request.POST.get("username", None)
+        password = request.POST.get("password", None)
+        # print username, password
+        if username is None or password is None:
+            return HttpResponse("error")
+        try:
+            user = AppUser.objects.get(username=username, password=password)
+            request.session["username"] = user.username
+            return HttpResponse("success")
+        except Exception, e:
+            print str(e)
+            return HttpResponse("error")
