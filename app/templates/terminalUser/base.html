@@ -25,7 +25,7 @@
         <div class="terminal-head">
             <div class="inline"><img src="/site_media/images/zhengsheng_icon.jpg"></div>
             <div style="position: absolute;right: 0;bottom: 0;">
-                |<span style="padding: 0 10px;">欢迎你：张三</span>|<span style="padding: 0 10px;cursor:pointer;"
+                |<span style="padding: 0 10px;">欢迎你：<span name="terminal-top-username"></span></span>|<span style="padding: 0 10px;cursor:pointer;"
                               onclick="window.location.href='/terminal/login/'">退出</span>|<span style="padding: 0 10px;"></span>
             </div>
         </div>
@@ -87,9 +87,14 @@
         <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
         <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    {% block special_js %}
     <script>
+        $(function(){
+            var username = "{{ user.username }}";
+            $("[name=terminal-top-username]").html(username);
+        });
     </script>
+    {% block special_js %}
+
     {% endblock %}
 </body>
 </html>

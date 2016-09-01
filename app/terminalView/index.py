@@ -12,4 +12,6 @@ def index(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/terminal/login/")
-    return render(request, 'terminalUser/terminal_index.html', {})
+    return render(request, 'terminalUser/terminal_index.html', {
+        'user':user,
+    })
