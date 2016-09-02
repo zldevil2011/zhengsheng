@@ -20,11 +20,11 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>张三</td>
-                                <td>正常</td>
-                                <td>100kw</td>
-                                <td>200V</td>
-                                <td>2.0A</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ device.status }}</td>
+                                <td>{{ data.power }}kwh</td>
+                                <td>{{ data.voltage }}V</td>
+                                <td>{{ data.electricity }}A</td>
                             </tr>
                         </tbody>
                     </table>
