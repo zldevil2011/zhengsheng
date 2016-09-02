@@ -2,16 +2,18 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from app.models import AppUser
+from app.models import AppUser, Device
 from django.contrib.auth.hashers import check_password
 
 
 @csrf_exempt
-def index(request):
+def terminal_device_info(request):
     try:
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/terminal/user/login/")
-    return render(request, 'terminalUser/terminal_index.html', {
-        'user':user,
+    device = Device.objects.get(appuser=user)
+    return render(request, 'terminalUser/terminal_device_info.html', {
+        'user': user,
+        'device': device,
     })

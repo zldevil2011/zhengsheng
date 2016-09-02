@@ -1,29 +1,45 @@
 from django.contrib import admin
-from app.models import AppUser, Node, Device, District, WorkOrder, Adminer
+from app.models import Area, Adminer, Data, Device, AppUser, WorkOrder, Repairing, Fund
+
+
+class AreaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'city', 'street', 'village')
+
+
+class AdminerAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'telephone', 'area')
+
+
+class DataAdmin(admin.ModelAdmin):
+    list_display = ('id', 'voltage', 'electricity', 'total_power')
+
+
+class DeviceAdmin(admin.ModelAdmin):
+    list_display = ('id', 'device_id', 'name', 'status')
 
 
 class AppUserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'username', 'phone', 'email')
+    list_display = ('id', 'username', 'telephone', 'email')
 
-class NodeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'temperature')
-
-class DeviceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'status', 'location')
-
-class DistrictAdmin(admin.ModelAdmin):
-    list_display = ('id', 'level0', 'level0', 'level0')
 
 class WorkOrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'num', 'type', 'classification', 'status')
+    list_display = ('id', 'num', 'type', 'status')
 
-class AdminerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'email')
 
-admin.site.register(AppUser, AppUserAdmin)
-admin.site.register(Node, NodeAdmin)
-admin.site.register(Device, DeviceAdmin)
-admin.site.register(District, DistrictAdmin)
-admin.site.register(WorkOrder, WorkOrderAdmin)
+class RepairingAdmin(admin.ModelAdmin):
+    list_display = ('id', 'num', 'status')
+
+
+class FundAdmin(admin.ModelAdmin):
+    list_display = ('id', 'appuser', 'total_num')
+
+admin.site.register(Area, AreaAdmin)
 admin.site.register(Adminer, AdminerAdmin)
+admin.site.register(Data, DataAdmin)
+admin.site.register(Device, DeviceAdmin)
+admin.site.register(AppUser, AppUserAdmin)
+admin.site.register(WorkOrder, WorkOrderAdmin)
+admin.site.register(Repairing, RepairingAdmin)
+admin.site.register(Fund, FundAdmin)
+
 # Register your models here.

@@ -14,20 +14,22 @@
                                 <th>编号</th>
                                 <th>充值类型</th>
                                 <th>充值金额</th>
-                                <th>上期余额</th>
+                                <th>总余额</th>
                                 <th>充值日期</th>
                                 <th>状态</th>
                             </tr>
                         </thead>
                         <tbody>
+                        {% for f in fund %}
                             <tr>
-                                <td>1</td>
+                                <td>{{ forloop.counter }}</td>
                                 <td>续费</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>2016-07-24 14:00:37</td>
-                                <td>成功</td>
+                                <td>{{ f.num }}</td>
+                                <td>{{ f.total_num }}</td>
+                                <td>{{ f.time }}</td>
+                                <td>{{ f.status }}</td>
                             </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>

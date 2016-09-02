@@ -13,29 +13,29 @@
                             <tr>
                                 <td colspan="2" align="center"><img src="/site_media/images/web_icon.png"></td>
                                 <td>设备编号</td>
-                                <td>MX00030889</td>
+                                <td>{{ device.device_id }}</td>
                                 <td>设备状态</td>
-                                <td>正常</td>
+                                <td>{{ device.status }}</td>
                             </tr>
                             <tr>
                                 <td>电压</td>
-                                <td>30V</td>
+                                <td>{{ device.data.voltage }}V</td>
                                 <td>电流</td>
-                                <td>1</td>
+                                <td>{{ device.data.electricity }}</td>
                                 <td>频率</td>
                                 <td>1000Hz</td>
                             </tr>
                             <tr>
                                 <td>温度</td>
-                                <td>30℃</td>
+                                <td>{{ device.data.temperature }}℃</td>
                                 <td>瞬时电压</td>
-                                <td>30</td>
+                                <td>{{ device.data.instantVoltage }}V</td>
                                 <td>瞬时电流</td>
-                                <td>1A</td>
+                                <td>{{ device.data.instantElectricity }}A</td>
                             </tr>
                             <tr>
                                 <td>总用电量</td>
-                                <td>10000kwh</td>
+                                <td>{{ device.data.total_power }}kwh</td>
                                 <td colspan="4"></td>
                             </tr>
                         </tbody>

@@ -7,11 +7,11 @@ from django.contrib.auth.hashers import check_password
 
 
 @csrf_exempt
-def index(request):
+def electricity_info(request):
     try:
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/terminal/user/login/")
-    return render(request, 'terminalUser/terminal_index.html', {
-        'user':user,
+    return render(request, 'terminalUser/terminal_electricity_info.html', {
+        'user': user,
     })

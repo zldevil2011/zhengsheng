@@ -2,7 +2,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from app.models import AppUser
+from app.models import AppUser, Fund
 from django.contrib.auth.hashers import check_password
 
 
@@ -12,6 +12,8 @@ def index(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/terminal/user/login/")
-    return render(request, 'terminalUser/terminal_index.html', {
-        'user':user,
+    fund = Fund.objects.filter(appuser=user)
+    return render(request, 'terminalUser/terminal_fund.html', {
+        'user': user,
+        'fund': fund,
     })
