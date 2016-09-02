@@ -20,8 +20,42 @@ class Adminer(models.Model):
         return self.name
 
 
+# 用户表，存储用户的相关信息
+class AppUser(models.Model):
+    user = models.OneToOneField(User)
+    username = models.CharField(max_length=200)
+    sex = models.CharField(max_length=100)
+    address = models.CharField(max_length=500)
+    register_time = models.DateTimeField(auto_created=True)
+    money = models.FloatField(default=0.0)
+    telephone = models.CharField(max_length=20, null=True)
+    phone = models.CharField(max_length=20, null=True)
+    email = models.CharField(max_length=100, null=True)
+    password = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.username
+
+
+# 设备信息，包括终端，配电箱，网关
+class Device(models.Model):
+    appuser = models.ForeignKey(AppUser, related_name="device", null=True)
+    device_id = models.CharField(max_length=100)
+    name = models.CharField(max_length=200, null=True)
+    address = models.CharField(max_length=500, null=True)
+    longitude = models.FloatField(default=0.0)
+    latitude = models.FloatField(default=0.0)
+    status = models.CharField(max_length=200, null=True)
+    install_time = models.DateTimeField(auto_created=True)
+    type = models.CharField(max_length=100, null=True)
+
+    def __unicode__(self):
+        return self.name
+
+
 # 节点数据表
 class Data(models.Model):
+    device = models.ForeignKey(Device, related_name="data", null=True)
     voltage = models.FloatField(default=0.0)
     electricity = models.FloatField(default=0.0)
     power = models.FloatField(default=0.0)
@@ -38,40 +72,6 @@ class Data(models.Model):
 
     def __unicode__(self):
         return str(self.id)
-
-
-# 设备信息，包括终端，配电箱，网关
-class Device(models.Model):
-    device_id = models.CharField(max_length=100)
-    name = models.CharField(max_length=200, null=True)
-    address = models.CharField(max_length=500, null=True)
-    longitude = models.FloatField(default=0.0)
-    latitude = models.FloatField(default=0.0)
-    status = models.CharField(max_length=200, null=True)
-    install_time = models.DateTimeField(auto_created=True)
-    type = models.CharField(max_length=100, null=True)
-    data = models.ForeignKey(Data, related_name='device')
-
-    def __unicode__(self):
-        return self.name
-
-
-# 用户表，存储用户的相关信息
-class AppUser(models.Model):
-    user = models.OneToOneField(User)
-    username = models.CharField(max_length=200)
-    sex = models.CharField(max_length=100)
-    address = models.CharField(max_length=500)
-    device = models.ForeignKey(Device, related_name='appuser', null=True)
-    register_time = models.DateTimeField(auto_created=True)
-    money = models.FloatField(default=0.0)
-    telephone = models.CharField(max_length=20, null=True)
-    phone = models.CharField(max_length=20, null=True)
-    email = models.CharField(max_length=100, null=True)
-    password = models.CharField(max_length=100)
-
-    def __unicode__(self):
-        return self.username
 
 
 # 工单
