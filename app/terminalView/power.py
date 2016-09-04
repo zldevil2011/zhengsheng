@@ -31,6 +31,7 @@ def electricity_info(request):
     today_hour = []
     tmp_time_init = now - timedelta(hours=1)
     tmp_time_end = now - timedelta(days=1)
+    today_hour.append(tmp_time_init.hour)
     init_time = datetime(tmp_time_init.year, tmp_time_init.month, tmp_time_init.day, tmp_time_init.hour, 0)
     end_time = datetime(year, month, tmp_time_end.day, 0, 0)
     hour_delta = timedelta(hours=1)
@@ -39,6 +40,7 @@ def electricity_info(request):
             break
         if data.time == init_time:
             today_power.append(data.power)
+            today_hour.append(data.time.hour)
             init_time = init_time - hour_delta
     print today_power
 
