@@ -49,17 +49,16 @@ def electricity_info(request):
     today_data["today_power"] = today_power
     today_data["today_hour"] = today_hour
     # 计算当月数据
-    day += 12
+    day += 1
     latest_data = datas[0]
-    # month_days = calendar.monthrange(year, day)[1]
+
     month_power = []
     month_day = []
-    month_day.append(str(latest_data.time.day) + "号")
+    # month_day.append(str(latest_data.time.day) + "号")
+    month_day.append(str(day) + "号")
     month_power.append(latest_data.power)
     init_time = datetime(year, month, day, 23, 50, 0) - timedelta(days=1)
     end_time = datetime(year, month, 1, 23, 50, 0)
-    print init_time
-    print end_time
     day_delta = timedelta(days=1)
     for data in datas:
         if data.time == end_time:
@@ -76,6 +75,28 @@ def electricity_info(request):
     month_data = {}
     month_data["month_power"] = month_power
     month_data["month_day"] = month_day
+
+    # 计算年内每月的用电量
+    month_days = calendar.monthrange(year, month - 1)[1]
+    print month_days
+    latest_data = datas[0]
+    year_power = []
+    year_month = []
+    year_month.append(str(month) + '月')
+    year_power.append(latest_data.total_power)
+    init_time = datetime(year, month - 1, month_days, 23, 50, 0) - timedelta(days=1)
+    end_time = datetime(year, 1, 1, 23, 50, 0)
+    month_delta = timedelta(days=30)
+    for data in datas:
+        if data.time == end_time:
+            year_power.append(data.power)
+            year_month.append(str(data.time.month) + "月")
+            break
+        if data.time == init_time:
+            year_power.append(data.power)
+            year_month.append(str(data.time.month) + "月")
+            month_days = calendar.monthrange(year, data.time.month)[1]
+            init_time = init_time - timedelta(days=month_days)
     return render(request, 'terminalUser/terminal_electricity_info.html', {
         'user': user,
         'device': device,
