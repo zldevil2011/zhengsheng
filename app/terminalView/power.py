@@ -49,6 +49,8 @@ def electricity_info(request):
     latest_data = datas[0]
     month_days = calendar.monthrange(year, day)[1]
     month_power = []
+    month_day = []
+    month_day.append(latest_data.time.day)
     month_power.append(latest_data.power)
     init_time = datetime(year, month, day, 23, 50, 0) - timedelta(days=1)
     end_time = datetime(year, month, 1, 23, 50, 0)
@@ -56,9 +58,11 @@ def electricity_info(request):
     for data in datas:
         if data.time == end_time:
             month_power.append(data.power)
+            month_day.append(data.time.day)
             break
         if data.time == init_time:
             month_power.append(data.power)
+            month_day.append(data.time.day)
             init_time = init_time - day_delta
     print month_power
 
