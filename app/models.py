@@ -68,6 +68,7 @@ class Data(models.Model):
     electricalEnergy = models.FloatField(default=0.0, null=True)   # 电能
     lopsidedVoltage = models.FloatField(default=0.0, null=True)   # 三相电压不平衡
     lopsidedElectricity = models.FloatField(default=0.0, null=True)   # 三相电流不平衡
+    time = models.DateTimeField(auto_created=True)
     # 负序电压 负序电流 功率因数
 
     def __unicode__(self):
