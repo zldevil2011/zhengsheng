@@ -12,7 +12,7 @@ def index(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/terminal/login/")
-    wo_list = WorkOrder.objects.filter(user=user)
+    wo_list = WorkOrder.objects.filter(appuser=user)
     return render(request, 'terminalUser/terminal_workOrder.html', {
         'user': user,
         'wo_list': wo_list,
@@ -48,10 +48,9 @@ def add_work_order(request):
         num=num,
         content=description,
         type=work_order_type,
-        classification=work_order_classification,
-        workOrderTime=time.strftime(ISOTIMEFORMAT, time.localtime()),
+        time=time.strftime(ISOTIMEFORMAT, time.localtime()),
         status=u"待处理",
-        user=user,
+        appuser=user,
     )
     work_order.save()
     return HttpResponse("success")

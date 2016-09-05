@@ -33,7 +33,7 @@ def electricity_info(request):
     tmp_time_end = now - timedelta(days=1)
     today_hour.append(tmp_time_init.hour)
     init_time = datetime(tmp_time_init.year, tmp_time_init.month, tmp_time_init.day, tmp_time_init.hour, 0)
-    end_time = datetime(year, month, tmp_time_end.day, 0, 0)
+    end_time = datetime(year, month, tmp_time_end.day, 23, 50)
     hour_delta = timedelta(hours=1)
     for data in datas:
         if data.time == end_time:
