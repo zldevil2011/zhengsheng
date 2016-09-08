@@ -48,7 +48,7 @@ def electricity_info(request):
     today_data = {}
     today_data["today_power"] = today_power
     today_data["today_hour"] = today_hour
-    # 计算当月数据
+    # 计算当月数据,当月数据每次获取每天的power即为当天的总用电量
     day += 1
     latest_data = datas[0]
 
@@ -76,7 +76,7 @@ def electricity_info(request):
     month_data["month_power"] = month_power
     month_data["month_day"] = month_day
 
-    # 计算年内每月的用电量
+    # 计算年内每月的用电量,每月用电量用当月最后一天23:50的总电流-上一月最后一天23:50的总电流，total_power一年一清楚
     month_days = calendar.monthrange(year, month - 1)[1]
     print month_days
     latest_data = datas[0]
@@ -84,23 +84,39 @@ def electricity_info(request):
     year_month = []
     year_month.append(str(month) + '月')
     year_power.append(latest_data.total_power)
-    init_time = datetime(year, month - 1, month_days, 23, 50, 0) - timedelta(days=1)
-    end_time = datetime(year, 1, 1, 23, 50, 0)
-    month_delta = timedelta(days=30)
-    for data in datas:
-        if data.time == end_time:
-            year_power.append(data.power)
-            year_month.append(str(data.time.month) + "月")
-            break
-        if data.time == init_time:
-            year_power.append(data.power)
-            year_month.append(str(data.time.month) + "月")
-            month_days = calendar.monthrange(year, data.time.month)[1]
-            init_time = init_time - timedelta(days=month_days)
+    try:
+        init_time = datetime(year, month - 1, month_days, 23, 50, 0)
+        end_time = datetime(year - 1, 12, 31, 23, 50, 0)
+        end_month_power = Data.objects.get(time=init_time).total_power
+        month_delta = timedelta(days=month_days)
+        init_time -= month_delta
+        for data in datas:
+            if data.time == end_time:
+                tmp_power = end_month_power - data.total_power
+                year_power.append(tmp_power)
+                year_month.append(str(1) + "月")
+                break
+            if data.time == init_time:
+                tmp_power = end_month_power - data.total_power
+                end_month_power = data.total_power
+                year_power.append(tmp_power)
+                year_month.append(str(data.time.month + 1) + "月")
+                month_days = calendar.monthrange(year, data.time.month)[1]
+                init_time = init_time - timedelta(days=month_days)
+        print year_month
+        print year_power
+        year_power.reverse()
+        year_month.reverse()
+        year_data = {}
+        year_data["year_power"] = year_power
+        year_data["year_month"] = year_month
+    except:
+        pass
     return render(request, 'terminalUser/terminal_electricity_info.html', {
         'user': user,
         'device': device,
         'data': data,
         'today_data': json.dumps(today_data, "application/json"),
-        'month_data': json.dumps(month_data, "application/json")
+        'month_data': json.dumps(month_data, "application/json"),
+        'year_data': json.dumps(year_data, "application/json")
     })

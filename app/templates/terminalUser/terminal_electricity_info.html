@@ -61,11 +61,31 @@
     <script>
         var dd = {{ today_data | safe }};
         var mm = {{ month_data | safe }};
+        var yy = {{ year_data | safe }};
         var today_hour = dd["today_hour"];
         var today_power = dd["today_power"];
 
         var month_day = mm["month_day"];
         var month_power = mm["month_power"];
+
+        var year_month = yy["year_month"];
+        var year_power = yy["year_power"];
+        console.log(year_month);
+        var year_data_list = new Array();
+        var len = year_month.length;
+        for(var i = 0; i < len; ++i){
+            var year = year_month[i];
+            var data = year_power[i];
+{#            console.log(year);#}
+{#            console.log(data);#}
+            var dic = {};
+            dic["name"] = year;
+            var list_tmp = [];
+            list_tmp.push(data);
+            dic["data"] = list_tmp;
+            year_data_list.push(dic);
+        }
+        console.log(year_data_list);
         $(function () {
             $('#today-data').highcharts({
                 title: {
@@ -182,7 +202,7 @@
                 text: '数据来源：征圣云平台'
             },
             xAxis: {
-                categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+                categories: ['电量'],// 'America', 'Asia', 'Europe', 'Oceania'],
                 title: {
                     text: null
                 }
@@ -190,7 +210,7 @@
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Population (millions)',
+                    text: '电量 (Kwh)',
                     align: 'high'
                 },
                 labels: {
@@ -198,7 +218,7 @@
                 }
             },
             tooltip: {
-                valueSuffix: ' millions'
+                valueSuffix: ' kwh'
             },
             plotOptions: {
                 bar: {
@@ -211,7 +231,7 @@
                 layout: 'vertical',
                 align: 'right',
                 verticalAlign: 'top',
-                x: -40,
+                x: -5,
                 y: 100,
                 floating: true,
                 borderWidth: 1,
@@ -221,16 +241,7 @@
             credits: {
                 enabled: false
             },
-            series: [{
-                name: 'Year 1800',
-                data: [107, 31, 635, 203, 2]
-            }, {
-                name: 'Year 1900',
-                data: [133, 156, 947, 408, 6]
-            }, {
-                name: 'Year 2008',
-                data: [973, 914, 4054, 732, 34]
-            }]
+            series: year_data_list
         });
     });
     </script>
