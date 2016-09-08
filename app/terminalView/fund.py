@@ -12,7 +12,7 @@ def index(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/terminal/user/login/")
-    fund = Fund.objects.filter(appuser=user)
+    fund = Fund.objects.filter(appuser=user).order_by('-time')
     return render(request, 'terminalUser/terminal_fund.html', {
         'user': user,
         'fund': fund,

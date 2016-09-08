@@ -19,7 +19,7 @@ def electricity_info(request):
     device = Device.objects.get(appuser=user)
     data = Data.objects.filter(device=device)[0]
 
-    datas = Data.objects.all().order_by('-time')
+    datas = Data.objects.filter(device=device).order_by('-time')
     today = date.today()
     year = today.year
     month = today.month

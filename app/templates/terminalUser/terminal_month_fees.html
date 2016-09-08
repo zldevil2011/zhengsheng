@@ -12,13 +12,13 @@
                         <thead>
                             <tr>
                                 <th>用电量</th>
-                                <th>费用</th>
+                                <th>余额</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>100kw</td>
-                                <td>12</td>
+                                <td>{{ latest_data.total_power }}kw</td>
+                                <td>{{ fund.total_num }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -41,14 +41,16 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for fund in fund_list %}
                             <tr>
-                                <td>1</td>
-                                <td>2016-07-01</td>
-                                <td>100</td>
-                                <td>12</td>
-                                <td>10000kw</td>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ fund.time }}</td>
+                                <td>{{ fund.num }}</td>
+                                <td>{{ fund.total_num }}</td>
+                                <td>100kw</td>
                                 <td>查看</td>
                             </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -59,5 +61,8 @@
     </div>
 {% endblock %}
 {% block special_js %}
-
+    <script>
+        var power_list = {{ power_list|safe }};
+        console.log(power_list);
+    </script>
 {% endblock %}
