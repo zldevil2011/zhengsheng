@@ -21,8 +21,9 @@ def index(request):
         fund = Fund.objects.filter(appuser=user).order_by('-time')[0]
     except:
         latest_data = None
+        fund = None
     fund_list = Fund.objects.filter(appuser=user, status=u"结算").order_by('-time')
-    print fund_list
+    # print fund_list
     today = datetime.today()
     year = today.year
     month = today.month
@@ -45,8 +46,18 @@ def index(request):
             month_days = calendar.monthrange(year, data.time.month)[1]
             init_time = init_time - timedelta(days=month_days)
 
+    ret_data = []
+    fund_num = len(fund_list)
+    for i in range(fund_num):
+        data_dic = {}
+        data_dic["fund"] = fund_list[i]
+        data_dic["power"] = power_list[i]
+        ret_data.append(data_dic)
+    print ret_data
     return render(request, 'terminalUser/terminal_month_fees.html', {
         'latest_data': latest_data,
         'fund_list': fund_list,
         'power_list': power_list,
+        'fund': fund,
+        'ret_data': ret_data,
     })

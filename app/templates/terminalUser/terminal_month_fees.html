@@ -41,13 +41,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for fund in fund_list %}
+                            {% for i in ret_data %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ fund.time }}</td>
-                                <td>{{ fund.num }}</td>
-                                <td>{{ fund.total_num }}</td>
-                                <td>100kw</td>
+                                <td>{{ i.fund.time }}</td>
+                                <td>{{ i.fund.num }}</td>
+                                <td>{{ i.fund.total_num }}</td>
+                                <td>{{ i.power }}kwh</td>
                                 <td>查看</td>
                             </tr>
                             {% endfor %}
