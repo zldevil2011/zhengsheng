@@ -22,10 +22,10 @@
                         <tbody>
                             <tr>
                                 <td>1</td>
-                                <td>2016-07</td>
-                                <td>100kw</td>
-                                <td>12</td>
-                                <td>88</td>
+                                <td>{{ month_time }}</td>
+                                <td>{{ month_power }}kwh</td>
+                                <td>{{ fund.num }}</td>
+                                <td>{{ fund.total_num }}</td>
                                 <td>正常</td>
                             </tr>
                         </tbody>
@@ -42,22 +42,48 @@
                         <thead>
                             <tr>
                                 <th>编号</th>
-                                <th>日期</th>
-                                <th>用电量</th>
-                                <th>费用</th>
+                                <th>时间</th>
+                                <th>当日电量</th>
+                                <th>总电量</th>
+                                <th>温度</th>
                                 <th>状态</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>2016-07-24</td>
-                                <td>100kw</td>
-                                <td>12</td>
-                                <td>正常</td>
-                            </tr>
+                            {% for data in datas %}
+                                <tr>
+                                    <td>{{ data.id }}</td>
+                                    <td>{{ data.time }}</td>
+                                    <td>{{ data.power }}kw</td>
+                                    <td>{{ data.total_power }}kw</td>
+                                    <td>{{ data.temperature }}</td>
+                                    <td>{{ data.device.status }}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
+                </div>
+                <div class="col-md-12 column" style="text-align: right;">
+                    <ul class="pagination account-pagination" style="">
+                        <li>
+                             <a href="#">上一页</a>
+                        </li>
+                        <li>
+                             <a href="#" name="pageInfo">第{{ page }}页/共{{ total_page }}页</a>
+                        </li>
+                        <li>
+                             <a href="#">下一页</a>
+                        </li>
+                        <li>
+                             <a href="#">跳转至</a>
+                        </li>
+                        <li>
+                             <input type="number" style="width: 50px;margin-left: 10px;line-height: 1.8571;border-radius: 4px; float: left;">
+                        </li>
+                        <li>
+                             <a href="#" class="">确定</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

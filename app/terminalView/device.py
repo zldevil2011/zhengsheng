@@ -13,7 +13,7 @@ def terminal_device_info(request):
     except:
         return HttpResponseRedirect("/terminal/user/login/")
     device = Device.objects.get(appuser=user)
-    data = Data.objects.get(device=device)
+    data = Data.objects.filter(device=device)[0]
     return render(request, 'terminalUser/terminal_device_info.html', {
         'user': user,
         'device': device,

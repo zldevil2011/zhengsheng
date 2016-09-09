@@ -1,7 +1,7 @@
 #coding=utf-8
 from django.conf.urls import url
 from django.views.generic import TemplateView
-from app.terminalView import index, month_fees, user_work_order, user, power, device, fund
+from app.terminalView import index, month_fees, user_work_order, user, power, device, fund, details
 urlpatterns = [
     # url(r'/$', TemplateView.as_view(template_name="terminalUser/terminal_login.html")),
 
@@ -16,7 +16,7 @@ urlpatterns = [
 
     url(r'fund/$', fund.index, name="fund_index"),
 
-    url(r'details/$', TemplateView.as_view(template_name="terminalUser/terminal_details.html")),
+    url(r'details/$', details.index, name="details_index"),
 
     url(r'month/$', month_fees.index, name="month_fees"),
 
