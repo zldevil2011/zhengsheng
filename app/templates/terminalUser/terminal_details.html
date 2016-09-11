@@ -112,7 +112,7 @@
         function UpdateDataUI(currentPage){
             var formdata = new FormData();
             formdata.append("page", currentPage);
-            var targetUrl = "/terminal/details/"
+            var targetUrl = "/terminal/details/";
             $.ajax({
                 url: targetUrl,
                 type: 'POST',
