@@ -83,7 +83,7 @@
 {#                            <td>{{ workOrder.classification }}</td>#}
                             <td>{{ workOrder.time }}</td>
                             <td>{{ workOrder.status }}</td>
-                            <td><button class="btn btn-success">查看</button></td>
+                            <td><button class="btn btn-success" onclick="viewWO(this.id);" id="{{ workOrder.id }}">查看</button></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -114,8 +114,59 @@
         </div>
 
     </div>
+{#    显示工单详细信息的悬浮窗#}
+    <div class="modal fade" id="workOrder-Info" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <span name="wo-title"></span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <p name="wo-content"></p>
+                </div>
+                <div class="modal-footer">
+                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div name="targetWO-id" style="display: none;"></div>
 {% endblock %}
 {% block special_js %}
+    <script>
+{#        点击按钮查看具体信息#}
+        $('#workOrder-Info').on('show.bs.modal', function (e) {
+            var wo_id = $("[name=targetWO-id]").html();
+            console.log(wo_id);
+            $.ajax({
+                url: '/admin_work_order/' + wo_id + '/',
+                type: 'GET',
+                cache: false,
+                processData: false
+            }).done(function(res){
+                if(res != "error"){
+                    var wo_json = JSON.parse(res);
+                    $("[name=wo-title]").html(wo_json.type);
+                    $("[name=wo-content]").html(wo_json.content);
+                }else{
+                    alert("数据错误");
+                    return;
+                }
+            }).fail(function(res){
+                alert("服务器错误");
+                return;
+            });
+        });
+        function viewWO(id){
+            $("[name=targetWO-id]").html(id);
+            $("#workOrder-Info").modal({
+                keyboard: false
+            })
+        }
+    </script>
     <script>
         function updateData(key, page, startTime, endTime){
             var formdata = new FormData();
@@ -146,7 +197,7 @@
                         var workOrder = workOrderList[i];
                         innerHtml += '<tr><td>'+ workOrder.num + '</td><td>' + workOrder.content + '</td>' +
                                 '<td>' + workOrder.type + '</td><td>' + workOrder.classification + '</td>' +
-                                '<td>' + workOrder.workOrderTime+'</td><td>' + workOrder.status + '</td>' +
+                                '<td>' + workOrder.time+'</td><td>' + workOrder.status + '</td>' +
                                 '<td><button class="btn btn-success" id="'+pk+'">查看</button></td></tr>';
                     }
                     $(".workOrderList").html(innerHtml);

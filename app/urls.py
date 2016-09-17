@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^admin_account/$', user.admin_account, name="admin_account"),
 
     url(r'^admin_work_order/$', workOrder.index, name="admin_work_order"),
+    url(r'^admin_work_order/(?P<wo_id>\d+)/$', workOrder.info, name="admin_work_order_info"),
     url(r'^admin_work_order/query/$', workOrder.work_order_filter, name="work_order_filter"),
 
     url(r'^admin_device/$', device.admin_device, name="admin_device"),

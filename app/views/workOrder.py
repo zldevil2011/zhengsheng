@@ -36,13 +36,17 @@ def work_order_filter(request):
         page = request.POST.get("page", None)
         startTime = request.POST.get("startTime", None)
         endTime = request.POST.get("endTime", None)
+        print key
+        print page
+        print startTime
+        print endTime
         if len(startTime) == 0:
             startTime = None
         if len(endTime) == 0:
             endTime = None
         if key is None:
             key = ""
-        work_order_list = WorkOrder.objects.filter(Q(content__icontains=key)|Q(type__icontains=key)|Q(classification__icontains=key))
+        work_order_list = WorkOrder.objects.filter(Q(content__icontains=key)|Q(type__icontains=key)|Q(type__icontains=key))
         if page is None:
             page = 1
         page = int(page)
@@ -72,11 +76,11 @@ def work_order_filter(request):
                 tmp_flag = 1
                 if startTime is not None:
                     print "startTTTTTTTTTTTTTTTTTTTT"
-                    if order.workOrderTime < startTime:
+                    if order.time < startTime:
                         tmp_flag = 0
                 if endTime is not None:
                     print "endTTTTTTTTTTTTTTTTTT"
-                    if order.workOrderTime > endTime:
+                    if order.time > endTime:
                         tmp_flag = 0
                 if tmp_flag == 1:
                     tmp.append(order)
@@ -87,7 +91,7 @@ def work_order_filter(request):
         print work_order_list
         for i in range(len(work_order_list)):
             order = work_order_list[i]
-            order["workOrderTime"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(float(order["workOrderTime"])))
+            order["time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(float(order["time"])))
 
         ret_data = {}
         ret_data["page"] = page
@@ -96,4 +100,19 @@ def work_order_filter(request):
         return HttpResponse(json.dumps(ret_data), "application/json")
     except Exception, e:
         return HttpResponse("error")
+
+
+def info(request, wo_id):
+    try:
+        user = AppUser.objects.get(username=request.session['username'])
+    except AppUser.DoesNotExist:
+        return HttpResponseRedirect("/admin_login/")
+    if request.method == "GET":
+        try:
+            WO = WorkOrder.objects.get(pk=wo_id)
+            return HttpResponse(json.dumps(serializer(WO)))
+        except:
+            return HttpResponse("error")
+    else:
+        return HttpResponse("success")
 
