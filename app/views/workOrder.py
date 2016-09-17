@@ -110,7 +110,7 @@ def info(request, wo_id):
     if request.method == "GET":
         try:
             WO = WorkOrder.objects.get(pk=wo_id)
-            return HttpResponse(json.dumps(serializer(WO)))
+            return HttpResponse(json.dumps(serializer(WO, foreign=True)))
         except:
             return HttpResponse("error")
     else:

@@ -149,7 +149,8 @@
             }).done(function(res){
                 if(res != "error"){
                     var wo_json = JSON.parse(res);
-                    $("[name=wo-title]").html(wo_json.type);
+                    console.log(res);
+                    $("[name=wo-title]").html(wo_json.appuser.username + " : " + wo_json.type);
                     $("[name=wo-content]").html(wo_json.content);
                 }else{
                     alert("数据错误");
