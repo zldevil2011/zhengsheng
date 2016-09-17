@@ -20,6 +20,7 @@ def electricity_info(request):
     data = Data.objects.filter(device=device)[0]
 
     datas = Data.objects.filter(device=device).order_by('-time')
+    print datas.count()
     today = date.today()
     year = today.year
     month = today.month
@@ -44,12 +45,13 @@ def electricity_info(request):
             init_time = init_time - hour_delta
     today_hour.reverse()
     today_power.reverse()
+    print "Day Data"
     print today_power
     today_data = {}
     today_data["today_power"] = today_power
     today_data["today_hour"] = today_hour
     # 计算当月数据,当月数据每次获取每天的power即为当天的总用电量
-    day += 1
+    # day += 1
     latest_data = datas[0]
 
     month_power = []
@@ -60,15 +62,20 @@ def electricity_info(request):
     init_time = datetime(year, month, day, 23, 50, 0) - timedelta(days=1)
     end_time = datetime(year, month, 1, 23, 50, 0)
     day_delta = timedelta(days=1)
+    print init_time
+    print end_time
+    print datas.count()
     for data in datas:
         if data.time == end_time:
             month_power.append(data.power)
             month_day.append(str(data.time.day) + "号")
             break
         if data.time == init_time:
+            print data.time
             month_power.append(data.power)
             month_day.append(str(data.time.day) + "号")
             init_time = init_time - day_delta
+    print "EveryDay Data"
     print month_power
     month_power.reverse()
     month_day.reverse()
