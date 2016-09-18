@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from app.models import AppUser, WorkOrder
 from django.contrib.auth.hashers import check_password
 import time
+import json
+from dss.Serializer import serializer
 
 @csrf_exempt
 def index(request):
@@ -12,7 +14,7 @@ def index(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/terminal/login/")
-    wo_list = WorkOrder.objects.filter(appuser=user)
+    wo_list = WorkOrder.objects.filter(appuser=user).order_by('-time')
     return render(request, 'terminalUser/terminal_workOrder.html', {
         'user': user,
         'wo_list': wo_list,
@@ -46,7 +48,7 @@ def add_work_order(request):
     ISOTIMEFORMAT ='%Y-%m-%d%X'
     work_order = WorkOrder(
         num=num,
-        content=description,
+        content=user.username + u"：" + description,
         type=work_order_type,
         time=time.strftime(ISOTIMEFORMAT, time.localtime()),
         status=u"待处理",
@@ -54,3 +56,42 @@ def add_work_order(request):
     )
     work_order.save()
     return HttpResponse("success")
+
+
+@csrf_exempt
+def info(request, wo_id):
+    try:
+        user = AppUser.objects.get(username=request.session['username'])
+    except AppUser.DoseNotExsit:
+        return HttpResponseRedirect("/terminal/login/")
+    if request.method == "GET":
+        try:
+            WO = WorkOrder.objects.get(pk=wo_id)
+            return HttpResponse(json.dumps(serializer(WO, foreign=True)))
+        except:
+            return HttpResponse("error")
+    else:
+        try:
+            ret_content = request.POST.get("ret_content", None)
+            if ret_content is not None:
+                wo = WorkOrder.objects.get(pk=wo_id)
+                wo.content = wo.content + "<br>" + user.username + u"：" + unicode(ret_content)
+                wo.status = u"正在处理"
+                wo.save()
+                return HttpResponse("success")
+            else:
+                try:
+                    closeWO = request.POST.get("closeWO", None)
+                    print closeWO
+                    if closeWO == "true":
+                        wo = WorkOrder.objects.get(pk=wo_id)
+                        wo.status = u"已处理"
+                        wo.save()
+                        return HttpResponse("success")
+                    else:
+                        return HttpResponse("error")
+                except:
+                    return HttpResponse("error")
+        except Exception, e:
+            print str(e)
+            return HttpResponse("error")

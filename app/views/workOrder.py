@@ -14,7 +14,7 @@ def index(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
-    work_order_list = WorkOrder.objects.all()
+    work_order_list = WorkOrder.objects.all().order_by('-time')
     total_page = len(work_order_list) / 20
     if len(work_order_list) - total_page * 20 > 0:
         total_page += 1
@@ -46,7 +46,7 @@ def work_order_filter(request):
             endTime = None
         if key is None:
             key = ""
-        work_order_list = WorkOrder.objects.filter(Q(content__icontains=key)|Q(type__icontains=key)|Q(type__icontains=key))
+        work_order_list = WorkOrder.objects.filter(Q(content__icontains=key)|Q(type__icontains=key)|Q(type__icontains=key)).order_by('-time')
         if page is None:
             page = 1
         page = int(page)
@@ -88,7 +88,7 @@ def work_order_filter(request):
             print tmp
         except Exception, e:
             print str(e)
-        work_order_list = serializer(tmp)
+        work_order_list = serializer(tmp, foreign=True)
         print work_order_list
         for i in range(len(work_order_list)):
             order = work_order_list[i]

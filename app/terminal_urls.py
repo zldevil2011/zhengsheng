@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'month/$', month_fees.index, name="month_fees"),
 
     url(r'work_order/$', user_work_order.index, name="work_order"),
+    url(r'work_order/(?P<wo_id>\d+)/$', user_work_order.info, name="work_order"),
     url(r'work_order/add/$', user_work_order.add_work_order, name="add_work_order"),
 ]

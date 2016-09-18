@@ -55,7 +55,7 @@
                                 工单编号
                             </th>
                             <th>
-                                内容
+                                用户
                             </th>
                             <th>
                                 工单类型
@@ -78,7 +78,7 @@
                     {% for workOrder in work_order_list %}
                         <tr style="max-height: 20px;">
                             <td>{{ workOrder.num }}</td>
-                            <td>{{ workOrder.content }}</td>
+                            <td>{{ workOrder.appuser.username }}</td>
                             <td>{{ workOrder.type }}</td>
 {#                            <td>{{ workOrder.classification }}</td>#}
                             <td>{{ workOrder.time }}</td>
@@ -136,7 +136,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-success" onclick="updateWO()">保存</button>
+                    <button name = "updateBtn" type="button" class="btn btn-success" onclick="updateWO()">保存</button>
                 </div>
             </div>
         </div>
@@ -169,6 +169,8 @@
                         $("[name=wo-status]").html(wo_json.status).css("color", "#e09d32");
                     }else{
                         $("[name=wo-status]").html(wo_json.status).css("color", "green");
+                        $("[name=ret_content]").remove();
+                        $("[name=updateBtn]").remove();
                     }
                 }else{
                     alert("数据错误");
@@ -240,7 +242,7 @@
                     for(var i = 0; i < listLen; ++i){
                         var pk = workOrderList[i].id;
                         var workOrder = workOrderList[i];
-                        innerHtml += '<tr><td>'+ workOrder.num + '</td><td>' + workOrder.content.toString() + '</td>' +
+                        innerHtml += '<tr><td>'+ workOrder.num + '</td><td>' + workOrder.appuser.username + '</td>' +
                                 '<td>' + workOrder.type + '</td><td>' + workOrder.time+'</td><td>' + workOrder.status + '</td>' +
                                 '<td><button class="btn btn-success" onclick="viewWO(this.id);" id="'+pk+'">查看</button></td></tr>';
                     }
