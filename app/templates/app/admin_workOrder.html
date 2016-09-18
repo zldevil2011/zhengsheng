@@ -76,7 +76,7 @@
                     </thead>
                     <tbody class="workOrderList">
                     {% for workOrder in work_order_list %}
-                        <tr>
+                        <tr style="max-height: 20px;">
                             <td>{{ workOrder.num }}</td>
                             <td>{{ workOrder.content }}</td>
                             <td>{{ workOrder.type }}</td>
@@ -115,20 +115,28 @@
 
     </div>
 {#    显示工单详细信息的悬浮窗#}
-    <div class="modal fade" id="workOrder-Info" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="workOrder-Info" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="color:black;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title" id="myModalLabel">
-                        <span name="wo-title"></span>
+                        <span name="wo-user"></span>
+                        <span name="wo-id" class="hidden"></span>
                     </h4>
                 </div>
                 <div class="modal-body">
+                    <p name="wo-title"></p>
                     <p name="wo-content"></p>
+                    <p>
+                        <h5>回复意见 : </h5>
+                        <textarea cols="10" rows="10" style="width: 100%;" name="ret_content"></textarea>
+                    </p>
+                    <p name="wo-status"></p>
                 </div>
                 <div class="modal-footer">
-                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> <button type="button" class="btn btn-primary">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success" onclick="updateWO()">保存</button>
                 </div>
             </div>
         </div>
@@ -149,9 +157,19 @@
             }).done(function(res){
                 if(res != "error"){
                     var wo_json = JSON.parse(res);
-                    console.log(res);
-                    $("[name=wo-title]").html(wo_json.appuser.username + " : " + wo_json.type);
+{#                    console.log(res);#}
+                    $("[name=wo-user]").html(wo_json.appuser.username);
+                    $("[name=wo-title]").html(wo_json.type);
                     $("[name=wo-content]").html(wo_json.content);
+                    $("[name=wo-id]").html(wo_json.id);
+                    $("[name=ret_content]").val("");
+                    if(wo_json.status == "待处理"){
+                        $("[name=wo-status]").html(wo_json.status).css("color", "red");
+                    }else if(wo_json.status == "正在处理"){
+                        $("[name=wo-status]").html(wo_json.status).css("color", "#e09d32");
+                    }else{
+                        $("[name=wo-status]").html(wo_json.status).css("color", "green");
+                    }
                 }else{
                     alert("数据错误");
                     return;
@@ -165,6 +183,32 @@
             $("[name=targetWO-id]").html(id);
             $("#workOrder-Info").modal({
                 keyboard: false
+            })
+        }
+        function updateWO(){
+            var wo_id = $("[name=wo-id]").html();
+            var formdata = new FormData();
+            var ret_content = $("[name=ret_content]").val();
+            console.log(ret_content);
+            formdata.append("ret_content", ret_content);
+            $.ajax({
+                url: '/admin_work_order/' + wo_id + '/',
+                type: 'POST',
+                data: formdata,
+                cache: false,
+                processData: false,
+                contentType: false
+            }).done(function(res){
+                if(res != "error"){
+                    alert("提交成功");
+                    $('#workOrder-Info').modal('hide')
+                }else{
+                    alert("数据错误");
+                    return;
+                }
+            }).fail(function(res){
+                alert("服务器错误");
+                return;
             })
         }
     </script>
@@ -196,10 +240,9 @@
                     for(var i = 0; i < listLen; ++i){
                         var pk = workOrderList[i].id;
                         var workOrder = workOrderList[i];
-                        innerHtml += '<tr><td>'+ workOrder.num + '</td><td>' + workOrder.content + '</td>' +
-                                '<td>' + workOrder.type + '</td><td>' + workOrder.classification + '</td>' +
-                                '<td>' + workOrder.time+'</td><td>' + workOrder.status + '</td>' +
-                                '<td><button class="btn btn-success" id="'+pk+'">查看</button></td></tr>';
+                        innerHtml += '<tr><td>'+ workOrder.num + '</td><td>' + workOrder.content.toString() + '</td>' +
+                                '<td>' + workOrder.type + '</td><td>' + workOrder.time+'</td><td>' + workOrder.status + '</td>' +
+                                '<td><button class="btn btn-success" onclick="viewWO(this.id);" id="'+pk+'">查看</button></td></tr>';
                     }
                     $(".workOrderList").html(innerHtml);
                 }else{

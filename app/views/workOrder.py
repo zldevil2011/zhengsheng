@@ -83,6 +83,7 @@ def work_order_filter(request):
                     if order.time > endTime:
                         tmp_flag = 0
                 if tmp_flag == 1:
+                    order.content = order.content.replace('<br>', '')[0:20] + "..."
                     tmp.append(order)
             print tmp
         except Exception, e:
@@ -102,6 +103,7 @@ def work_order_filter(request):
         return HttpResponse("error")
 
 
+@csrf_exempt
 def info(request, wo_id):
     try:
         user = AppUser.objects.get(username=request.session['username'])
@@ -114,5 +116,17 @@ def info(request, wo_id):
         except:
             return HttpResponse("error")
     else:
-        return HttpResponse("success")
+        try:
+            ret_content = request.POST.get("ret_content", None)
+            print ret_content
+            if ret_content is None:
+                return HttpResponse("error")
+            wo = WorkOrder.objects.get(pk=wo_id)
+            wo.content = wo.content + "<br>" + u"系统回复：" + unicode(ret_content)
+            wo.status = u"正在处理"
+            wo.save()
+            return HttpResponse("success")
+        except Exception, e:
+            print str(e)
+            return HttpResponse("error")
 
