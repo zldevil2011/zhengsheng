@@ -114,11 +114,11 @@ def electricity_info(request):
         print year_power
         year_power.reverse()
         year_month.reverse()
-        year_data = {}
-        year_data["year_power"] = year_power
-        year_data["year_month"] = year_month
     except:
         pass
+    year_data = {}
+    year_data["year_power"] = year_power
+    year_data["year_month"] = year_month
     return render(request, 'terminalUser/terminal_electricity_info.html', {
         'user': user,
         'device': device,
