@@ -125,7 +125,7 @@
         function loginAjax(){
             var username = $("[name=zhengsheng_username]").val();
             var password = $("[name=zhengsheng_password]").val();
-            var info = { username: username, password: $.md5(password) };
+            var info = { username: username, password: password };
             var targetUrl = "/admin_user/login/";
             $.post(
                 targetUrl,

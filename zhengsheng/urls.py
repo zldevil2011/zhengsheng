@@ -15,6 +15,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 import settings
+from app.api import api_urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -22,5 +23,5 @@ urlpatterns = [
     url(r'^terminal/', include('app.terminal_urls')),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-
+    url(r'^api/v1/', include(api_urls)),
 ]

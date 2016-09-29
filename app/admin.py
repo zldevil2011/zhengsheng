@@ -1,9 +1,16 @@
 from django.contrib import admin
-from app.models import Area, Adminer, Data, Device, AppUser, WorkOrder, Repairing, Fund
+from app.models import City, Village, Parameter, Adminer, Data, Device, AppUser, WorkOrder, Repairing, Fund
+
+class CityAdmin(admin.ModelAdmin):
+    list_display = ('id', 'city_code', 'city_name')
 
 
-class AreaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'city', 'street', 'village')
+class VillageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'city', 'village_code', 'village_name')
+
+
+class ParameterAdmin(admin.ModelAdmin):
+    list_display = ('id', 'device', 'version')
 
 
 class AdminerAdmin(admin.ModelAdmin):
@@ -11,11 +18,11 @@ class AdminerAdmin(admin.ModelAdmin):
 
 
 class DataAdmin(admin.ModelAdmin):
-    list_display = ('id', 'voltage', 'electricity', 'total_power')
+    list_display = ('id', 'temp', 'tempB', 'faultB')
 
 
 class DeviceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'device_id', 'name', 'status')
+    list_display = ('id', 'device_id', 'device_status')
 
 
 class AppUserAdmin(admin.ModelAdmin):
@@ -33,7 +40,9 @@ class RepairingAdmin(admin.ModelAdmin):
 class FundAdmin(admin.ModelAdmin):
     list_display = ('id', 'appuser', 'total_num')
 
-admin.site.register(Area, AreaAdmin)
+admin.site.register(City, CityAdmin)
+admin.site.register(Village, VillageAdmin)
+admin.site.register(Parameter, ParameterAdmin)
 admin.site.register(Adminer, AdminerAdmin)
 admin.site.register(Data, DataAdmin)
 admin.site.register(Device, DeviceAdmin)

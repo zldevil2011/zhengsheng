@@ -11,12 +11,19 @@ from django.contrib.auth.hashers import check_password
 def login(request):
     username = request.POST.get('username', None)
     password = request.POST.get('password', None)
+    print username, password
     try:
-        user = AppUser.objects.get(username = username)
-        request.session['username'] = username
+        user = User.objects.get(username = username)
+        print user.password
+        if check_password(password, user.password):
+            appuser = AppUser.objects.get(user=user)
+            print "check ok"
+            request.session['username'] = appuser.username
+            return HttpResponse("success")
+        else:
+            return HttpResponse("error")
     except AppUser.DoesNotExist:
         return HttpResponse("error")
-    return HttpResponse("success")
 
 
 @csrf_exempt
