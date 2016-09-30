@@ -46,7 +46,9 @@ class DeviceExtramessage(APIView):
                     print "failed = " + str(device_id)
                     fail_id.append(str(device_id))
             response_str = ''
-            response_str += 'fail_id=' + ";".join(fail_id)
+            for fid in fail_id:
+                response_str += "fail_id=" + fid + ";"
+            # response_str += 'fail_id=' + ";".join(fail_id)
             print "res_str = " + request_str
             return Response({'k': response_str} , status=status.HTTP_200_OK)
         except Exception, e:
