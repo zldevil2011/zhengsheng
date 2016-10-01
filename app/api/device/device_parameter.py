@@ -28,9 +28,9 @@ class DeviceParameter(APIView):
             PUTime1 = parameter.power_get_point1
             PUTime2 = parameter.power_get_point2
             response_str = ''
-            response_str += 'up=' + up + ';id=' + str(device_id) + ';parVer=' + str(parVer) + ';TempSet=' + str(TempSet) + ';TempTSet='+str(TempTSet)+';'+';PUTime1='+str(PUTime1)+';PUTime2='+str(PUTime2)
+            response_str += 'up=' + up + ',id=' + str(device_id) + ',parVer=' + str(parVer) + ',TempSet=' + str(TempSet) + ',TempTSet='+str(TempTSet)+',PUTime1='+str(PUTime1)+',PUTime2='+str(PUTime2)
             return Response({'k': response_str} , status=status.HTTP_200_OK)
         except Exception, e:
             print str(e)
-            response_str = 'up=0;id=0;parVer=0;TempSet=0;TempTSet=0;PUTime1=0;PUTime2=0'
+            response_str = 'up=0,id=0,parVer=0,TempSet=0,TempTSet=0,PUTime1=0,PUTime2=0'
             return Response({'k': response_str} , status=status.HTTP_404_NOT_FOUND)

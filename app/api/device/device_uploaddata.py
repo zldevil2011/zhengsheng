@@ -20,7 +20,7 @@ class DeviceUploadData(APIView):
     def post(self, request, format=None):
         try:
             request_str = request.data['k']
-            device_list = request_str.split(';')
+            device_list = request_str.split('/')
             print device_list
             InvID = []
             ExtInfoID = []
@@ -66,14 +66,25 @@ class DeviceUploadData(APIView):
                     InvID.append(str(device_id))
             response_str = ''
             for inv in InvID:
-                response_str += "InvID=" + str(inv) + ";"
+                response_str += "InvID=" + str(inv) + "/"
             for ext in ExtInfoID:
-                response_str += "ExtInfoID=" + str(ext) + ";"
+                response_str += "ExtInfoID=" + str(ext) + "/"
             # response_str = response_str.remove(len(response_str) - 1)
             # print "res_str = " + request_str
             return Response({'k': response_str}, status=status.HTTP_200_OK)
         except Exception, e:
             print str(e)
+            request_str = request.data['k']
+            device_list = request_str.split('/')
+            print device_list
+            InvID = []
+            ExtInfoID = []
+            for device in device_list:
+                device_data_list = device.split(',')
+                print device_data_list
+                device_id = int(device_data_list[0].split('=')[1])
+                InvID.append(device_id)
             response_str = ''
-            response_str += 'InvID=all'
+            for inv in InvID:
+                response_str += "InvID=" + str(inv) + "/"
             return Response({'k': response_str}, status=status.HTTP_200_OK)

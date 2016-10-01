@@ -23,9 +23,9 @@ class DeviceCheck(APIView):
             if device.city_code is None or device.village_code is None or device.gateway_code is None:
                 ext_info = '1'
             response_str = ''
-            response_str += 'valid_s=1;CurTime='+CurTime+';ext_info='+ext_info
+            response_str += 'valid_s=1/CurTime='+CurTime+'/ext_info='+ext_info
             return Response({'k': response_str} , status=status.HTTP_200_OK)
         except:
             response_str = ''
-            response_str += 'valid_s=0;CurTime=' + CurTime + ';ext_info=1'
+            response_str += 'valid_s=0/CurTime=' + CurTime + '/ext_info=1'
             return Response({'k': response_str}, status=status.HTTP_200_OK)

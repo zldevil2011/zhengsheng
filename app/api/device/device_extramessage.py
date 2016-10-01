@@ -11,7 +11,8 @@ class DeviceExtramessage(APIView):
     def post(self, request, format=None):
         try:
             request_str = request.data['k']
-            device_list = request_str.split(';')
+            print request_str
+            device_list = request_str.split('/')
             print device_list
             fail_id = []
             for device in device_list:
@@ -47,12 +48,23 @@ class DeviceExtramessage(APIView):
                     fail_id.append(str(device_id))
             response_str = ''
             for fid in fail_id:
-                response_str += "fail_id=" + fid + ";"
+                response_str += "fail_id=" + fid + "/"
             # response_str += 'fail_id=' + ";".join(fail_id)
             print "res_str = " + request_str
             return Response({'k': response_str} , status=status.HTTP_200_OK)
         except Exception, e:
             print str(e)
+            request_str = request.data['k']
+            print request_str
+            device_list = request_str.split('/')
+            print device_list
+            fail_id = []
+            for device in device_list:
+                device_attr_list = device.split(',')
+                print device_attr_list
+                device_id = int(device_attr_list[0].split('=')[1])
+                fail_id.append(device_id)
             response_str = ''
-            response_str += 'fail_id=all'
+            for fid in fail_id:
+                response_str += "fail_id=" + fid + "/"
             return Response({'k': response_str}, status=status.HTTP_200_OK)
