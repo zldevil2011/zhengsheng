@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import check_password
 from dss.Serializer import serializer
 from datetime import datetime
 import time
+import json
 
 @csrf_exempt
 def admin_device(request):
@@ -105,3 +106,55 @@ def list(request):
        "device_list": device_list
     })
 
+
+@csrf_exempt
+def instock(request):
+    try:
+        user = AppUser.objects.get(username = request.session["username"])
+    except:
+        return HttpResponseRedirect("/admin_login/")
+    try:
+        device_type = request.POST.get("type", None)
+        device_number = request.POST.get("number", None)
+        if device_type is None or device_number is None:
+            return HttpResponse("error")
+        device_number = int(device_number)
+        start_num = 0
+        if device_type == "1":
+            d_num = Device.objects.filter(device_id__lt=200000000).order_by('-manufacture_date')
+            if len(d_num) > 0:
+                start_num = d_num[0].device_id
+            else:
+                start_num = 100000000
+            device_type = u"终端"
+        elif device_type == "2":
+            d_num = Device.objects.filter(device_id__gt=200000000, device_id__lt=300000000).order_by('-manufacture_date')
+            if len(d_num) > 0:
+                start_num = d_num[0].device_id
+            else:
+                start_num = 200000000
+            device_type = u"中继"
+        else:
+            d_num = Device.objects.filter(device_id__gt=300000000).order_by('-manufacture_date')
+            if len(d_num) > 0:
+                start_num = d_num[0].device_id
+            else:
+                start_num = 300000000
+            device_type = u"网关"
+        start_no = start_num + 1
+        for i in range(device_number):
+            start_num += 1
+            device = Device()
+            device.device_id = start_num
+            device.device_status = u"未安装"
+            now = time.localtime()
+            device.manufacture_date = datetime(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
+            device.save()
+        ret_data = {}
+        ret_data["type"] = device_type
+        ret_data["start_no"] = start_no
+        ret_data["end_no"] = start_num
+        return HttpResponse(json.dumps(ret_data), "application/json")
+    except Exception, e:
+        print str(e)
+        return HttpResponse("error")

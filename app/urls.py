@@ -49,5 +49,6 @@ urlpatterns = [
     url(r'^admin_info/user/$', admin_info.user, name="admin_info_user"),
 ]
 urlpatterns += {
-    url(r'^device/list/$', device.list, name="device_list")
+    url(r'^device/list/$', device.list, name="device_list"),
+    url(r'^device/instock/$', device.instock, name="device_instock")
 }

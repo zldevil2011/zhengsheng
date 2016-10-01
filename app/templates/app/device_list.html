@@ -131,7 +131,7 @@
                 </div>
                 <div name="instock_tip" class="col-md-12" style="margin-top:20px;display: none;">
                     <div class="alert alert-success alert-dismissable">
-                        已入库设备类型：<span name="device_type">终端</span>，设备编号：<span name="start_no">100000010</span>-<span name="end-no">100000090</span>
+                        已入库设备类型：<span name="device_type">终端</span>，设备编号：<span name="start_no">100000010</span>-<span name="end_no">100000090</span>
                     </div>
                 </div>
             </div>
@@ -152,11 +152,13 @@
                 data : {type: device_type, number:device_number},
                 dataType : 'json',
                 success : function(data){
+                    console.log(data);
                     if(data != "error"){
                         $("[name=instock_tip]").css("display", "block");
                         $("[name=device_type]").html(data.type);
-                        $("[name=device_type]").html(data.start_no);
-                        $("[name=device_type]").html(data.end_no);
+                        $("[name=start_no]").html(data.start_no);
+                        $("[name=end_no]").html(data.end_no);
+                        window.location.reload();
                     }else{
                         alert("入库失败，请联系管理员");
                     }
