@@ -10,7 +10,7 @@ class DeviceParameter(APIView):
 
     def post(self, request, format=None):
         request_str = request.data['k']
-        request_list = request_str.split('&')
+        request_list = request_str.split(',')
         device_id = request_list[0].split("=")[1]
         ver_no = int(request_list[1].split("=")[1])
         try:

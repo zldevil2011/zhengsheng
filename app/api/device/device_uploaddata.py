@@ -25,7 +25,7 @@ class DeviceUploadData(APIView):
             InvID = []
             ExtInfoID = []
             for device in device_list:
-                device_data_list = device.split('&')
+                device_data_list = device.split(',')
                 print device_data_list
                 try:
                     device_id = int(device_data_list[0].split('=')[1])

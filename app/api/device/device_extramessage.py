@@ -15,7 +15,7 @@ class DeviceExtramessage(APIView):
             print device_list
             fail_id = []
             for device in device_list:
-                device_attr_list = device.split('&')
+                device_attr_list = device.split(',')
                 print device_attr_list
                 try:
                     device_id = int(device_attr_list[0].split('=')[1])
