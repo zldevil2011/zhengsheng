@@ -32,5 +32,17 @@ class DeviceParameter(APIView):
             return Response({'k': response_str} , status=status.HTTP_200_OK)
         except Exception, e:
             print str(e)
-            response_str = 'up=0,id=0,parVer=0,TempSet=0,TempTSet=0,PUTime1=0,PUTime2=0'
-            return Response({'k': response_str} , status=status.HTTP_404_NOT_FOUND)
+            request_str = request.data['k']
+            request_list = request_str.split(',')
+            device_id = int(request_list[0].split("=")[1])
+            device = Device.objects.get(device_id=device_id)
+            parameter = Parameter()
+            parameter.device = device
+            parameter.temperature_t_length = 0
+            parameter.temperature = 0
+            parameter.power_get_point1 = '00:00:00'
+            parameter.power_get_point2 = '12:00:00'
+            parameter.version = 1
+            parameter.save()
+            response_str = 'up=1,id=' + str(device_id) + ',parVer=1,TempSet=0,TempTSet=0,PUTime1=00:00:00,PUTime2=12:00:00'
+            return Response({'k': response_str} , status=status.HTTP_200_OK)
