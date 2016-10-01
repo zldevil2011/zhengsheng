@@ -76,4 +76,4 @@ class DeviceUploadData(APIView):
             print str(e)
             response_str = ''
             response_str += 'InvID=all'
-            return Response({'k': response_str}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'k': response_str}, status=status.HTTP_200_OK)

@@ -32,4 +32,5 @@ class DeviceParameter(APIView):
             return Response({'k': response_str} , status=status.HTTP_200_OK)
         except Exception, e:
             print str(e)
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            response_str = 'up=0;id=0;parVer=0;TempSet=0;TempTSet=0;PUTime1=0;PUTime2=0'
+            return Response({'k': response_str} , status=status.HTTP_404_NOT_FOUND)

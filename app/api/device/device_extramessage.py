@@ -55,4 +55,4 @@ class DeviceExtramessage(APIView):
             print str(e)
             response_str = ''
             response_str += 'fail_id=all'
-            return Response({'k': response_str}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'k': response_str}, status=status.HTTP_200_OK)

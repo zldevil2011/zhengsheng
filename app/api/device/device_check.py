@@ -28,4 +28,4 @@ class DeviceCheck(APIView):
         except:
             response_str = ''
             response_str += 'valid_s=0;CurTime=' + CurTime + ';ext_info=1'
-            return Response({'k': response_str}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'k': response_str}, status=status.HTTP_200_OK)
