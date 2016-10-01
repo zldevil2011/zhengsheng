@@ -2,6 +2,7 @@
 from django.conf.urls import url
 from django.views.generic import TemplateView
 from app.views import index, user, device, data, mobile, installArea, admin_info,workOrder
+
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name="app/welcome.html")),
 
@@ -47,3 +48,6 @@ urlpatterns = [
 
     url(r'^admin_info/user/$', admin_info.user, name="admin_info_user"),
 ]
+urlpatterns += {
+    url(r'^device/list/$', device.list, name="device_list")
+}
