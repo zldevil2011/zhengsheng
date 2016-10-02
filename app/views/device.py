@@ -9,6 +9,7 @@ from dss.Serializer import serializer
 from datetime import datetime
 import time
 import json
+import math
 
 @csrf_exempt
 def admin_device(request):
@@ -86,10 +87,20 @@ def list(request):
         user = AppUser.objects.get(username = request.session["username"])
     except:
         return HttpResponseRedirect("/admin_login/")
-    page = int(request.POST.get("page", 1))
-    start_num = (page - 1) * 20
-    end_num = page * 20
-    device_list = Device.objects.all().order_by('-manufacture_date')[start_num:end_num]
+    page = request.GET.get("page")
+    page_num = int(math.ceil(len(Device.objects.all()) / 10.0))
+    print page
+    if page is None:
+        page = 1
+    else:
+        page = int(page)
+    if page < 1:
+        page = 1
+    if page > page_num:
+        page = page_num
+    start_num = (page - 1) * 10
+    end_num = page * 10
+    device_list = Device.objects.all().order_by('-id')[start_num:end_num]
     device_list = serializer(device_list)
     for device in device_list:
         device_id = str(device["device_id"])
@@ -103,7 +114,9 @@ def list(request):
         device["manufacture_date"] = str_time
     print device_list
     return render(request, "app/device_list.html", {
-       "device_list": device_list
+        "device_list": device_list,
+        "page_num": page_num,
+        "page" : page,
     })
 
 
@@ -121,21 +134,21 @@ def instock(request):
         device_number = int(device_number)
         start_num = 0
         if device_type == "1":
-            d_num = Device.objects.filter(device_id__lt=200000000).order_by('-manufacture_date')
+            d_num = Device.objects.filter(device_id__lt=200000000).order_by('-id')
             if len(d_num) > 0:
                 start_num = d_num[0].device_id
             else:
                 start_num = 100000000
             device_type = u"终端"
         elif device_type == "2":
-            d_num = Device.objects.filter(device_id__gt=200000000, device_id__lt=300000000).order_by('-manufacture_date')
+            d_num = Device.objects.filter(device_id__gt=200000000, device_id__lt=300000000).order_by('-id')
             if len(d_num) > 0:
                 start_num = d_num[0].device_id
             else:
                 start_num = 200000000
             device_type = u"中继"
         else:
-            d_num = Device.objects.filter(device_id__gt=300000000).order_by('-manufacture_date')
+            d_num = Device.objects.filter(device_id__gt=300000000).order_by('-id')
             if len(d_num) > 0:
                 start_num = d_num[0].device_id
             else:
