@@ -158,3 +158,28 @@ def instock(request):
     except Exception, e:
         print str(e)
         return HttpResponse("error")
+
+
+@csrf_exempt
+def device_info(request):
+    try:
+        user = AppUser.objects.get(username = request.session["username"])
+    except:
+        return HttpResponseRedirect("/admin_login/")
+    if request.method == "POST":
+        try:
+            device_id = request.POST.get('device_id', None)
+            print device_id
+            if device_id is None:
+                return HttpResponse("error")
+            device_id = int(device_id)
+            device = Device.objects.get(device_id=device_id)
+            device.delete()
+            return HttpResponse("success")
+        except Exception, e:
+            print str(e)
+            return HttpResponse("error")
+    else:
+        device_id = int(request.GET("device_id"))
+
+        return HttpResponse("GET")

@@ -55,7 +55,7 @@
                                 {{ device.device_status }}
                             </td>
                             <td style="text-align: center;">
-                                <button class="btn btn-danger btn-small btn-block">删除</button>
+                                <button id="{{ device.device_id }}" class="btn btn-danger btn-small btn-block" onclick="deleteDevice(this.id);">删除</button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -107,7 +107,7 @@
         <div class="row clearfix bg-color"  style="padding: 10px 30px;color:black !important;">
             <div class="col-md-12 column">
                 <div class="col-md-4">
-                    <div class="form-group" style＝"height:30px;">
+                    <div class="form-group" style="height:30px;">
                         <div class="col-md-4" style="line-height: 30px;display: inline-block;">设备类型</div>
                         <div class="col-md-8" style="display: inline-block;">
                             <select name="device_type" class="form-control">
@@ -119,7 +119,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="form-group" style＝"height:30px;">
+                    <div class="form-group" style="height:30px;">
                         <div class="col-md-4" style="line-height: 30px;display: inline-block;">设备数量</div>
                         <div class="col-md-8" style="display: inline-block;">
                             <input name="device_number" type="number" class="form-control">
@@ -168,9 +168,30 @@
                     alert("error =" + data);
                 }
             });
-        })
+        });
         $("[name=reload]").on("click", function(){
            window.location.reload();
         });
+        function deleteDevice(device_id){
+            $.ajax({
+                type: 'POST',
+                url: '/device/info/',
+                data : {device_id : device_id},
+{#                dataType : 'json',#}
+                success : function(data){
+                    console.log(data);
+                    if(data != 'error'){
+                        $("#" + device_id).parent().parent().fadeOut("slow", function (){
+                            $(this).remove();
+                        });
+                    }else{
+                        alert("删除失败，请稍后再试");
+                    }
+                },
+                error : function(data){
+                    alert("服务器错误 =" + data);
+                }
+            })
+        }
     </script>
 {% endblock %}

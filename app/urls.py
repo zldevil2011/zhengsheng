@@ -50,5 +50,6 @@ urlpatterns = [
 ]
 urlpatterns += {
     url(r'^device/list/$', device.list, name="device_list"),
-    url(r'^device/instock/$', device.instock, name="device_instock")
+    url(r'^device/instock/$', device.instock, name="device_instock"),
+    url(r'^device/info/$', device.device_info, name="device_info"),
 }
