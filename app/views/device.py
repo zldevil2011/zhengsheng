@@ -3,13 +3,14 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from app.models import AppUser, Device
+from app.models import AppUser, Device, City, Village
 from django.contrib.auth.hashers import check_password
 from dss.Serializer import serializer
 from datetime import datetime
 import time
 import json
 import math
+from dss.Serializer import serializer
 
 @csrf_exempt
 def admin_device(request):
@@ -20,15 +21,33 @@ def admin_device(request):
     return render(request, 'app/admin_device.html', {})
 
 
+@csrf_exempt
 def admin_device_add(request):
     try:
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     if request.method == "GET":
-        return render(request, 'app/admin_deviceAdd.html', {})
+        city_list = City.objects.all()
+        village_list = Village.objects.filter(city=city_list[0])
+        return render(request, 'app/admin_deviceAdd.html', {
+            "city_list":city_list,
+            "village_list":village_list,
+        })
     else:
-        return HttpResponse("POST")
+        city_code = request.POST.get("city_code", None)
+        get_device_flag = request.POST.get("get_device_flag", None)
+        add_user_flag = request.POST.get("add_user_flag", None)
+        if get_device_flag is not None:
+            pass
+        elif add_user_flag is not None:
+            pass
+        else:
+            city_code = int(city_code)
+            city  = City.objects.get(city_code=city_code)
+            village_list = Village.objects.filter(city=city)
+            return HttpResponse(json.dumps(serializer(village_list)), "application/json")
+        return HttpResponse("error")
 
 
 def admin_device_remove(request):

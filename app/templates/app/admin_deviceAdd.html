@@ -13,7 +13,7 @@
 					 <a href="#">设备</a>
 				</li>
 				<li class="active">
-					设备添加
+					用户登记
 				</li>
 			</ul>
         </div>
@@ -21,68 +21,44 @@
             <hr>
             <div class="device-add-head col-md-12">
                 <div class="col-md-2">
-                    设备类型
+                    设备地址
                 </div>
                 <div class="col-md-10">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="btn-group btn-block">
-                            <button type="button" class="btn btn-default" style="width:80%;;">一级类别</button>
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false" style="width: 10%;">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" style="width: 80%;">
-                                <li><a href="#">电表</a></li>
-                                <li><a href="#">原件</a></li>
-                                <li><a href="#">配件</a></li>
-                            </ul>
+                            <select class="btn btn-default" style="width:100%; height: 30px;" name="city_select">
+                                {% for city in city_list %}
+                                <option value="{{ city.city_code }}">{{ city.city_name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="btn-group btn-block">
-                            <button type="button" class="btn btn-default" style="width:80%;;">二级类别</button>
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false" style="width: 10%;">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" style="width: 80%;">
-                                <li><a href="#">电表</a></li>
-                                <li><a href="#">原件</a></li>
-                                <li><a href="#">配件</a></li>
-                            </ul>
+                            <select class="btn btn-default" style="width:100%; height: 30px;" name="village_select">
+                                {% for village in village_list %}
+                                    <option value="{{ village.village_code }}">{{ village.village_name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="btn-group btn-block">
-                            <button type="button" class="btn btn-default" style="width:80%;;">三级类别</button>
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false" style="width: 10%;">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" style="width: 80%;">
-                                <li><a href="#">电表</a></li>
-                                <li><a href="#">原件</a></li>
-                                <li><a href="#">配件</a></li>
-                            </ul>
+                            <input class="form-control" placeholder="楼栋号">
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="btn-group btn-block">
-                            <button type="button" class="btn btn-default" style="width:80%;;">四级类别</button>
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false" style="width: 10%;">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" style="width: 80%;">
-                                <li><a href="#">电表</a></li>
-                                <li><a href="#">原件</a></li>
-                                <li><a href="#">配件</a></li>
-                            </ul>
+                            <input class="form-control" placeholder="单元">
                         </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="btn-group btn-block">
+                            <input class="form-control" placeholder="房间号">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-success btn-block">确定</button>
                     </div>
                 </div>
             </div>
@@ -131,16 +107,23 @@
                             <input type="text" class="form-control" id="" placeholder="XXX市XXX街道XXX小区XXX号楼XXX层XXX号"/>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="form-group col9-md-1" style="height: 30px; line-height: 30px;">
-                            设备图像
+                    <div class="col-md-4">
+                        <div class="form-group col-md-4" style="height: 30px; line-height: 30px;">
+                            用户手机
                         </div>
-                        <div class="form-group col9-md-8" style="height: 30px;">
-                            <button class="btn btn-block btn-info" onclick="deviceFileSelect.click();">
-                                <input type="file" class="form-control" id=deviceFileSelect style="display: none;"/><span>选择文件</span>
-                            </button>
+                        <div class="form-group col-md-8" style="height: 30px; ">
+                            <input type="text" class="form-control" id="" placeholder="IMGXXXXXX"/>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group col-md-4" style="height: 30px; line-height: 30px;">
+                            用户邮箱
+                        </div>
+                        <div class="form-group col-md-8" style="height: 30px; ">
+                            <input type="text" class="form-control" id=""  placeholder="设备名称"/>
+                        </div>
+                    </div>
+
                     <div class="col-md-12">
                         <div class="col-md-offset-10 col-md-2">
                             <button class="btn btn-block btn-success">提交</button>
@@ -155,5 +138,29 @@
     </div>
 {% endblock %}
 {% block special_js %}
+    <script>
+        $("[name=city_select]").on("change", function(){
+            var city_code = $(this).val();
+            $.ajax({
+                url: '/admin_device/add/',
+                type: 'POST',
+                data: {city_code:city_code},
+                success: function(data){
+                    console.log(data);
+                    if(data != "error"){
+                        var innerHtml = "";
+                        for(var i in data){
+                            village = data[i];
+                            innerHtml += '<option value=' + village.village_code + '>' + village.village_name + '</option>';
+                        }
+                        console.log(innerHtml);
+                        $("[name=village_select]").html(innerHtml);
+                    }
+                },
+                error: function(data){
 
+                }
+            })
+        })
+    </script>
 {% endblock %}
