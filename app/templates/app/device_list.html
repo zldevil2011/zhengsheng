@@ -131,7 +131,9 @@
                 </div>
                 <div name="instock_tip" class="col-md-12" style="margin-top:20px;display: none;">
                     <div class="alert alert-success alert-dismissable">
-                        已入库设备类型：<span name="device_type">终端</span>，设备编号：<span name="start_no">100000010</span>-<span name="end_no">100000090</span>
+                        已入库设备类型：<span name="device_type">终端</span>，
+                        设备编号：<span name="start_no">100000010</span>-<span name="end_no">100000090</span>
+                        <button name = "reload" class="btn btn-success btn-small" style="margin-left: 100px; width:100px;">确定</button>
                     </div>
                 </div>
             </div>
@@ -158,7 +160,6 @@
                         $("[name=device_type]").html(data.type);
                         $("[name=start_no]").html(data.start_no);
                         $("[name=end_no]").html(data.end_no);
-                        window.location.reload();
                     }else{
                         alert("入库失败，请联系管理员");
                     }
@@ -168,5 +169,8 @@
                 }
             });
         })
+        $("[name=reload]").on("click", function(){
+           window.location.reload();
+        });
     </script>
 {% endblock %}

@@ -89,7 +89,7 @@ def list(request):
     page = int(request.POST.get("page", 1))
     start_num = (page - 1) * 20
     end_num = page * 20
-    device_list = Device.objects.all().order_by('manufacture_date')[start_num:end_num]
+    device_list = Device.objects.all().order_by('-manufacture_date')[start_num:end_num]
     device_list = serializer(device_list)
     for device in device_list:
         device_id = str(device["device_id"])
