@@ -38,10 +38,47 @@ def admin_device_add(request):
         city_code = request.POST.get("city_code", None)
         get_device_flag = request.POST.get("get_device_flag", None)
         add_user_flag = request.POST.get("add_user_flag", None)
+        print get_device_flag
+        print add_user_flag
         if get_device_flag is not None:
+            city_code=request.POST.get('city_code')
+            village_code=request.POST.get('village_code')
+            building_code=request.POST.get('building_code')
+            unit_code=request.POST.get('unit_code')
+            room_code=request.POST.get('room_code')
+            try:
+                device = Device.objects.get(city_code=int(city_code), village_code=int(village_code), building_code=int(building_code),
+                                            unit_code=int(unit_code), room_code=int(room_code))
+                return HttpResponse(device.device_id)
+            except Exception, e:
+                print str(e)
+                return HttpResponse("error")
             pass
         elif add_user_flag is not None:
-            pass
+            print "xyxyxyxyyx"
+            try:
+                device_id = request.POST.get("device_id", None)
+                if device_id is None:
+                    return HttpResponse("error")
+                device = Device.objects.get(device_id=int(device_id))
+                user = User()
+                user.username = request.POST.get('username')
+                user.password = request.POST.get('telephone', '123456')
+                user.save()
+                appuser = AppUser()
+                appuser.user = user
+                appuser.username = request.POST.get('username','')
+                appuser.address = request.POST.get('address','')
+                appuser.register_time = datetime.now()
+                appuser.telephone = request.POST.get('telephone', '')
+                appuser.email = request.POST.get('email', '')
+                appuser.password = user.password
+                appuser.device = device
+                appuser.save()
+                return HttpResponse("success")
+            except Exception, e:
+                print str(e)
+                return HttpResponse("error")
         else:
             city_code = int(city_code)
             city  = City.objects.get(city_code=city_code)

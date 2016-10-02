@@ -342,3 +342,6 @@ body{  font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei"
 .login-tool-tip a{
     color: #ffffff;vertical-align: top;
 }
+.red-form input{
+     color: red !important;
+}

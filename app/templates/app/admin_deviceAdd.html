@@ -44,21 +44,21 @@
                     </div>
                     <div class="col-md-2">
                         <div class="btn-group btn-block">
-                            <input class="form-control" placeholder="楼栋号">
+                            <input class="form-control" placeholder="楼栋号" name="building_code">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="btn-group btn-block">
-                            <input class="form-control" placeholder="单元">
+                            <input class="form-control" placeholder="单元" name="unit_code">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="btn-group btn-block">
-                            <input class="form-control" placeholder="房间号">
+                            <input class="form-control" placeholder="房间号" name="room_code">
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button class="btn btn-success btn-block">确定</button>
+                        <button class="btn btn-success btn-block" name="getDevice">确定</button>
                     </div>
                 </div>
             </div>
@@ -66,13 +66,13 @@
                 <hr>
             </div>
             <div class="col-md-12" style="margin-top: 10px;">
-                <form class="" role="form" onsubmit="return false;">
+                <form class="red-form" role="form" onsubmit="return false;">
                     <div class="col-md-4">
                         <div class="form-group col-md-4" style="height: 30px; line-height: 30px;">
                             设备编号
                         </div>
                         <div class="form-group col-md-8" style="height: 30px; ">
-                            <input type="text" class="form-control" id="" placeholder="IMGXXXXXX"/>
+                            <input type="text" class="form-control" id="device_id" placeholder="设备ID" style="color: red !important;" readonly/>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -80,7 +80,7 @@
                             设备名称
                         </div>
                         <div class="form-group col-md-8" style="height: 30px; ">
-                            <input type="text" class="form-control" id=""  placeholder="设备名称"/>
+                            <input type="text" class="form-control" id="device_name"  placeholder="设备名称" value="终端" readonly/>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -88,7 +88,7 @@
                             安装时间
                         </div>
                         <div class="form-group col-md-8" style="height: 30px; ">
-                            <input type="text" class="form-control" id=""  placeholder="2016-xx-xx"/>
+                            <input type="date" class="form-control" id="device_time"  placeholder="2016-xx-xx"/>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -96,15 +96,15 @@
                             设备用户
                         </div>
                         <div class="form-group col-md-8" style="height: 30px; ">
-                            <input type="text" class="form-control" id=""  placeholder="张三"/>
+                            <input type="text" class="form-control" id="user_username"  placeholder="张三"/>
                         </div>
                     </div>
                     <div class="col-md-8">
                         <div class="form-group col-md-2" style="height: 30px; line-height: 30px;">
-                            设备地址
+                            用户地址
                         </div>
                         <div class="form-group col-md-10" style="height: 30px; ">
-                            <input type="text" class="form-control" id="" placeholder="XXX市XXX街道XXX小区XXX号楼XXX层XXX号"/>
+                            <input type="text" class="form-control" id="user_address" placeholder="XXX市XXX街道XXX小区XXX号楼XXX层XXX号"/>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -112,7 +112,7 @@
                             用户手机
                         </div>
                         <div class="form-group col-md-8" style="height: 30px; ">
-                            <input type="text" class="form-control" id="" placeholder="IMGXXXXXX"/>
+                            <input type="number" class="form-control" id="user_telephone" placeholder=""/>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -120,13 +120,13 @@
                             用户邮箱
                         </div>
                         <div class="form-group col-md-8" style="height: 30px; ">
-                            <input type="text" class="form-control" id=""  placeholder="设备名称"/>
+                            <input type="email" class="form-control" id="user_email"  placeholder="用户邮箱"/>
                         </div>
                     </div>
 
                     <div class="col-md-12">
                         <div class="col-md-offset-10 col-md-2">
-                            <button class="btn btn-block btn-success">提交</button>
+                            <button class="btn btn-block btn-success" name="userRegister">提交</button>
                         </div>
 
                     </div>
@@ -161,6 +161,57 @@
 
                 }
             })
-        })
+        });
+        $("[name=getDevice]").on("click", function(){
+            var city_code = $("[name=city_select]").val();
+            var village_code = $("[name=village_select]").val();
+            var building_code = $("[name=building_code]").val();
+            var unit_code = $("[name=unit_code]").val();
+            var room_code = $("[name=room_code]").val();
+            $.ajax({
+                url: '/admin_device/add/',
+                type : 'POST',
+                data : {city_code:city_code, village_code:village_code, building_code:building_code, unit_code:unit_code, room_code:room_code,get_device_flag:1},
+                success : function(data){
+                    console.log(data);
+                    if(data != 'error'){
+                        $("#device_id").val(data);
+                    }else{
+                        alert("设备不存在或未安装");
+                    }
+                },
+                error: function(data){
+                    alert("设备不存在");
+                }
+            })
+        });
+        $("[name=userRegister]").on("click", function(){
+            var device_id = $("#device_id").val();
+            var device_time = $("#device_time").val();
+            var username = $("#user_username").val();
+            var telephone = $("#user_telephone").val();
+            var address = $("#user_address");
+            var email = $("#user_email").val();
+            if(device_id == "" || username == ""){
+                alert("请填写完整信息");
+                return;
+            }
+            $.ajax({
+                url:'/admin_device/add/',
+                type: 'POST',
+                data: {device_id:device_id, username:username, telephone:telephone, email:email, address: address, add_user_flag:1},
+                success : function(data){
+                    if(data != "error"){
+                        alert("注册成功");
+                        window.location.href = "/admin_device/";
+                    }else{
+                        alert("注册失败，请重新注册");
+                    }
+                },
+                error: function(data){
+                    alert("服务器错误，请联系管理员");
+                }
+            })
+        });
     </script>
 {% endblock %}
