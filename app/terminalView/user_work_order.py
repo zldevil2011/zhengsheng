@@ -27,6 +27,9 @@ def index(request):
     total_page = int(math.ceil(wo_list.count()/10.0))
     if page > total_page:
         return HttpResponseRedirect("/terminal/work_order?page=" + str(total_page))
+    start_num = (page - 1) * 10
+    end_num = page * 10
+    wo_list = wo_list[start_num:end_num]
     wo_list = serializer(wo_list)
     for wo in wo_list:
         wo['time'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(wo["time"]))

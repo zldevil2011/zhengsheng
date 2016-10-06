@@ -18,8 +18,59 @@ def admin_device(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
-    return render(request, 'app/admin_device.html', {})
+    page = int(request.GET.get("page", 1))
+    if page < 1:
+        return HttpResponseRedirect("/admin_device?page=1")
+    device_list = Device.objects.exclude(device_status=u"未安装")
+    total_page = int(math.ceil(device_list.count()/20.0))
+    start_num = (page - 1) * 20
+    end_num = page * 20
+    device_list = device_list[start_num:end_num]
+    device_list = serializer(device_list)
+    for device in device_list:
+        device["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(device["manufacture_date"]))
+        D = Device.objects.get(device_id=int(device["device_id"]))
+        user = AppUser.objects.get(device=D)
+        device["address"] = user.address
+        device["user"] = user.username
+        print type(device["device_id"])
+        if str(device["device_id"])[0:1] == '1':
+            device["type"] = u"终端"
+        elif str(device["device_id"])[0:1] == '2':
+            device["type"] = u"中继"
+        else:
+            device["type"] = u"网关"
+    return render(request, 'app/admin_device.html', {
+        "device_list": device_list,
+        "page": page,
+        "total_page": total_page,
+    })
 
+
+@csrf_exempt
+def admin_device_filter(request):
+    try:
+        user = AppUser.objects.get(username=request.session['username'])
+    except:
+        return HttpResponseRedirect("/admin_login/")
+    try:
+        device_id = request.POST.get("device_id", None)
+        start_time = request.POST.get("start_time", None)
+        end_time = request.POST.get("end_time", None)
+        key = request.POST.get("key", "")
+        print device_id
+        print start_time
+        print end_time
+        print key
+        if device_id is not None and device_id != "":
+            print("ok")
+            device_list = Device.objects.filter(device_id__in=device_id)
+        else:
+            device_list = Device.objects.filter(device_status__in=key)
+        return HttpResponse(serializer(device_list))
+    except Exception, e:
+        print str(e)
+        return HttpResponse("error")
 
 @csrf_exempt
 def admin_device_add(request):

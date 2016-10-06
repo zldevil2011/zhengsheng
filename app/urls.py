@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^admin_work_order/query/$', workOrder.work_order_filter, name="work_order_filter"),
 
     url(r'^admin_device/$', device.admin_device, name="admin_device"),
+    url(r'^admin_device/filter/$', device.admin_device_filter, name="admin_device_filter"),
 
     url(r'^admin_device/add/$', device.admin_device_add, name="admin_device_add"),
 
