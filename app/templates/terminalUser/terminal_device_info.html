@@ -18,25 +18,10 @@
                                 <td>{{ device.device_status }}</td>
                             </tr>
                             <tr>
-                                <td>电压</td>
-                                <td>{{ data.voltage }}V</td>
-                                <td>电流</td>
-                                <td>{{ data.electricity }}A</td>
-                                <td>频率</td>
-                                <td>1000Hz</td>
-                            </tr>
-                            <tr>
                                 <td>温度</td>
-                                <td>{{ data.temperature }}℃</td>
-                                <td>瞬时电压</td>
-                                <td>{{ data.instantVoltage }}V</td>
-                                <td>瞬时电流</td>
-                                <td>{{ data.instantElectricity }}A</td>
-                            </tr>
-                            <tr>
+                                <td>{{ data.temp }}℃</td>
                                 <td>总用电量</td>
-                                <td>{{ data.total_power }}kwh</td>
-                                <td colspan="4"></td>
+                                <td>{{ data.powerV }}V</td>
                             </tr>
                         </tbody>
                     </table>
@@ -51,22 +36,7 @@
                 <div id="device-temperature" style="height: 400px; width: 100%"></div>
             </div>
         </div>
-        <div class="col-md-12 tab-tip tab-blue">
-            设备电压
-        </div>
-        <div class="clearfix">
-            <div class="col-md-12" style="margin-top: 10px;">
-                <div id="device-voltage" style="height: 400px; width: 100%"></div>
-            </div>
-        </div>
-        <div class="col-md-12 tab-tip tab-blue">
-            设备电流
-        </div>
-        <div class="clearfix">
-            <div class="col-md-12" style="margin-top: 10px;">
-                <div id="device-electricity" style="height: 400px; width: 100%"></div>
-            </div>
-        </div>
+
         <div class="clearfix">
             <div class="col-md-12 tab-tip tab-blue">
                 设备控制
@@ -191,179 +161,6 @@
                 series: [{
                     name: '温度',
                     data: temperature
-                }],
-                navigation: {
-                    menuItemStyle: {
-                        fontSize: '10px'
-                    }
-                }
-            });
-
-            $('#device-voltage').highcharts({
-                chart: {
-                    type: 'spline'
-                },
-                colors: ['#0d233a'],
-                title: {
-                    text: '当前设备电压曲线'
-                },
-                subtitle: {
-                    text: '数据来源：征圣云平台'
-                },
-                xAxis: {
-                    type: 'datetime',
-                    labels: {
-                        overflow: 'justify'
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: '电压 (V)'
-                    },
-                    min: 150,
-                    minorGridLineWidth: 0,
-                    gridLineWidth: 0,
-                    alternateGridColor: null,
-                    plotBands: [{ // Light air
-                        from: 150,
-                        to: 200,
-                        color: 'rgba(68, 170, 213, 0.1)',
-                        label: {
-                            text: '电压过低',
-                            style: {
-                                color: '#606060'
-                            }
-                        }
-                    }, { // Light breeze
-                        from: 200,
-                        to: 230,
-                        color: 'rgba(1, 254, 5, 0.1)',
-                        label: {
-                            text: '电压正常',
-                            style: {
-                                color: '#606060'
-                            }
-                        }
-                    }, { // Gentle breeze
-                        from: 230,
-                        to: 300,
-                        color: 'rgba(255, 83, 14, 0.5)',
-                        label: {
-                            text: '电压过高',
-                            style: {
-                                color: '#606060'
-                            }
-                        }
-                    }]
-                },
-                tooltip: {
-                    valueSuffix: ' V'
-                },
-                plotOptions: {
-                    spline: {
-                        lineWidth: 4,
-                        states: {
-                            hover: {
-                                lineWidth: 5
-                            }
-                        },
-                        marker: {
-                            enabled: false
-                        },
-                        pointInterval: 3600000, // one hour
-                        pointStart: Date.UTC(2016, 9, 17, 0, 0, 0)
-                    }
-                },
-                series: [{
-                    name: '电压',
-                    data: voltage
-                }],
-                navigation: {
-                    menuItemStyle: {
-                        fontSize: '10px'
-                    }
-                }
-            });
-
-
-            $('#device-electricity').highcharts({
-                chart: {
-                    type: 'spline'
-                },
-                colors: ['#91e8e1'],
-                title: {
-                    text: '当前设备电流曲线'
-                },
-                subtitle: {
-                    text: '数据来源：征圣云平台'
-                },
-                xAxis: {
-                    type: 'datetime',
-                    labels: {
-                        overflow: 'justify'
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: '电流 (A)'
-                    },
-                    min: 0,
-                    minorGridLineWidth: 0,
-                    gridLineWidth: 0,
-                    alternateGridColor: null,
-                    plotBands: [{ // Light air
-                        from: 0,
-                        to: 3,
-                        color: 'rgba(68, 170, 213, 0.1)',
-                        label: {
-                            text: '电流过低',
-                            style: {
-                                color: '#606060'
-                            }
-                        }
-                    }, { // Light breeze
-                        from: 3,
-                        to: 6,
-                        color: 'rgba(1, 254, 5, 0.1)',
-                        label: {
-                            text: '电流正常',
-                            style: {
-                                color: '#606060'
-                            }
-                        }
-                    }, { // Gentle breeze
-                        from: 6,
-                        to: 9,
-                        color: 'rgba(255, 83, 14, 0.5)',
-                        label: {
-                            text: '电流过高',
-                            style: {
-                                color: '#606060'
-                            }
-                        }
-                    }]
-                },
-                tooltip: {
-                    valueSuffix: ' A'
-                },
-                plotOptions: {
-                    spline: {
-                        lineWidth: 4,
-                        states: {
-                            hover: {
-                                lineWidth: 5
-                            }
-                        },
-                        marker: {
-                            enabled: false
-                        },
-                        pointInterval: 3600000, // one hour
-                        pointStart: Date.UTC(year, month + 1, day, 0, 0, 0)
-                    }
-                },
-                series: [{
-                    name: '电流',
-                    data: electricity
                 }],
                 navigation: {
                     menuItemStyle: {
