@@ -22,11 +22,17 @@ def index(request):
     page = request.GET.get("page", None)
     if page is None:
         page = 1
-
+    else:
+        page = int(page)
+    if page < 1:
+        return HttpResponseRedirect("/terminal/details?page=1")
     start_num = int(page - 1) * 20
     end_num = int(page) * 20
     device = user.device
     datas = Data.objects.filter(device_id=device).order_by('-powerT')
+    total_page = int(math.ceil(datas.count() / 20.0))
+    if page > total_page:
+        return HttpResponseRedirect("/terminal/details?page=" + str(total_page))
     today = date.today()
     yesterday = date.today() - timedelta(days=1)
     try:
@@ -47,7 +53,7 @@ def index(request):
         month_power = None
         month_time = None
     datas = datas[start_num:end_num]
-    total_page = int(math.ceil(datas.count() / 20.0))
+
     datas = serializer(datas, foreign=True)
     for data in datas:
         data["powerT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(data["powerT"]))

@@ -66,13 +66,13 @@
                 <div class="col-md-12 column" style="text-align: right;">
                     <ul class="pagination account-pagination" style="">
                         <li>
-                             <a href="#" name="pre">上一页</a>
+                             <a href="/terminal/details?page={{ page | add:-1 }}" name="pre">上一页</a>
                         </li>
                         <li>
                              <a href="#" name="pageInfo">第<span name="currentPage">{{ page }}</span>页/共<span name="totalPage">{{ total_page }}</span>页</a>
                         </li>
                         <li>
-                             <a href="#" name="next">下一页</a>
+                             <a href="/terminal/details/?page={{ page|add:1 }}" name="next">下一页</a>
                         </li>
                         <li>
                              <a href="#">跳转至</a>
@@ -90,47 +90,47 @@
     </div>
 {% endblock %}
 {% block special_js %}
-    <script>
-        $("[name=pre]").on("click", function(){
-            var currentPage = parseInt($("[name=currentPage]").html());
-            var totalPage = parseInt($("[name=totalPage]").html());
-            currentPage -= 1;
-            if(currentPage <= 0){
-                return;
-            }
-            UpdateDataUI(currentPage);
-        });
-        $("[name=next]").on("click", function(){
-            var currentPage = parseInt($("[name=currentPage]").html());
-            var totalPage = parseInt($("[name=totalPage]").html());
-            currentPage += 1;
-            if(currentPage > totalPage){
-                return;
-            }
-            UpdateDataUI(currentPage);
-        });
-        function UpdateDataUI(currentPage){
-            var formdata = new FormData();
-            formdata.append("page", currentPage);
-            var targetUrl = "/terminal/details/";
-            $.ajax({
-                url: targetUrl,
-                type: 'POST',
-                cache: false,
-                processData : false,
-                contentType : false
-            }).done(function(res){
-                var json_data = JSON.parse(res);
-                var total_page = json_data["total_page"];
-                var ret_data = json_data["data"];
-                console.log(ret_data.length);
-                for(var i = 0; i < ret_data.length; ++i){
-                    var now = $("[name=data-list]").children().get(i);
-                    console.log(now);
-                }
-            }).fail(function(res){
-               alert("服务器出错啦，请联系管理员");
-            });
-        }
-    </script>
+{#    <script>#}
+{#        $("[name=pre]").on("click", function(){#}
+{#            var currentPage = parseInt($("[name=currentPage]").html());#}
+{#            var totalPage = parseInt($("[name=totalPage]").html());#}
+{#            currentPage -= 1;#}
+{#            if(currentPage <= 0){#}
+{#                return;#}
+{#            }#}
+{#            UpdateDataUI(currentPage);#}
+{#        });#}
+{#        $("[name=next]").on("click", function(){#}
+{#            var currentPage = parseInt($("[name=currentPage]").html());#}
+{#            var totalPage = parseInt($("[name=totalPage]").html());#}
+{#            currentPage += 1;#}
+{#            if(currentPage > totalPage){#}
+{#                return;#}
+{#            }#}
+{#            UpdateDataUI(currentPage);#}
+{#        });#}
+{#        function UpdateDataUI(currentPage){#}
+{#            var formdata = new FormData();#}
+{#            formdata.append("page", currentPage);#}
+{#            var targetUrl = "/terminal/details/";#}
+{#            $.ajax({#}
+{#                url: targetUrl,#}
+{#                type: 'POST',#}
+{#                cache: false,#}
+{#                processData : false,#}
+{#                contentType : false#}
+{#            }).done(function(res){#}
+{#                var json_data = JSON.parse(res);#}
+{#                var total_page = json_data["total_page"];#}
+{#                var ret_data = json_data["data"];#}
+{#                console.log(ret_data.length);#}
+{#                for(var i = 0; i < ret_data.length; ++i){#}
+{#                    var now = $("[name=data-list]").children().get(i);#}
+{#                    console.log(now);#}
+{#                }#}
+{#            }).fail(function(res){#}
+{#               alert("服务器出错啦，请联系管理员");#}
+{#            });#}
+{#        }#}
+{#    </script>#}
 {% endblock %}

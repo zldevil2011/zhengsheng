@@ -42,25 +42,13 @@
                 <div class="col-md-12 column" style="text-align: right;">
                     <ul class="pagination account-pagination" style="">
                         <li>
-                             <a href="#">Prev</a>
+                             <a href="/terminal/work_order?page={{ page | add:-1 }}">Prev</a>
                         </li>
                         <li>
-                             <a href="#">1</a>
+                             <a href="#"><span name="page">{{ page }}</span> / <span name="total-page">{{ total_page }}</span></a>
                         </li>
                         <li>
-                             <a href="#">2</a>
-                        </li>
-                        <li>
-                             <a href="#">3</a>
-                        </li>
-                        <li>
-                             <a href="#">4</a>
-                        </li>
-                        <li>
-                             <a href="#">5</a>
-                        </li>
-                        <li>
-                             <a href="#">Next</a>
+                             <a href="/terminal/work_order?page={{ page | add:1 }}">Next</a>
                         </li>
                     </ul>
                 </div>

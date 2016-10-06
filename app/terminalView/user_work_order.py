@@ -7,6 +7,7 @@ from django.contrib.auth.hashers import check_password
 import time
 import json
 from dss.Serializer import serializer
+import math
 
 @csrf_exempt
 def index(request):
@@ -14,10 +15,26 @@ def index(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/terminal/login/")
+    page = request.GET.get("page", None)
+    if page is None:
+        page = 1
+    else:
+        page = int(page)
+    if page < 1:
+        return HttpResponseRedirect("/terminal/work_order?page=1")
+
     wo_list = WorkOrder.objects.filter(appuser=user).order_by('-time')
+    total_page = int(math.ceil(wo_list.count()/10.0))
+    if page > total_page:
+        return HttpResponseRedirect("/terminal/work_order?page=" + str(total_page))
+    wo_list = serializer(wo_list)
+    for wo in wo_list:
+        wo['time'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(wo["time"]))
     return render(request, 'terminalUser/terminal_workOrder.html', {
         'user': user,
         'wo_list': wo_list,
+        'page': page,
+        'total_page': total_page
     })
 
 
