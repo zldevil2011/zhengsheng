@@ -92,13 +92,13 @@
             <div class="col-md-12 column" style="text-align: right;">
                 <ul class="pagination account-pagination" style="">
                     <li>
-                         <a href="#">上一页</a>
+                         <a href="/admin_work_order?page={{ page|add:-1 }}">上一页</a>
                     </li>
                     <li>
                          <a href="#" name="pageInfo">第{{ page }}页/共{{ total_page }}页</a>
                     </li>
                     <li>
-                         <a href="#">下一页</a>
+                         <a href="/admin_work_order?page={{ page|add:1 }}">下一页</a>
                     </li>
                     <li>
                          <a href="#">跳转至</a>
@@ -107,7 +107,7 @@
                          <input type="number" style="width: 50px;margin-left: 10px;line-height: 1.8571;border-radius: 4px; float: left;">
                     </li>
                     <li>
-                         <a href="#" class="">确定</a>
+                         <a href="" class="">确定</a>
                     </li>
                 </ul>
             </div>

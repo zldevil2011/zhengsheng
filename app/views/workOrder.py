@@ -8,6 +8,7 @@ import json
 import time
 import datetime
 from dss.Serializer import serializer
+import math
 
 def index(request):
     try:
@@ -15,13 +16,19 @@ def index(request):
     except:
         return HttpResponseRedirect("/admin_login/")
     work_order_list = WorkOrder.objects.all().order_by('-time')
-    total_page = len(work_order_list) / 20
-    if len(work_order_list) - total_page * 20 > 0:
-        total_page += 1
+    page = int(request.GET.get("page", 1))
+    if page < 1:
+        return HttpResponseRedirect("/admin_work_order?page=1")
+    total_page = int(math.ceil(work_order_list.count() / 20.0))
+    if page > total_page:
+        return HttpResponseRedirect("/admin_work_order?page=" + str(total_page))
+    work_order_list = serializer(work_order_list)
+    for work in work_order_list:
+        work["time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(work["time"]))
     return render(request, 'app/admin_workOrder.html', {
         'work_order_list': work_order_list,
         'total_page': total_page,
-        'page': 1,
+        'page': page,
     })
 
 
