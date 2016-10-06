@@ -10,8 +10,8 @@
                 <div class="col-md-12" style="margin-top: 10px;">
                     <table class="table table-bordered">
                         <tbody>
-                            <tr><td>用户名</td><td colspan="3">{{ user.username }}</td><td>地区</td><td colspan="3">{{ user.address }}</td></tr>
-                            <tr><td>密码</td><td colspan="3"><input>不修改请勿填写</td><td>确认密码</td><td colspan="3"><input></td></tr>
+                            <tr><td>用户名</td><td colspan="3">{{ user.username }}</td><td>地址</td><td colspan="3">{{ user.address }}</td></tr>
+                            <tr><td>密码</td><td colspan="3"><input type="password" name="password" class="form-input" value="">不修改请勿填写</td><td>确认密码</td><td colspan="3"><input type="password" name="repeat_password" class="form-input"><span name="repeat_tip">密码不一致</span></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -23,20 +23,46 @@
                 <div class="col-md-12" style="margin-top: 10px;">
                     <table class="table table-bordered">
                         <tbody>
-                            <tr><td>姓名</td><td colspan="3">{{ user.username }}</td><td>性别</td><td colspan="3">{{ user.sex }}</td></tr>
-                            <tr><td>固定电话</td><td colspan="3">{{ user.phone }}</td><td>手机</td><td colspan="3">{{ user.telephone }}</td></tr>
-                            <tr><td>用户地址</td><td colspan="3">{{ user.address }}</td><td>邮箱</td><td colspan="3">{{ user.email }}</td></tr>
-                            <tr><td>布线数据</td><td colspan="7"></td></tr>
+                            <tr><td>姓名</td><td colspan="3">{{ user.username }}</td><td>手机</td><td colspan="3"><input type="number" name="telephone" class="form-input" value="{{ user.telephone }}"></td></tr>
+                            <tr><td>邮箱</td><td colspan="3"><input type = "email" name = "email" class="form-input" value="{{ user.email }}"></td><td>地址</td><td colspan="3"><input name="address" class="form-input" value="{{ user.address }}"></td></tr>
+                            <tr><td>注册时间</td><td colspan="3">{{ user.register_time }}</td><td>设备编号</td><td colspan="3">{{ user.device }}</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="col-md-12 save-btn-green">
-                <button class="btn-success save-btn">保存</button>
+                <button class="btn-success save-btn" onclick="updateUserInfoFun();">保存</button>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block special_js %}
-
+    <script>
+        $("[name=repeat_password]").on("change", function(){
+            $("[name=repeat_tip]").css("display", "none");
+        });
+        function updateUserInfoFun(){
+            var password = $("[name=password]").val();
+            var repeatPassword = $("[name=repeat_password]").val();
+            if(password != repeatPassword){
+                $("[name=repeat_password]").focus();
+                $("[name=repeat_tip]").css("display", "inline-block");
+                return;
+            }
+            var telephone = $("[name=telephone]").val();
+            var email = $("[name=email]").val()
+            var address = $("[name=address]").val();
+            $.ajax({
+                url: '/terminal/user/update/',
+                type: 'POST',
+                data: {password: password, telephone:telephone, email: email, address: address},
+                success: function(data){
+                    alert(data);
+                },
+                error: function(data){
+                    alert("失败");
+                }
+            })
+        }
+    </script>
 {% endblock %}

@@ -7,6 +7,7 @@ urlpatterns = [
 
     # url(r'login/$', TemplateView.as_view(template_name="terminalUser/terminal_login.html")),
     url(r'user/login/$', user.login, name="terminal-user-login"),
+    url(r'user/update/$', user.update, name="terminal-user-update"),
 
     url(r'index/$', index.index, name="terminal-index"),
 
