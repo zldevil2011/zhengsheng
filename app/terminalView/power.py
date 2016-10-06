@@ -32,7 +32,7 @@ def electricity_info(request):
     # 获取今天已经采集的电能数据
     today_power = []
     today_hour = []
-    data = datas.filter(powerT__year=year, powerT__month=month, powerT__day=day)
+    data = datas.filter(powerT__year=year, powerT__month=month, powerT__day=day).order_by('-powerT')
     for d in data:
         if d.powerV is not None:
             today_power.append(d.powerV)

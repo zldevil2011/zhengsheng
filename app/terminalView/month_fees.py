@@ -27,10 +27,11 @@ def index(request):
     today = datetime.today()
     year = today.year
     month = today.month
+    day = today.day
     month_days = calendar.monthrange(year, month - 1)[1]
     init_time = datetime(year, month - 1, month_days, 23, 50, 0)
     end_time = datetime(year - 1, 12,  31, 23, 50, 0)
-    init_power = Data.objects.get(powerT=init_time).total_power
+    init_power = Data.objects.filter(powerT__year=year, powerT__month=month, powerT__day=day).order_by('-powerT')[0].powerV
     month_delta = timedelta(days=month_days)
     init_time -= month_delta
     power_list = []
@@ -39,7 +40,7 @@ def index(request):
             tmp_power = init_power
             power_list.append(tmp_power)
             break
-        if init_time == data.time:
+        if init_time == data.powerV:
             tmp = init_power - data.total_power
             init_power = data.total_power
             power_list.append(tmp)

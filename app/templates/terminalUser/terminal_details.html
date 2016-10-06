@@ -53,11 +53,11 @@
                             {% for data in datas %}
                                 <tr>
                                     <td>{{ data.id }}</td>
-                                    <td>{{ data.time }}</td>
-                                    <td>{{ data.power }}kw</td>
-                                    <td>{{ data.total_power }}kw</td>
-                                    <td>{{ data.temperature }}</td>
-                                    <td>{{ data.device.status }}</td>
+                                    <td>{{ data.powerT }}</td>
+                                    <td>{{ data.powerV }}kw</td>
+                                    <td>{{ data.powerV }}kw</td>
+                                    <td>{{ data.temp }}</td>
+                                    <td>{{ data.device_id.device_status }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
