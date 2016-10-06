@@ -16,10 +16,12 @@ def electricity_info(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/terminal/user/login/")
-    device = Device.objects.get(appuser=user)
-    data = Data.objects.filter(device=device)[0]
-
-    datas = Data.objects.filter(device=device).order_by('-time')
+    device = user.device
+    try:
+        data = Data.objects.filter(device_id=device)[0]
+    except:
+        data = None
+    datas = Data.objects.filter(device_id=device).order_by('-powerT')
     print datas.count()
     today = date.today()
     year = today.year

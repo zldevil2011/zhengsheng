@@ -23,8 +23,8 @@ def index(request):
         page = 1
     start_num = int(page - 1) * 20
     end_num = int(page) * 20
-    device = Device.objects.get(appuser=user)
-    datas = Data.objects.filter(device=device).order_by('-time')
+    device = user.device
+    datas = Data.objects.filter(device_id=device).order_by('-powerT')
     today = datetime.today()
     last_point_datetime = datetime(today.year, today.month, today.day, 23, 50, 0)
     last_point_datetime -= timedelta(days=today.day)
@@ -49,11 +49,11 @@ def index(request):
             'fund': fund,
             'month_power': month_power,
             'month_time': month_time,
-            'total_page': total_page,
+            'total_page': 1,
             'page': '1',
         })
     else:
         ret_data = {}
-        ret_data["total_page"] = total_page
+        ret_data["total_page"] = 1
         ret_data["data"] = serializer(datas)
         return HttpResponse(json.dumps(ret_data))

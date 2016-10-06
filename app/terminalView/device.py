@@ -11,13 +11,16 @@ def terminal_device_info(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/terminal/user/login/")
-    device = Device.objects.get(appuser=user)
-    data = Data.objects.filter(device=device).order_by('-time')[0]
+    device = user.device
+    try:
+        data = Data.objects.filter(device_id=device).order_by('-time')[0]
+    except:
+        data = None
     # 获取当前设备的今日温度曲线
     now = datetime.now()
     today_now = datetime(now.year, now.month, now.day, now.hour, now.minute, 0)
     today_start = datetime(now.year, now.month, now.day, 0, 0, 0)
-    datas = Data.objects.filter(time__lte=today_now, time__gte=today_start).order_by('time')
+    datas = Data.objects.filter(powerT__lte=today_now, powerT__gte=today_start).order_by('-powerT')
     temperature = []
     for d in datas:
         temperature.append(d.temperature)

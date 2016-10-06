@@ -14,11 +14,11 @@ def index(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/terminal/login/")
-    device = Device.objects.get(appuser=user)
-    datas = Data.objects.filter(device=device).order_by('-time')
+    device = user.device
+    datas = Data.objects.filter(device_id=device).order_by('-powerT')
     try:
         latest_data = datas[0]
-        fund = Fund.objects.filter(appuser=user).order_by('-time')[0]
+        fund = Fund.objects.filter(appuser=user).order_by('-powerT')[0]
     except:
         latest_data = None
         fund = None
@@ -30,7 +30,7 @@ def index(request):
     month_days = calendar.monthrange(year, month - 1)[1]
     init_time = datetime(year, month - 1, month_days, 23, 50, 0)
     end_time = datetime(year - 1, 12,  31, 23, 50, 0)
-    init_power = Data.objects.get(time=init_time).total_power
+    init_power = Data.objects.get(powerT=init_time).total_power
     month_delta = timedelta(days=month_days)
     init_time -= month_delta
     power_list = []
