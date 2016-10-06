@@ -21,7 +21,7 @@ def electricity_info(request):
         data = Data.objects.filter(device_id=device)[0]
     except:
         data = None
-    datas = Data.objects.filter(device_id=device).order_by('-powerT')
+    datas = Data.objects.filter(device_id=device)
     print datas.count()
     today = date.today()
     year = today.year
@@ -29,98 +29,89 @@ def electricity_info(request):
     day = today.day
     now = datetime.now()
     hour = now.hour
-    # 计算当天每时刻的电量
+    # 获取今天已经采集的电能数据
     today_power = []
     today_hour = []
-    tmp_time_init = now - timedelta(hours=1)
-    tmp_time_end = now - timedelta(days=1)
-    today_hour.append(tmp_time_init.hour)
-    init_time = datetime(tmp_time_init.year, tmp_time_init.month, tmp_time_init.day, tmp_time_init.hour, 0)
-    end_time = datetime(year, month, tmp_time_end.day, 23, 50)
-    hour_delta = timedelta(hours=1)
-    for data in datas:
-        if data.time == end_time:
-            break
-        if data.time == init_time:
-            today_power.append(data.power)
-            today_hour.append(str(data.time.hour) + "时")
-            init_time = init_time - hour_delta
-    today_hour.reverse()
+    data = datas.filter(powerT__year=year, powerT__month=month, powerT__day=day)
+    for d in data:
+        if d.powerV is not None:
+            today_power.append(d.powerV)
+            today_hour.append(str(d.powerT.hour) + '时')
     today_power.reverse()
+    today_hour.reverse()
     print "Day Data"
     print today_power
+    print today_hour
     today_data = {}
     today_data["today_power"] = today_power
     today_data["today_hour"] = today_hour
-    # 计算当月数据,当月数据每次获取每天的power即为当天的总用电量
-    # day += 1
-    latest_data = datas[0]
-
+    # 计算当月数据,当月数据每次获取当天的第二次采集减去前天的第二次采集点即为当天的总用电量
     month_power = []
     month_day = []
-    # month_day.append(str(latest_data.time.day) + "号")
-    month_day.append(str(day) + "号")
-    month_power.append(latest_data.power)
-    init_time = datetime(year, month, day, 23, 50, 0) - timedelta(days=1)
-    end_time = datetime(year, month, 1, 23, 50, 0)
-    day_delta = timedelta(days=1)
-    print init_time
-    print end_time
-    print datas.count()
-    for data in datas:
-        if data.time == end_time:
-            month_power.append(data.power)
-            month_day.append(str(data.time.day) + "号")
-            break
-        if data.time == init_time:
-            print data.time
-            month_power.append(data.power)
-            month_day.append(str(data.time.day) + "号")
-            init_time = init_time - day_delta
+    try:
+        yesterday = datetime(year, month, 1) - timedelta(days=1)
+        try:
+            pre_total = data.filter(powerT__year=yesterday.year, powerT__month=yesterday.month, powerT__day=yesterday.day).order_by('-powerT')[0].powerV
+        except:
+            pre_total = 0
+        for i in range(1, day+1):
+            try:
+                data = datas.filter(powerT__year=year, powerT__month=month, powerT__day=i).order_by('-powerT')[0]
+                month_day.append(str(data.powerT.day) + '号')
+                month_power.append(data.powerV - pre_total)
+                pre_total = data.powerV
+            except:
+                month_day.append(str(i) + '号')
+                month_power.append(0)
+    except:
+        pass
     print "EveryDay Data"
     print month_power
-    month_power.reverse()
-    month_day.reverse()
+    print month_day
     month_data = {}
     month_data["month_power"] = month_power
     month_data["month_day"] = month_day
 
-    # 计算年内每月的用电量,每月用电量用当月最后一天23:50的总电流-上一月最后一天23:50的总电流，total_power一年一清楚
-    month_days = calendar.monthrange(year, month - 1)[1]
-    print month_days
-    latest_data = datas[0]
+    # 计算年内每月的用电量,每月用电量用当月最后一天的采集数量-上一月最后一天的采集量
     year_power = []
     year_month = []
-    year_month.append(str(month) + '月')
-    year_power.append(latest_data.total_power)
     try:
-        init_time = datetime(year, month - 1, month_days, 23, 50, 0)
-        end_time = datetime(year - 1, 12, 31, 23, 50, 0)
-        end_month_power = Data.objects.get(time=init_time).total_power
-        month_delta = timedelta(days=month_days)
-        init_time -= month_delta
-        for data in datas:
-            if data.time == end_time:
-                tmp_power = end_month_power - data.total_power
-                year_power.append(tmp_power)
-                year_month.append(str(1) + "月")
-                break
-            if data.time == init_time:
-                tmp_power = end_month_power - data.total_power
-                end_month_power = data.total_power
-                year_power.append(tmp_power)
-                year_month.append(str(data.time.month + 1) + "月")
-                month_days = calendar.monthrange(year, data.time.month)[1]
-                init_time = init_time - timedelta(days=month_days)
-        print year_month
-        print year_power
-        year_power.reverse()
-        year_month.reverse()
+        pre_month = datetime(year, 1, 1) - timedelta(days=1)
+        try:
+            pre_total = data.filter(powerT__year=pre_month.year, powerT__month=pre_month.month, powerT__day=pre_month.day).order_by('-powerT')[0].powerV
+        except:
+            pre_total = 0
+        for i in range(1, month - 1):
+            try:
+                month_days = calendar.monthrange(year, i)[1]
+                data = datas.filter(powerT__year=year, powerT__month=i).order_by('-powerT')[0]
+                year_month.append(data.powerT.month + '月')
+                year_power.append(data.powerV - pre_total)
+                pre_total = data.powerV
+            except:
+                year_month.append(str(i) + '月')
+                year_power.append(0)
     except:
+        pre_total = 0
         pass
+    # 由于当月不一定是最后一天，所以单独计算最新的数字
+    try:
+        data = datas.filter(powerT__year=year, powerT__month=month).order_by('-powerT')[0].powerV
+        power = data - pre_total
+    except:
+        power = 0
+    year_month.append(month)
+    year_power.append(power)
+    print "year Data"
+    print year_month
+    print year_power
     year_data = {}
     year_data["year_power"] = year_power
     year_data["year_month"] = year_month
+    try:
+        data = datas.order_by('-powerT')[0]
+    except:
+        data = None
     return render(request, 'terminalUser/terminal_electricity_info.html', {
         'user': user,
         'device': device,
