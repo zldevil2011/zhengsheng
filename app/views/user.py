@@ -1,11 +1,10 @@
-
 # coding=utf-8
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from app.models import AppUser
 from django.contrib.auth.hashers import check_password
-
+import math
 
 @csrf_exempt
 def login(request):
@@ -42,7 +41,25 @@ def admin_account(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
-    return render(request, 'app/admin_account.html', {})
+    try:
+        page = request.GET.get("page", 1)
+    except:
+        pass
+    page = int(page)
+    if page < 1:
+        page = 1
+        return HttpResponseRedirect("/admin_account?page=1")
+    start_num = (page - 1) * 10
+    end_num = page * 10
+    userlist = AppUser.objects.all()
+    total_page = int(math.ceil(userlist.count()/10.0))
+    if page > total_page:
+        return HttpResponseRedirect("/admin_account?page=" +str(total_page))
+    return render(request, 'app/admin_account.html', {
+        "userlist" : userlist,
+        "page": page,
+        "total_page": total_page
+    })
 
 
 def admin_work_order(request):
