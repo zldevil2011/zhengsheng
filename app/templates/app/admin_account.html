@@ -68,7 +68,7 @@
                                 {{ user.email }}
                             </td>
                             <td>
-                                查看
+                                <button id = "{{ user.id }}" class="btn btn-danger btn-small btn-block" onclick="deleteUser(this.id);">删除</button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -224,5 +224,25 @@
     </div>
 {% endblock %}
 {% block special_js %}
-
+    <script>
+        function deleteUser(id){
+            $.ajax({
+                url: '/admin_account/delete/',
+                type: 'POST',
+                data: {user_id: id},
+                success: function(data){
+                    if(data == "success"){
+                        $("#" + id).parent().parent().fadeOut(1000, function(){
+                           $(this).remove();
+                        });
+                    }else{
+                        alert("删除失败");
+                    }
+                },
+                error: function(data){
+                    alert(data + "删除失败");
+                }
+            })
+        }
+    </script>
 {% endblock %}

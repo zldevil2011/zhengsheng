@@ -68,3 +68,24 @@ def admin_work_order(request):
     except:
         return HttpResponseRedirect("/admin_login/")
     return render(request, 'app/admin_workOrder.html', {})
+
+
+@csrf_exempt
+def admin_delete_user(request):
+    # return HttpResponse("success")
+    try:
+        user = AppUser.objects.get(username=request.session['username'])
+    except:
+        return HttpResponseRedirect("/admin_login/")
+    user_id = request.POST.get("user_id", None)
+    if user_id is None:
+        return HttpResponse("error")
+    user_id = int(user_id)
+    user = AppUser.objects.get(id=user_id)
+    device = user.device
+    device.device_status = u"未安装"
+    device.save()
+    sys_user = user.user
+    sys_user.delete()
+    user.delete()
+    return HttpResponse("success")

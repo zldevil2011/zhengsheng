@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^admin_index/$', index.admin_index, name="admin_index"),
 
     url(r'^admin_account/$', user.admin_account, name="admin_account"),
+    url(r'^admin_account/delete/$', user.admin_delete_user, name="delete_user"),
 
     url(r'^admin_work_order/$', workOrder.index, name="admin_work_order"),
     url(r'^admin_work_order/(?P<wo_id>\d+)/$', workOrder.info, name="admin_work_order_info"),
