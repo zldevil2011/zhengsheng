@@ -210,7 +210,8 @@ def instock(request):
             else:
                 start_num = 300000000
             device_type = u"网关"
-        start_no = start_num + 1
+        start_num = int(start_num)
+        start_num += 1
         for i in range(device_number):
             start_num += 1
             device = Device()
@@ -221,7 +222,7 @@ def instock(request):
             device.save()
         ret_data = {}
         ret_data["type"] = device_type
-        ret_data["start_no"] = start_no
+        ret_data["start_no"] = start_num
         ret_data["end_no"] = start_num
         return HttpResponse(json.dumps(ret_data), "application/json")
     except Exception, e:
