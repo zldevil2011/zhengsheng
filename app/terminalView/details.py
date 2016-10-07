@@ -31,6 +31,8 @@ def index(request):
     device = user.device
     datas = Data.objects.filter(device_id=device).order_by('-powerT')
     total_page = int(math.ceil(datas.count() / 20.0))
+    if total_page < 1:
+        total_page = 1
     if page > total_page:
         return HttpResponseRedirect("/terminal/details?page=" + str(total_page))
     today = date.today()

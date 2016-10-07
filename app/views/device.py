@@ -4,7 +4,7 @@ from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from app.models import AppUser, Device, City, Village
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth.hashers import check_password,make_password
 from dss.Serializer import serializer
 from datetime import datetime
 import time
@@ -139,7 +139,9 @@ def admin_device_add(request):
                 device = Device.objects.get(device_id=int(device_id))
                 user = User()
                 user.username = request.POST.get('username')
-                user.password = request.POST.get('telephone', '123456')
+                password = request.POST.get('telephone', '123456')
+                password = make_password(password, None, 'pbkdf2_sha256')
+                user.password = password
                 user.save()
                 appuser = AppUser()
                 appuser.user = user
@@ -163,15 +165,57 @@ def admin_device_add(request):
         return HttpResponse("error")
 
 
+@csrf_exempt
 def admin_device_remove(request):
     try:
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     if request.method == "GET":
-        return render(request, 'app/admin_deviceRemove.html', {})
+        page = int(request.GET.get("page", 1))
+        if page < 1:
+            return HttpResponseRedirect("/admin_device/remove?page=1")
+        device_list = Device.objects.exclude(device_status=u"未安装")
+        total_page = int(math.ceil(device_list.count() / 20.0))
+        start_num = (page - 1) * 20
+        end_num = page * 20
+        device_list = device_list[start_num:end_num]
+        device_list = serializer(device_list)
+        for device in device_list:
+            device["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(device["manufacture_date"]))
+            D = Device.objects.get(device_id=int(device["device_id"]))
+            user = AppUser.objects.get(device=D)
+            device["address"] = user.address
+            device["user"] = user.username
+            print type(device["device_id"])
+            if str(device["device_id"])[0:1] == '1':
+                device["type"] = u"终端"
+            elif str(device["device_id"])[0:1] == '2':
+                device["type"] = u"中继"
+            else:
+                device["type"] = u"网关"
+
+        return render(request, 'app/admin_deviceRemove.html', {
+            "device_list": device_list,
+            "page": page,
+            "total_page": total_page,
+        })
     else:
-        return HttpResponse("POST")
+        device_id = request.POST.get("device_id", None)
+        if device_id is None:
+            return HttpResponse("error")
+        try:
+            device_id = int(device_id)
+            device = Device.objects.get(device_id = device_id)
+            appuser = AppUser.objects.get(device=device)
+            appuser.device = None
+            appuser.save()
+            device.device_status = u"未安装"
+            device.save()
+            return HttpResponse("success")
+        except Exception, e:
+            print str(e)
+            return HttpResponse("error")
 
 
 def admin_device_location(request):

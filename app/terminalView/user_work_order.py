@@ -25,6 +25,8 @@ def index(request):
 
     wo_list = WorkOrder.objects.filter(appuser=user).order_by('-time')
     total_page = int(math.ceil(wo_list.count()/10.0))
+    if total_page < 1:
+        total_page = 1
     if page > total_page:
         return HttpResponseRedirect("/terminal/work_order?page=" + str(total_page))
     start_num = (page - 1) * 10

@@ -85,7 +85,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group col-md-4" style="height: 30px; line-height: 30px;">
-                            安装时间
+                            生产时间
                         </div>
                         <div class="form-group col-md-8" style="height: 30px; ">
                             <input type="date" class="form-control" id="device_time"  placeholder="2016-xx-xx"/>
@@ -190,8 +190,14 @@
             var device_time = $("#device_time").val();
             var username = $("#user_username").val();
             var telephone = $("#user_telephone").val();
-            var address = $("#user_address");
+            var address = $("#user_address").val();
             var email = $("#user_email").val();
+            console.log(device_id);
+            console.log(device_time);
+            console.log(username);
+            console.log(telephone);
+            console.log(address);
+            console.log(email);
             if(device_id == "" || username == ""){
                 alert("请填写完整信息");
                 return;
