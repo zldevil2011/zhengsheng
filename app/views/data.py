@@ -9,7 +9,7 @@ from dss.Serializer import serializer
 import time
 import math
 from datetime import datetime, date, timedelta
-
+import sys
 
 @csrf_exempt
 def admin_data(request):
@@ -22,8 +22,8 @@ def admin_data(request):
         return HttpResponseRedirect("/admin_data?page=1")
     start_num = (page - 1) * 10
     end_num = (page) * 10
-    city_code = 32701
-    village_code = 10001
+    city_code = 1001
+    village_code = 1001
     city = City.objects.get(city_code=city_code)
     village = Village.objects.get(village_code=village_code)
     # 首先查找出属于该地区的所有终端
@@ -66,6 +66,28 @@ def admin_data(request):
     print("开始计算每天的用电总量")
     month_power = []
     month_day = []
+    # 日均最高最低用电量
+    try:
+        power_min = sys.maxint
+    except:
+        power_min = sys.maxsize
+    power_max = -1
+    day_min = 1
+    day_max = 1
+    # 总用电量
+    power_total = 0
+    # 终端数量
+    device_num = 0
+    # 正常数量
+    device_success = 0
+    # 异常数量
+    device_error = 0
+    for device in village_device_list:
+        device_num += 1
+        if device.device_status == u"正常":
+            device_success += 1
+        else:
+            device_error += 1
     for i in range(1, day + 1):
         today_power = 0
         for device in village_device_list:
@@ -76,9 +98,18 @@ def admin_data(request):
             except Exception, e:
                 print str(e)
                 today_power += 0
+        power_total += (today_power - yesterday_power)
+        if today_power - yesterday_power > power_max:
+            power_max = today_power - yesterday_power
+            day_max = i
+        if today_power - yesterday_power < power_min:
+            power_min = today_power - yesterday_power
+            day_min = i
         month_day.append(i)
         month_power.append(today_power - yesterday_power)
         yesterday_power = today_power
+    day_max = str(day_max) + "日"
+    day_min = str(day_min) + "日"
     print "当前小区当月每天的用电总量"
     print(month_day)
     print(month_power)
@@ -90,6 +121,14 @@ def admin_data(request):
         "page": page,
         "total_page": total_page,
         "month_data": month_data,
+        "day_max": day_max,
+        "power_max": power_max,
+        "day_min": day_min,
+        "power_min": power_min,
+        "power_total": power_total,
+        "device_num": device_num,
+        "device_success": device_success,
+        "device_error": device_error,
     })
 
 

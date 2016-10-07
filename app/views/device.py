@@ -137,6 +137,8 @@ def admin_device_add(request):
                 if device_id is None:
                     return HttpResponse("error")
                 device = Device.objects.get(device_id=int(device_id))
+                device.device_status = u"正常"
+                device.save()
                 user = User()
                 user.username = request.POST.get('username')
                 password = request.POST.get('telephone', '123456')
@@ -150,7 +152,7 @@ def admin_device_add(request):
                 appuser.register_time = datetime.now()
                 appuser.telephone = request.POST.get('telephone', '')
                 appuser.email = request.POST.get('email', '')
-                appuser.password = user.password
+                appuser.password = request.POST.get('telephone', '123456')
                 appuser.device = device
                 appuser.save()
                 return HttpResponse("success")

@@ -98,13 +98,13 @@
                 <div class="col-md-12 column" style="text-align: right;">
                     <ul class="pagination account-pagination" style="">
                         <li>
-                             <a href="/admin_device?page={{ page|add:-1 }}">上一页</a>
+                             <a href="/admin_data?page={{ page|add:-1 }}">上一页</a>
                         </li>
                         <li>
                              <a href="#"><span name="page">{{ page }}</span> / <span name="total_page">{{ total_page }}</span></a>
                         </li>
                         <li>
-                             <a href="/admin_device?page={{ page|add:1 }}">下一页</a>
+                             <a href="/admin_data?page={{ page|add:1 }}">下一页</a>
                         </li>
                     </ul>
                 </div>
@@ -122,15 +122,12 @@
                 </div>
                 <div class="col-md-6" style="margin-bottom:1rem;border: solid 1px #FFFFFF;height: 400px;padding-left: 0;padding-right: 0;">
                     <ul class="list-group">
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">用电高峰：10000kw</span><span style="width: 50%;display: inline-block;">时间：20：00</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">用电低谷：100kw</span><span style="width: 50%;display: inline-block;">时间：00：00</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">总用电量：100000kwh</span><span style="width: 50%;display: inline-block;">时间：00:00-23:00</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">总发电量：30000kw</span><span style="width: 50%;display: inline-block;">时间：00:00-23:00</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">最高温度：70℃</span><span style="width: 50%;display: inline-block;">时间：14：28</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">最高瞬时电压：240V</span><span style="width: 50%;display: inline-block;">时间：14：28</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">最高瞬时电流：2.5A</span><span style="width: 50%;display: inline-block;">时间：14：28</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">平均有效电压：220V</span><span style="width: 50%;display: inline-block;">时间：14：28</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">平均有效电流：2.0A</span><span style="width: 50%;display: inline-block;">时间：14：28</span></li>
+                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">用电高峰：{{ power_max }}kwh</span><span style="width: 50%;display: inline-block;">时间：{{ day_max }}</span></li>
+                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">用电低谷：{{ power_min }}kwh</span><span style="width: 50%;display: inline-block;">时间：{{ day_min }}</span></li>
+                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">总用电量：{{ power_total }}kwh</span></li>
+                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">终端数量：{{ device_num }}</span></li>
+                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">正常数量：{{ device_success }}</span></li>
+                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">异常数量：{{ device_error }}</span></li>
                     </ul>
                 </div>
             </div>
@@ -395,7 +392,7 @@
                 }
             },
             series: [{
-                name: 'Tokyo',
+                name: '电量',
                 data: month_power
             }]
         });
