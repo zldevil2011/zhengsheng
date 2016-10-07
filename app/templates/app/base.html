@@ -111,16 +111,16 @@
                 <div id="nt-title-container" class="navbar-left running-text visible-lg">
                     <ul class="date-top">
                         <li class="entypo-calendar" style="margin-right:5px"></li>
-                        <li id="Date">2016-08-28 星期天</li>
+                        <li id="Date_today"></li>
                     </ul>
                     <ul id="digital-clock" class="digital">
                         <li class="entypo-clock" style="margin-right:5px"></li>
-                        <li class="hour">10</li>
+                        <li class="hour" id="Hour"></li>
                         <li>:</li>
-                        <li class="min">33</li>
+                        <li class="min" id="Min"></li>
                         <li>:</li>
-                        <li class="sec">00</li>
-                        <li class="meridiem">AM</li>
+                        <li class="sec" id="Sec"></li>
+{#                        <li class="meridiem">AM</li>#}
                     </ul>
                     <ul id="nt-title" style="height: 18px; overflow: hidden;">
                         <li style="margin-top: 0px;"><i class="wi-day-lightning"></i>&nbsp;&nbsp;池州&nbsp;
@@ -261,5 +261,30 @@
     </script>
 
     {% endblock %}
+    <script>
+        var mp = new Array("星期天", "星期一",  "星期二", "星期三" ,"星期四", "星期五", "星期六");
+        var myDate = new Date();
+        var date = myDate.toLocaleDateString();
+        var year = myDate.getFullYear(), month = myDate.getMonth(), day = myDate.getDate();
+        var week = myDate.getDay();
+        $("#Date_today").html(year + "年" + month + "月" + day + "日 " + mp[week]);
+        var hour = myDate.getHours();
+        console.log(hour);
+        console.log(String(hour));
+        if(hour<10){
+            hour = "0" + String(hour);
+        }
+        var min = myDate.getMinutes();
+        if(min<10){
+            min = "0" + String(min);
+        }
+        var sec = myDate.getSeconds();
+        if(sec<10){
+            sec = "0" + String(sec);
+        }
+        $("#Hour").html(hour);
+        $("#Min").html(min);
+        $("#Sec").html(sec);
+    </script>
 </body>
 </html>
