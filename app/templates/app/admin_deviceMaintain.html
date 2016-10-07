@@ -91,7 +91,7 @@
                             <td><span class="btn btn-danger">{{ repair.device.device_status }}</span></td>
                             <td>{{ repair.user }}</td>
                             <td>{{ repair.time }}</td>
-                            <td><button class="btn btn-warning">维修记录</button></td>
+                            <td><button id = "{{ repair.id }}" class="btn btn-warning" onclick="showMaintainInfoFun(this.id);">维修记录</button></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -117,21 +117,21 @@
                         <hr>
                     </div>
                     <div class="col-md-12">
-                        <form class="" role="form" onsubmit="return false;">
+                        <form class="black-color" role="form" onsubmit="return false;">
                             <div class="col-md-4">
                                 <div class="form-group col-md-4" style="height: 30px; line-height: 30px;">
                                     设备编号
                                 </div>
                                 <div class="form-group col-md-8" style="height: 30px; ">
-                                    <input type="text" class="form-control" id="" placeholder="IMGXXXXXX"/>
+                                    <input type="text" class="form-control" id="repair_num" placeholder="IMGXXXXXX" readonly/>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group col-md-4" style="height: 30px; line-height: 30px;">
-                                    设备名称
+                                    设备类型
                                 </div>
                                 <div class="form-group col-md-8" style="height: 30px; ">
-                                    <input type="text" class="form-control" id=""  placeholder="设备名称"/>
+                                    <input type="text" class="form-control" id="repair_device_type"  placeholder="设备类型" readonly/>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -139,7 +139,7 @@
                                     送修时间
                                 </div>
                                 <div class="form-group col-md-8" style="height: 30px; ">
-                                    <input type="text" class="form-control" id=""  placeholder="2016-xx-xx"/>
+                                    <input type="text" class="form-control" id="repair_time"  placeholder="2016-xx-xx" readonly/>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -147,7 +147,7 @@
                                     送修用户
                                 </div>
                                 <div class="form-group col-md-8" style="height: 30px; ">
-                                    <input type="text" class="form-control" id=""  placeholder="张三"/>
+                                    <input type="text" class="form-control" id="repair_user"  placeholder="张三" readonly/>
                                 </div>
                             </div>
                             <div class="col-md-8"></div>
@@ -160,19 +160,19 @@
                                         <span class="active">-------></span>
                                     </div>
                                     <div class="col-md-2">
-                                        <span class="active">开始送修</span>
+                                        <span class="waiting" name="start">开始送修</span>
                                     </div>
                                     <div class="col-md-2">
-                                        <span class="active">-------></span>
+                                        <span class="waiting">-------></span>
                                     </div>
                                     <div class="col-md-2">
-                                        <span class="active">正在维修</span>
+                                        <span class="waiting" name="repairing">正在维修</span>
                                     </div>
                                     <div class="col-md-2">
-                                        <span>-------></span>
+                                        <span class="waiting">-------></span>
                                     </div>
                                     <div class="col-md-2">
-                                        <span>维修成功</span>
+                                        <span class="waiting" name="end">维修成功</span>
                                     </div>
                                 </div>
                             </div>
@@ -208,7 +208,7 @@
                             innerHtml += '<tr><td>' + device.device.device_id + '</td>' +
                                 '<td>' + device.type + '</td><td>' + device.address + '</td>' +
                                 '<td><span class="btn btn-danger">' + device.device.device_status + '<span></td><td>' + device.user + '</td>' +
-                                '<td>' + device.time + '</td><td><button class="btn btn-warning">维修记录</button></td></tr>';
+                                '<td>' + device.time + '</td><td><button id = "' + device.id + '" class="btn btn-warning"  onclick="showMaintainInfoFun(this.id);">维修记录</button></td></tr>';
                         }
                         $("[name=device_list_tr]").html(innerHtml);
                     }
@@ -218,5 +218,47 @@
                 }
             })
         });
+    </script>
+    <script>
+        function showMaintainInfoFun(id){
+            alertify.set({
+				labels : {
+					ok     : "确定",
+					cancel : "取消"
+				},
+				delay : 1500,
+				buttonReverse : false,
+				buttonFocus   : "ok"
+			});
+            $.ajax({
+                url: '/admin_device/maintain/',
+                type: 'POST',
+                data: {repair_id: id},
+                success: function (data) {
+                    if(data == "error"){
+                        alertify.error("信息不存在");
+                    }else{
+{#                        console.log(data);#}
+                        $("#repair_num").val(data.num);
+                        $("#repair_device_type").val(data.type);
+                        $("#repair_time").val(data.time);
+                        $("#repair_user").val(data.user);
+                        var process_name = data.status;
+                        var label_span = $(".maintain-process span");
+                        $.each(label_span, function(i){
+                            $(this).removeClass("waiting");
+                            $(this).addClass("active");
+                            var $name = $(this).attr("name");
+                            if($name == process_name){
+                                return false;
+                            }
+                        });
+                    }
+                },
+                error: function(data){
+                    alertify.error("查询失败，请联系管理员");
+                }
+            });
+        }
     </script>
 {% endblock %}

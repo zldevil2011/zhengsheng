@@ -226,6 +226,7 @@ def admin_device_location(request):
     return render(request, 'app/admin_deviceLocation.html', {})
 
 
+@csrf_exempt
 def admin_device_maintain(request):
     try:
         user = AppUser.objects.get(username=request.session['username'])
@@ -261,7 +262,27 @@ def admin_device_maintain(request):
             "total_page": total_page,
         })
     else:
-        return HttpResponse("success")
+        repair_id = request.POST.get("repair_id", None)
+        if repair_id is None:
+            return HttpResponse("error")
+        repair_id = int(repair_id)
+        try:
+            repair = Repairing.objects.get(id = repair_id)
+            device = repair.device
+            user = AppUser.objects.get(device=device)
+            repair = serializer(repair)
+            if str(device.device_id)[0:1] == '1':
+                repair["type"] = u"终端"
+            elif str(device.device_id)[0:1] == '2':
+                repair["type"] = u"中继"
+            else:
+                repair["type"] = u"网关"
+            repair["time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(repair["time"])))
+            repair["user"] = user.username
+            return HttpResponse(json.dumps(repair), "application/json")
+        except Exception, e:
+            print str(e)
+            return HttpResponse("error")
 
 
 @csrf_exempt
