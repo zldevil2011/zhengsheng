@@ -178,6 +178,8 @@
             var device_id =  $("[name=device_id]").val();
             var start_time = $("[name=start_time]").val();
             var end_time = $("[name=end_time]").val();
+            console.log(start_time);;
+            console.log(end_time);
             var key = $("[name=key]").val();
             $.ajax({
                 url: '/admin_device/filter/',
@@ -187,7 +189,7 @@
                     if(data == "error"){
                         alert("查找失败");
                     }else{
-                        console.log(data);
+{#                        console.log(data);#}
                         var innerHtml = "";
                         for(var i = 0; i < data.length; ++i){
                             var device = data[i];

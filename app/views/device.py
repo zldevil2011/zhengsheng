@@ -59,15 +59,40 @@ def admin_device_filter(request):
         end_time = request.POST.get("end_time", None)
         key = request.POST.get("key", "")
         print device_id
-        print start_time
+        print type(start_time)
         print end_time
         print key
+        device_list = Device.objects.exclude(device_status=u"未安装")
         if device_id is not None and device_id != "":
             print("ok")
-            device_list = Device.objects.filter(device_id__in=device_id)
+            device_list = device_list.filter(device_id__icontains=device_id)
+            device_list = device_list.filter(device_status__icontains=key)
         else:
-            device_list = Device.objects.filter(device_status__in=key)
-        return HttpResponse(serializer(device_list))
+            device_list = device_list.filter(device_status__icontains=key)
+        if start_time is not None and start_time != "":
+            start_time = str(start_time) + " 00:00:00"
+            start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+            device_list = device_list.filter(manufacture_date__gt=start_time)
+        if end_time is not None and end_time != "":
+            end_time = str(end_time) + " 23:59:59"
+            end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+            device_list = device_list.filter(manufacture_date__lt=end_time)
+        print device_list.count()
+        device_list = serializer(device_list)
+        for device in device_list:
+            device["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(device["manufacture_date"]))
+            D = Device.objects.get(device_id=int(device["device_id"]))
+            user = AppUser.objects.get(device=D)
+            device["address"] = user.address
+            device["user"] = user.username
+            print type(device["device_id"])
+            if str(device["device_id"])[0:1] == '1':
+                device["type"] = u"终端"
+            elif str(device["device_id"])[0:1] == '2':
+                device["type"] = u"中继"
+            else:
+                device["type"] = u"网关"
+        return HttpResponse(json.dumps(device_list), "application/json")
     except Exception, e:
         print str(e)
         return HttpResponse("error")
