@@ -264,6 +264,57 @@ def admin_device_maintain(request):
         return HttpResponse("success")
 
 
+@csrf_exempt
+def admin_device_maintain_filter(request):
+    try:
+        user = AppUser.objects.get(username=request.session['username'])
+    except:
+        return HttpResponseRedirect("/admin_login/")
+    try:
+        device_id = request.POST.get("device_id", None)
+        start_time = request.POST.get("start_time", None)
+        end_time = request.POST.get("end_time", None)
+        key = request.POST.get("key", "")
+        print device_id
+        print type(start_time)
+        print end_time
+        print key
+        device_list = Repairing.objects.all().order_by('-time')
+        if device_id is not None and device_id != "":
+            print("ok")
+            device_list = device_list.filter(device__device_id__icontains=device_id)
+            device_list = device_list.filter(device__device_status__icontains=key)
+        else:
+            device_list = device_list.filter(device__device_status__icontains=key)
+        if start_time is not None and start_time != "":
+            start_time = str(start_time) + " 00:00:00"
+            start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+            device_list = device_list.filter(time__gt=start_time)
+        if end_time is not None and end_time != "":
+            end_time = str(end_time) + " 23:59:59"
+            end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+            device_list = device_list.filter(time__lt=end_time)
+        print device_list.count()
+        device_list = serializer(device_list, foreign=True)
+        for device in device_list:
+            device["time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(device["time"]))
+            D = Device.objects.get(device_id=int(device["device"]["device_id"]))
+            user = AppUser.objects.get(device=D)
+            device["address"] = user.address
+            device["user"] = user.username
+            print type(device["device_id"])
+            if str(device["device"]["device_id"])[0:1] == '1':
+                device["type"] = u"终端"
+            elif str(device["device"]["device_id"])[0:1] == '2':
+                device["type"] = u"中继"
+            else:
+                device["type"] = u"网关"
+        return HttpResponse(json.dumps(device_list), "application/json")
+    except Exception, e:
+        print str(e)
+        return HttpResponse("error")
+
+
 def admin_device_temperature(request):
     try:
         user = AppUser.objects.get(username=request.session['username'])
