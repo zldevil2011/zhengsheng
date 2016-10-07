@@ -151,6 +151,44 @@ def admin_data(request):
     year_data["year_power"] = year_power
 
 
+    # 计算今年和去年的对应月份的总用电量的比较吗，上面已经计算了今年的数据，所以直接计算去年的数据
+    compare_max = -1
+    for power in year_power:
+        if power > compare_max:
+            compare_max = power
+    pre_year_last_day = datetime(year - 1, 1, 1) - timedelta(days=1)
+    pre_year_last_day_power = 0
+    print("计算前年最后一月最后一天的用电量")
+    for device in village_device_list:
+        try:
+            data = Data.objects.filter(device_id=device, powerT__year=pre_year_last_day.year, powerT__month=pre_year_last_day.month).order_by('-powerT')[0]
+            pre_year_last_day_power += data.powerV
+        except Exception, e:
+            print str(e)
+            pre_year_last_day_power += 0
+    print("开始计算去年每月的用电总量")
+    pre_year_power = []
+    pre_year_month = []
+    for i in range(1, month + 1):
+        month_power = 0
+        for device in village_device_list:
+            try:
+                data = Data.objects.filter(device_id=device, powerT__year=today.year - 1, powerT__month=i).order_by('-powerT')[0]
+                month_power += data.powerV
+            except Exception, e:
+                print str(e)
+                month_power += 0
+        if month_power - pre_year_last_day_power > compare_max:
+            compare_max = month_power - pre_year_last_day_power
+        pre_year_month.append(str(i))
+        pre_year_power.append(month_power - pre_year_last_day_power)
+        pre_year_last_day_power = month_power
+    print "当前小区去年每月的用电总量"
+    print(pre_year_month)
+    print(pre_year_power)
+    pre_year_data = {}
+    pre_year_data["pre_year_month"] = pre_year_month
+    pre_year_data["pre_year_power"] = pre_year_power
     return render(request, 'app/admin_data.html', {
         "device_list": device_list,
         "page": page,
@@ -165,6 +203,8 @@ def admin_data(request):
         "device_success": device_success,
         "device_error": device_error,
         "year_data": year_data,
+        "pre_year_data": pre_year_data,
+        "compare_max": compare_max,
     })
 
 

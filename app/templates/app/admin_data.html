@@ -471,4 +471,85 @@
             }]
         });
     </script>
+    <script>
+        var yy = {{ year_data | safe }};
+        var year_month = yy["year_month"];
+        var year_power = yy["year_power"];
+        var preYY = {{ pre_year_data | safe }};
+        var pre_year_power = preYY["pre_year_power"];
+        var compare_max = {{ compare_max  }} + 10;
+        for(var i = 0; i < year_month.length; ++i){
+            year_month[i] = year_month[i] + "月";
+        }
+        var chart,
+            categories = year_month;
+        $(document).ready(function() {
+            $('#AllUserYearCompare').highcharts({
+                chart: {
+                    type: 'bar',
+                    backgroundColor: 'rgba(80,81,95,0.1)',
+                },
+                title: {
+                    text: '近两年月度用电量对比',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                subtitle: {
+                    text: '数据来源：电力公司',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                xAxis: [{
+                    categories: categories,
+                    reversed: false
+                }, { // mirror axis on right side
+                    opposite: true,
+                    reversed: false,
+                    categories: categories,
+                    linkedTo: 0,
+                }],
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    labels: {
+                        formatter: function(){
+                            return (Math.abs(this.value) / 1) + 'kwh';
+                        },
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color:'#FFFFFF',
+                        }
+                    },
+                    min: -compare_max,
+                    max: compare_max,
+
+                },
+
+                plotOptions: {
+                    series: {
+                        stacking: 'normal'
+                    }
+                },
+
+                tooltip: {
+                    formatter: function(){
+                        return '<b>'+ this.series.name +' '+ this.point.category +'</b><br/>'+
+                            '用电量: '+ Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                    }
+                },
+
+                series: [{
+                    name: '上一年',
+                    data: pre_year_power
+                }, {
+                    name: '今年',
+                    data: year_power
+                }]
+            });
+        });
+    </script>
 {% endblock %}

@@ -124,7 +124,7 @@ $(function(){
     try{
         // AllUser24Hour();
         //AllUserMonth();
-        AllUserYearCompare();
+        //AllUserYearCompare();
         User24Hour();
         UserMonth();
     }catch(e){
