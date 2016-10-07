@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^admin_device/leakage/$', device.admin_device_leakage, name="admin_device_leakage"),
 
     url(r'^admin_data/$', data.admin_data, name="admin_data"),
+    url(r'^admin_data/userinfo/$', data.admin_user_data, name="admin_user_data"),
 
     url(r'^admin_mobile/user/$', mobile.admin_mobile_user, name="admin_mobile_user"),
 

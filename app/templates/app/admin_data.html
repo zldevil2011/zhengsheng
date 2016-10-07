@@ -90,7 +90,7 @@
                             <td>{{ device.device_status }}</td>
                             <td>{{ device.user }}</td>
                             <td>{{ device.manufacture_date }}</td>
-                            <td><button class="btn btn-success">查看</button></td>
+                            <td><button id = "{{ device.device_id }}" class="btn btn-success" onclick="showUserInfo(this.id);">查看</button></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -152,7 +152,7 @@
             </div>
             <div class="col-md-12">
                 <div class="col-md-6" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
-                    <div id = "User24Hour" style="width: 100%; height:400px;"></div>
+                    <div id = "UserMonth" style="width: 100%; height:400px;"></div>
                 </div>
                 <div class="col-md-6"  style="margin-bottom:1rem;border: solid 1px #FFFFFF;height: 400px;padding-left: 0;padding-right: 0;">
                     <ul class="list-group">
@@ -170,7 +170,7 @@
             </div>
 
             <div class="col-md-12" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
-                <div id = "UserMonth" style="width: 100%; height:400px;">该用户月度曲线</div>
+                <div id = "UserYear" style="width: 100%; height:400px;">该用户月度曲线</div>
             </div>
         </div>
     </div>
@@ -551,5 +551,93 @@
                 }]
             });
         });
+    </script>
+    <script>
+{#        点击该按钮查看当前用户的用电信息#}
+        function showUserInfo(id){
+            alertify.success("Id = " + id);
+{#            异步请求该用户的用电信息#}
+            $.ajax({
+                url: '/admin_data/userinfo/',
+                type: 'POST',
+                data: {device_id: id},
+                success: function(data){
+                    if(data == "error"){
+                        alertify.error("数据缺失");
+                    }else{
+                        userMonth(data.month_day, data.month_power);
+                    }
+                },
+                error: function(data){
+                    alertify.error("设备工作不正常");
+                }
+            });
+        }
+    </script>
+    <script>
+{#        当前用户当月用电量统计#}
+        function userMonth(month_day, month_power){
+            $('#UserMonth').highcharts({
+                chart: {
+                    type: 'line',
+                    backgroundColor: 'rgba(80,81,95,0.1)',
+                },
+                title: {
+                    text: '该用户24小时用电量',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                subtitle: {
+                    text: '数据来源：电表箱',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                xAxis: {
+                    categories: month_day,
+                    labels: {
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color:'#FFFFFF',
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: '用电量(Kwh)',
+                        style: {
+                            color: '#FFFFFF',
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color:'#FFFFFF',
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: false,
+                    formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+this.x +': '+ this.y +'°C';
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: false
+                    }
+                },
+                series: [{
+                    name: 'Tokyo',
+                    data: month_power
+                }]
+            });
+        }
     </script>
 {% endblock %}

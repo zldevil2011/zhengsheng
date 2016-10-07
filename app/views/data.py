@@ -10,6 +10,7 @@ import time
 import math
 from datetime import datetime, date, timedelta
 import sys
+import json
 
 @csrf_exempt
 def admin_data(request):
@@ -47,6 +48,9 @@ def admin_data(request):
         else:
             device["type"] = u"网关"
         device["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(device["manufacture_date"])))
+        t_device = Device.objects.get(device_id = int(device["device_id"]))
+        appuser = AppUser.objects.get(device=t_device)
+        device["user"] = appuser.username
     # 日均最高最低用电量
     try:
         power_min = sys.maxint
@@ -206,5 +210,58 @@ def admin_data(request):
         "pre_year_data": pre_year_data,
         "compare_max": compare_max,
     })
+
+
+@csrf_exempt
+def admin_user_data(request):
+    try:
+        user = AppUser.objects.get(username=request.session['username'])
+    except:
+        return HttpResponseRedirect("/admin_login/")
+    # 对于每个用户，有两种数据，当月每天用电量和当年每月用电量
+    # 计算当月每天的用电量，用当天的采集量减去昨天的采集量即为当天的用电量
+    # 首先，计算当月1号 则先获取上月最后一次的采集量
+    device_id = request.POST.get("device_id", None)
+    if device_id is None:
+        return HttpResponse("error")
+    device_id = int(device_id)
+    try:
+        device = Device.objects.get(device_id=device_id)
+    except:
+        return HttpResponse("error")
+    today = date.today()
+    year = today.year
+    month = today.month
+    day = today.day
+    yesterday = datetime(year,  month, 1) - timedelta(days=1)
+    yesterday_power = 0
+    try:
+        yesterday_power = Data.objects.filter(device=device, powerT__year=yesterday.year, powerT__month=yesterday.month).order_by('-powerT')[0]
+    except:
+        yesterday_power = 0
+    print "YYYY"
+    try:
+        datas_list = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month).order_by('-powerT')
+        month_day = []
+        month_power = []
+    except Exception, e:
+        print str(e)
+    print "ZZZ"
+    for i in range(1, day + 1):
+        try:
+            today_power = datas_list.filter(powerT__day=i).order_by('-powerT')[0].powerV
+        except:
+            today_power = 0
+        month_day.append(i)
+        if today_power != 0:
+            month_power.append(today_power - yesterday_power)
+            yesterday_power = today_power
+        else:
+            month_power.append(0)
+    month_data = {}
+    month_data["month_day"] = month_day
+    month_data["month_power"] = month_power
+    print "xxxxx"
+    return HttpResponse(json.dumps(month_data), "application/json")
 
 
