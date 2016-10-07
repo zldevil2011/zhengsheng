@@ -118,7 +118,7 @@
             </div>
             <div class="col-md-12">
                 <div class="col-md-6" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
-                    <div id = "AllUser24Hour" style="width: 100%; height:400px;"></div>
+                    <div id = "AllUserMonth" style="width: 100%; height:400px;"></div>
                 </div>
                 <div class="col-md-6" style="margin-bottom:1rem;border: solid 1px #FFFFFF;height: 400px;padding-left: 0;padding-right: 0;">
                     <ul class="list-group">
@@ -136,7 +136,7 @@
             </div>
             <div class="col-md-12">
                 <div class="col-md-6" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
-                    <div id = "AllUserMonth" style="width: 100%; height:400px;">该地点月度曲线</div>
+                    <div id = "AllUserYear" style="width: 100%; height:400px;">该地点月度曲线</div>
                 </div>
                 <div class="col-md-6" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
                     <div id = "AllUserYearCompare" style="width: 100%; height:400px;">该地点年度曲线</div>
@@ -331,4 +331,73 @@
 {#            return !!(elem.getContext && elem.getContext('2d'));#}
 {#        }#}
 {#    </script>#}
+    <script>
+        var mm = {{ month_data | safe }};
+        var month_day = mm["month_day"];
+        var month_power = mm["month_power"];
+        $('#AllUserMonth').highcharts({
+            chart: {
+                type: 'line',
+                backgroundColor: 'rgba(80,81,95,0.1)',
+            },
+            title: {
+                text: '该地区用户当月用电量统计',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            subtitle: {
+                text: '数据来源：征圣云平台',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            xAxis: {
+                categories: month_day,
+                style: {
+                    color: '#FFFFFF',
+                },
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: '用电量 (Kwh)',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                }
+            },
+            tooltip: {
+                enabled: false,
+                formatter: function() {
+                    return '<b>'+ this.series.name +'</b><br/>'+this.x +': '+ this.y +'°C';
+                }
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: false
+                }
+            },
+            series: [{
+                name: 'Tokyo',
+                data: month_power
+            }]
+        });
+    </script>
 {% endblock %}

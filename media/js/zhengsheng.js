@@ -122,7 +122,7 @@ $(function () {
 //数据查询界面的表格绘制
 $(function(){
     try{
-        AllUser24Hour();
+        // AllUser24Hour();
         AllUserMonth();
         AllUserYearCompare();
         User24Hour();
@@ -198,7 +198,7 @@ function AllUser24Hour(){
     });
 }
 function AllUserMonth(){
-    $('#AllUserMonth').highcharts({
+    $('#AllUserYear').highcharts({
         chart: {
             type: 'column',
             margin: [ 50, 50, 100, 80],
