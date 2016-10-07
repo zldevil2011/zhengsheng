@@ -3,7 +3,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from app.models import AppUser, Device, City, Village
+from app.models import AppUser, Device, City, Village, Repairing
 from django.contrib.auth.hashers import check_password,make_password
 from dss.Serializer import serializer
 from datetime import datetime
@@ -231,7 +231,37 @@ def admin_device_maintain(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
-    return render(request, 'app/admin_deviceMaintain.html', {})
+    if request.method == "GET":
+        page = int(request.GET.get("page", 1))
+        if page < 1:
+            return HttpResponseRedirect("/admin_device/maintain?page=1")
+        repair_list = Repairing.objects.all().order_by('-time')
+        total_page = int(math.ceil(repair_list.count()/10.0))
+        if total_page < 1:
+            total_page = 1
+        if page > total_page:
+            return HttpResponseRedirect("/admin_device/maintain?page=" + str(total_page))
+        repair_list = serializer(repair_list, foreign=True)
+        for repair in repair_list:
+            device = Device.objects.get(device_id=int(repair["device"]["device_id"]))
+            if str(device.device_id)[0:1] == '1':
+                repair["type"] = u"终端"
+            elif str(device.device_id)[0:1] == '2':
+                repair["type"] = u"中继"
+            else:
+                repair["type"] = u"网关"
+            repair["time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(repair["time"])))
+            appuser = AppUser.objects.get(device=device)
+            repair["address"] = appuser.address
+            repair["user"] = appuser.username
+
+        return render(request, 'app/admin_deviceMaintain.html', {
+            "repair_list": repair_list,
+            "page": page,
+            "total_page": total_page,
+        })
+    else:
+        return HttpResponse("success")
 
 
 def admin_device_temperature(request):
