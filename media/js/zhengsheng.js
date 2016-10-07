@@ -123,7 +123,7 @@ $(function () {
 $(function(){
     try{
         // AllUser24Hour();
-        AllUserMonth();
+        //AllUserMonth();
         AllUserYearCompare();
         User24Hour();
         UserMonth();

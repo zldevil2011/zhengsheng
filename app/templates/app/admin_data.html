@@ -397,4 +397,78 @@
             }]
         });
     </script>
+    <script>
+        var yy = {{ year_data | safe }};
+        var year_month = yy["year_month"];
+        var year_power = yy["year_power"];
+        console.log(year_month);
+        for(var i = 0; i < year_month.length; ++i){
+            year_month[i] = year_month[i] + "月";
+        }
+        console.log(year_month);
+        $('#AllUserYear').highcharts({
+            chart: {
+                type: 'column',
+                margin: [ 50, 50, 100, 80],
+                backgroundColor: 'rgba(80,81,95,0.1)',
+            },
+            title: {
+                text: '该地区一年用电量',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            xAxis: {
+                categories:year_month,
+                labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '用电量(Kwh)',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '当月用电量<b>{point.y:.1f} kwh</b>',
+            },
+            series: [{
+                name: 'Population',
+                data: year_power,
+                dataLabels: {
+                    enabled: true,
+                    rotation: -90,
+                    color: '#FFFFFF',
+                    align: 'right',
+                    x: 4,
+                    y: 10,
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }]
+        });
+    </script>
 {% endblock %}

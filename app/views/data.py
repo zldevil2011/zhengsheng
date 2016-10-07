@@ -34,6 +34,7 @@ def admin_data(request):
     if page > total_page:
         return HttpResponseRedirect("/admin_data?page=" + str(total_page))
     village_device_list = device_list
+    # 下面主要是对查看当前小区的翻页实现机器列表展示
     device_list = device_list[start_num:end_num]
     device_list = serializer(device_list)
     for device in device_list:
@@ -46,26 +47,6 @@ def admin_data(request):
         else:
             device["type"] = u"网关"
         device["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(device["manufacture_date"])))
-
-    # 首先需要计算该小区当月的用电总量，按当月每天使用量统计的话，需要将该小区的所有终端的用电量求和（每天求和，做差）
-    # 可以从1号开始算，每天的总和前去前一天的总和
-    today = date.today()
-    year = today.year
-    month = today.month
-    day = today.day
-    yesterday = datetime(year, month, 1) - timedelta(days=1)
-    yesterday_power = 0
-    print("计算上一月最后一天的用电总量")
-    for device in village_device_list:
-        try:
-            data = Data.objects.filter(device_id=device, powerT__year=yesterday.year, powerT__month=yesterday.month, powerT__day=yesterday.day).order_by('-powerT')[0]
-            yesterday_power += data.powerV
-        except Exception, e:
-            print str(e)
-            yesterday_power += 0
-    print("开始计算每天的用电总量")
-    month_power = []
-    month_day = []
     # 日均最高最低用电量
     try:
         power_min = sys.maxint
@@ -88,6 +69,25 @@ def admin_data(request):
             device_success += 1
         else:
             device_error += 1
+    # 首先需要计算该小区当月的用电总量，按当月每天使用量统计的话，需要将该小区的所有终端的用电量求和（每天求和，做差）
+    # 可以从1号开始算，每天的总和前去前一天的总和
+    today = date.today()
+    year = today.year
+    month = today.month
+    day = today.day
+    yesterday = datetime(year, month, 1) - timedelta(days=1)
+    yesterday_power = 0
+    print("计算上一月最后一天的用电总量")
+    for device in village_device_list:
+        try:
+            data = Data.objects.filter(device_id=device, powerT__year=yesterday.year, powerT__month=yesterday.month, powerT__day=yesterday.day).order_by('-powerT')[0]
+            yesterday_power += data.powerV
+        except Exception, e:
+            print str(e)
+            yesterday_power += 0
+    print("开始计算每天的用电总量")
+    month_power = []
+    month_day = []
     for i in range(1, day + 1):
         today_power = 0
         for device in village_device_list:
@@ -116,6 +116,41 @@ def admin_data(request):
     month_data = {}
     month_data["month_day"] = month_day
     month_data["month_power"] = month_power
+
+    # 计算当前小区过去一年的用电量统计，按月统计，即最后会有1-12个月数据，每个月的用电量等于当月最后一天的第二次电量采集量减去上一个最后一天的电量
+    last_year_last_day = datetime(year, 1, 1) - timedelta(days=1)
+    last_year_last_day_power = 0
+    print("计算上一年最后一月最后一天的用电量")
+    for device in village_device_list:
+        try:
+            data = Data.objects.filter(device_id=device, powerT__year=last_year_last_day.year, powerT__month=last_year_last_day.month, powerT__day=last_year_last_day.day).order_by('-powerT')[0]
+            last_year_last_day_power += data.powerV
+        except Exception, e:
+            print str(e)
+            last_year_last_day_power += 0
+    print("开始计算每月的用电总量")
+    year_power = []
+    year_month = []
+    for i in range(1, month + 1):
+        month_power = 0
+        for device in village_device_list:
+            try:
+                data = Data.objects.filter(device_id=device, powerT__year=today.year, powerT__month=i).order_by('-powerT')[0]
+                month_power += data.powerV
+            except Exception, e:
+                print str(e)
+                month_power += 0
+        year_month.append(str(i))
+        year_power.append(month_power - last_year_last_day_power)
+        last_year_last_day_power = month_power
+    print "当前小区当年每月的用电总量"
+    print(year_month)
+    print(year_power)
+    year_data = {}
+    year_data["year_month"] = year_month
+    year_data["year_power"] = year_power
+
+
     return render(request, 'app/admin_data.html', {
         "device_list": device_list,
         "page": page,
@@ -129,6 +164,7 @@ def admin_data(request):
         "device_num": device_num,
         "device_success": device_success,
         "device_error": device_error,
+        "year_data": year_data,
     })
 
 
