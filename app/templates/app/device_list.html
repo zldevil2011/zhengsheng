@@ -131,6 +131,10 @@
 {% endblock %}
 {% block special_js %}
     <script>
+        $("#deviceChild").addClass("in");
+        $("#collapseTwo").removeClass("in");
+    </script>
+    <script>
         $("[name=device_instock]").on("click", function(){
             var device_type = $("[name=device_type]").val();
             var device_number = $("[name=device_number]").val();

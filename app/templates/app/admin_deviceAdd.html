@@ -139,6 +139,10 @@
 {% endblock %}
 {% block special_js %}
     <script>
+        $("#deviceChild").addClass("in");
+        $("#collapseTwo").removeClass("in");
+    </script>
+    <script>
         $("[name=city_select]").on("change", function(){
             var city_code = $(this).val();
             $.ajax({

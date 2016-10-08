@@ -116,6 +116,10 @@
 {% endblock %}
 {% block special_js %}
     <script>
+        $("#deviceChild").addClass("in");
+        $("#collapseTwo").removeClass("in");
+    </script>
+    <script>
         $("[name=filter_device]").on("click", function(){
             var device_id =  $("[name=device_id]").val();
             var start_time = $("[name=start_time]").val();
