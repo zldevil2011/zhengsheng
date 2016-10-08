@@ -83,7 +83,8 @@ def admin_data(request):
     device_list = serializer(device_list)
     for device in device_list:
         city_name = City.objects.get(city_code=int(device["city_code"])).city_name
-        village_name = Village.objects.get(village_code=int(device["village_code"])).village_name
+        city_tmp = City.objects.get(city_code=int(device["city_code"]))
+        village_name = Village.objects.get(city=city_tmp, village_code=int(device["village_code"])).village_name
         address = city_name + village_name
         device["address"] = address
         if str(device["device_id"])[0:1] == "1":
