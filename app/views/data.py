@@ -23,8 +23,20 @@ def admin_data(request):
         return HttpResponseRedirect("/admin_data?page=1")
     start_num = (page - 1) * 10
     end_num = (page) * 10
-    city_code = 1001
-    village_code = 1001
+    try:
+        city_code = int(request.GET.get("city_code"))
+    except:
+        city_code = 1001
+    try:
+        village_code = int(request.GET.get("village_code"))
+    except:
+        village_code = 1001
+    city_list = City.objects.all()
+    try:
+        village_list = Village.objects.filter(city=city_list[0])
+    except:
+        village_list = None
+
     city = City.objects.get(city_code=city_code)
     village = Village.objects.get(village_code=village_code)
     # 首先查找出属于该地区的所有终端
@@ -219,6 +231,8 @@ def admin_data(request):
         "year_data": year_data,
         "pre_year_data": pre_year_data,
         "compare_max": compare_max,
+        "village_list": village_list,
+        "city_list": city_list,
     })
 
 

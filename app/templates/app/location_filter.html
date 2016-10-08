@@ -5,38 +5,10 @@
             <b>地区</b>
         </div>
         <div class="col-md-11 filter-value">
-            <div class="col-md-2 hander"><span class="active">不限</span></div>
-            <div class="col-md-2 hander"><span>池州市</span></div>
-            <div class="col-md-2 hander"><span>贵池区</span></div>
-            <div class="col-md-2 hander"><span>东至县</span></div>
-            <div class="col-md-2 hander"><span>石台县</span></div>
-            <div class="col-md-2 hander"><span>青阳县</span></div>
-            <div class="col-md-2 hander"><span>不限</span></div>
-            <div class="col-md-2 hander"><span>池州市</span></div>
-            <div class="col-md-2 hander"><span>贵池区</span></div>
-            <div class="col-md-2 hander"><span>东至县</span></div>
-            <div class="col-md-2 hander"><span>石台县</span></div>
-            <div class="col-md-2 hander"><span>青阳县</span></div>
-        </div>
-    </div>
-    <div class="clearfix" style="border-bottom: dotted 1px white; margin-bottom: 10px; padding-bottom: 10px;">
-        <div class="col-md-1 filter-type">
-            <b>街道</b>
-        </div>
-        <div class="col-md-11 filter-value">
-            <div class="col-md-2 hander"><span class="active">池阳街道</span></div>
-            <div class="col-md-2 hander"><span>秋浦街道</span></div>
-            <div class="col-md-2 hander"><span>江口街道</span></div>
-            <div class="col-md-2 hander"><span>里山街道</span></div>
-            <div class="col-md-2 hander"><span>马衙街道</span></div>
-            <div class="col-md-2 hander"><span>墩上街道</span></div>
-            <div class="col-md-2 hander"><span>梅龙街道</span></div>
-            <div class="col-md-2 hander"><span>秋江街道</span></div>
-            <div class="col-md-2 hander"><span>杏花村街道</span></div>
-            <div class="col-md-2 hander"><span>清溪街道</span></div>
-            <div class="col-md-2 hander"><span>牛头山镇</span></div>
-            <div class="col-md-2 hander"><span>殷汇镇</span></div>
-            <div class="col-md-2 hander"><span>涓桥镇</span></div>
+            <div class="col-md-2 hander" onclick="selectCity(id=0000);"><span class="active">不限</span></div>
+            {% for city in city_list %}
+                <div class="col-md-2 hander" id="c{{ city.city_code }}" onclick="selectCity(this.id);"><span>{{ city.city_name }}</span></div>
+            {% endfor %}
         </div>
     </div>
     <div class="clearfix" style="border-bottom: dotted 1px white; margin-bottom: 10px; padding-bottom: 10px;">
@@ -44,8 +16,31 @@
             <b>小区</b>
         </div>
         <div class="col-md-11 filter-value">
-            <div class="col-md-2 hander"><span class="active">江阳小区</span></div>
-            <div class="col-md-2 hander"><span>红色小区</span></div>
+            <div class="col-md-2 hander" onclick="selectVillage(id=0000);"><span class="active">不限</span></div>
+            {% for village in village_list %}
+                <div class="col-md-2 hander" id="v{{ village.village_code }}" onclick="selectVillage(this.id);"><span>{{ village.village_name }}</span></div>
+            {% endfor %}
         </div>
     </div>
+    <script>
+        function selectCity(id){
+            console.log(id);
+            $("#"+ id).children().addClass("active");
+            $("#" + id).siblings().children().removeClass("active");
+        }
+        function selectVillage(id){
+            console.log(id);
+            $("#"+ id).children().addClass("active");
+            $("#" + id).siblings().children().removeClass("active");
+        }
+    </script>
+{#    <div class="clearfix" style="border-bottom: dotted 1px white; margin-bottom: 10px; padding-bottom: 10px;">#}
+{#        <div class="col-md-1 filter-type">#}
+{#            <b>小区</b>#}
+{#        </div>#}
+{#        <div class="col-md-11 filter-value">#}
+{#            <div class="col-md-2 hander"><span class="active">江阳小区</span></div>#}
+{#            <div class="col-md-2 hander"><span>红色小区</span></div>#}
+{#        </div>#}
+{#    </div>#}
 </div>
