@@ -12,20 +12,20 @@
                     <div class="alert alert-white alert-dismissable" style="">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         <h4 style="background-color: #d58512; width: 50%; border-radius: 6px;text-align: center; color: white;">
-                            Cloud Speed
+                            温度
                         </h4>
-                        <h1 style="text-align: center;color:#d58512; ">47Km/h</h1>
-                        <h6 style="text-align: center;"><span class="icon-download"></span>explanation</h6>
+                        <h1 style="text-align: center;color:#d58512; "><span name="realtime_temperature">20</span>℃</h1>
+{#                        <h6 style="text-align: center;"><span class="icon-download"></span>explanation</h6>#}
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="alert alert-white alert-dismissable" style="">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         <h4 style="background-color: #45b6b0; width: 50%; border-radius: 6px;text-align: center; color: white;">
-                            Train Speed
+                            天气
                         </h4>
-                        <h1 style="text-align: center;color:#45b6b0; ">220Km/h</h1>
-                        <h6 style="text-align: center;"><span class="icon-download"></span>explanation</h6>
+                        <h1 style="text-align: center;color:#45b6b0; "><span name="realtime_skycon">晴</span></h1>
+{#                        <h6 style="text-align: center;"><span class="icon-download"></span>explanation</h6>#}
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -34,18 +34,18 @@
                         <h4 style="background-color: #65c3df; width: 50%; border-radius: 6px;text-align: center; color: white;">
                             PM2.5
                         </h4>
-                        <h1 style="text-align: center;color:#65c3df; ">50/优</h1>
-                        <h6 style="text-align: center;"><span class="icon-download"></span>explanation</h6>
+                        <h1 style="text-align: center;color:#65c3df; "><span name="realtime_pm25">0</span></h1>
+{#                        <h6 style="text-align: center;"><span class="icon-download"></span>explanation</h6>#}
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="alert alert-white alert-dismissable" style="">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         <h4 style="background-color: #ff6b6b; width: 50%; border-radius: 6px;text-align: center; color: white;">
-                            Accident
+                            风速
                         </h4>
-                        <h1 style="text-align: center;color:#ff6b6b; ">67%</h1>
-                        <h6 style="text-align: center;"><span class="icon-download"></span>explanation</h6>
+                        <h1 style="text-align: center;color:#ff6b6b; "><span name="realtime_speed">0</span>Km/h</h1>
+{#                        <h6 style="text-align: center;"><span class="icon-download"></span>explanation</h6>#}
                     </div>
                 </div>
             </div>
@@ -132,17 +132,17 @@
     <script type="text/javascript" src="http://api.map.baidu.com/library/LuShu/1.2/src/LuShu_min.js"></script>
     <script>
         var map = new BMap.Map("map");          // 创建地图实例
-        var point = new BMap.Point(117.48, 30.67);  // 创建点坐标
+        var point = new BMap.Point(117.533683,30.699859);  // 创建点坐标
         var sContent =
         "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>池州</h4>" +
         "<img style='float:right;margin:4px' id='imgDemo' src='http://b.hiphotos.baidu.com/baike/pic/item/adaf2edda3cc7cd9645689f33101213fb80e91a5.jpg' width='139' height='104' title='天安门'/>" +
-        "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>池州，别名贵池、秋浦，安徽省辖市，是长江南岸重要的滨江港口城市</p>" +
+        "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>安徽征圣智能科技有限公司主要从事设计、研发、制造和销售电力计量和智能电网配套设备。公司于2011年11月在池州经济技术开发区注册成立，公司现有员工100余人，其中专业研发人员占员工总数的32%，企业注册资金3000万元人民币。 公司在池州投建的年产150万户电能计量箱项目及永磁真空断路器及高压柜项目。该项目占地约60亩，总投资20000万元，其中固定资产投资16000万元。项目达产后年产值可达5亿元以上。达产后将填补池州市新材料（工程塑料）智能电能计量箱、第一代物联网设备、永磁智能真空断路器及小型集成化智能电控高压柜生产企业的空白。</p>" +
         "</div>";
         var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
         var marker = new BMap.Marker(point);
         map.addOverlay(marker);
         marker.addEventListener("click", function(){
-            lushu.start();
+{#            lushu.start();#}
             this.openInfoWindow(infoWindow);
             //图片加载完毕重绘infowindow
             document.getElementById('imgDemo').onload = function (){
@@ -180,34 +180,167 @@
             anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
             offset: size
         }));
-        var lushu;
+{#        var lushu;#}
         // 实例化一个驾车导航用来生成路线
-        var drv = new BMap.DrivingRoute('安徽', {
-            onSearchComplete: function(res) {
-                if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
-                    var plan = res.getPlan(0);
-                    var arrPois =[];
-                    for(var j=0;j<plan.getNumRoutes();j++){
-                        var route = plan.getRoute(j);
-                        arrPois= arrPois.concat(route.getPath());
-                    }
-                    map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
-                    map.setViewport(arrPois);
+{#        var drv = new BMap.DrivingRoute('安徽', {#}
+{#            onSearchComplete: function(res) {#}
+{#                if (drv.getStatus() == BMAP_STATUS_SUCCESS) {#}
+{#                    var plan = res.getPlan(0);#}
+{#                    var arrPois =[];#}
+{#                    for(var j=0;j<plan.getNumRoutes();j++){#}
+{#                        var route = plan.getRoute(j);#}
+{#                        arrPois= arrPois.concat(route.getPath());#}
+{#                    }#}
+{#                    map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));#}
+{#                    map.setViewport(arrPois);#}
+{##}
+{#                    lushu = new BMapLib.LuShu(map,arrPois,{#}
+{#                    defaultContent:"从池州到合肥",#}
+{#                    autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整#}
+{#                    icon  : new BMap.Icon('http://developer.baidu.com/map/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),#}
+{#                    speed: 60000,#}
+{#                    enableRotation:true,//是否设置marker随着道路的走向进行旋转#}
+{#                    });#}
+{#                }#}
+{#            }#}
+{#        });#}
+{#        drv.search('池州', '合肥');#}
+{#        window.onload = function(){#}
+{##}
+{#        }#}
 
-                    lushu = new BMapLib.LuShu(map,arrPois,{
-                    defaultContent:"从池州到合肥",
-                    autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
-                    icon  : new BMap.Icon('http://developer.baidu.com/map/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
-                    speed: 60000,
-                    enableRotation:true,//是否设置marker随着道路的走向进行旋转
-                    });
-                }
+    </script>
+    <script>
+        Array.prototype.remove = function(s) {
+            for (var i = 0; i < this.length; i++) {
+                if (s == this[i])
+                    this.splice(i, 1);
             }
-        });
-        drv.search('池州', '合肥');
-        window.onload = function(){
+        };
+        function STLMap() {
+            /** 存放键的数组(遍历用到) */
+            this.keys = new Array();
+            /** 存放数据 */
+            this.data = new Object();
 
+            /**
+             * 放入一个键值对
+             * @param {String} key
+             * @param {Object} value
+             */
+            this.put = function(key, value) {
+                if(this.data[key] == null){
+                    this.keys.push(key);
+                }
+                this.data[key] = value;
+            };
+
+            /**
+             * 获取某键对应的值
+             * @param {String} key
+             * @return {Object} value
+             */
+            this.get = function(key) {
+                return this.data[key];
+            };
+
+            /**
+             * 删除一个键值对
+             * @param {String} key
+             */
+            this.remove = function(key) {
+                this.keys.remove(key);
+                this.data[key] = null;
+            };
+
+            /**
+             * 遍历Map,执行处理函数
+             *
+             * @param {Function} 回调函数 function(key,value,index){..}
+             */
+            this.each = function(fn){
+                if(typeof fn != 'function'){
+                    return;
+                }
+                var len = this.keys.length;
+                for(var i=0;i<len;i++){
+                    var k = this.keys[i];
+                    fn(k,this.data[k],i);
+                }
+            };
+
+            /**
+             * 获取键值数组(类似Java的entrySet())
+             * @return 键值对象{key,value}的数组
+             */
+            this.entrys = function() {
+                var len = this.keys.length;
+                var entrys = new Array(len);
+                for (var i = 0; i < len; i++) {
+                    entrys[i] = {
+                        key : this.keys[i],
+                        value : this.data[i]
+                    };
+                }
+                return entrys;
+            };
+
+            /**
+             * 判断Map是否为空
+             */
+            this.isEmpty = function() {
+                return this.keys.length == 0;
+            };
+
+            /**
+             * 获取键值对数量
+             */
+            this.size = function(){
+                return this.keys.length;
+            };
+
+            /**
+             * 重写toString
+             */
+            this.toString = function(){
+                var s = "{";
+                for(var i=0;i<this.keys.length;i++,s+=','){
+                    var k = this.keys[i];
+                    s += k+"="+this.data[k];
+                }
+                s+="}";
+                return s;
+            };
         }
-
+    </script>
+    <script>
+        $.ajax({
+            url: 'https://api.caiyunapp.com/v2/tCJY0-YnHrHVkfXA/117.533683,30.699859/realtime.json',
+            type: 'GET',
+            dataType: 'jsonp',
+{#            crossDomain: true,#}
+            success: function(data){
+                console.log(data);
+                $("[name=realtime_temperature]").html(data.result.temperature);
+                var mp = new STLMap();
+                mp.put("CLEAR_DAY", "晴天");
+                mp.put("CLEAR_NIGHT", "晴夜");
+                mp.put("PARTLY_CLOUDY_DAY", "多云");
+                mp.put("PARTLY_CLOUDY_NIGHT", "多云");
+                mp.put("CLOUDY", "阴");
+                mp.put("RAIN", "雨");
+                mp.put("SLEET", "冻雨");
+                mp.put("SNOW", "雪");
+                mp.put("WIND", "风");
+                mp.put("FOG", "雾");
+                mp.put("HAZE", "霾");
+                $("[name=realtime_skycon]").html(mp.get(data.result.skycon));
+                $("[name=realtime_pm25]").html(data.result.pm25);
+                $("[name=realtime_speed]").html(data.result.wind.speed);
+            },
+            error: function(data){
+                alertify.error("获取实时天气失败");
+            }
+        })
     </script>
 {% endblock %}
