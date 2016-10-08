@@ -6,7 +6,7 @@ from app.models import AppUser
 from django.contrib.auth.hashers import check_password,make_password
 import sys
 reload(sys)
-sys.setdefaultencoding('utf-8') 
+sys.setdefaultencoding('utf-8')
 
 @csrf_exempt
 def login(request):
@@ -15,7 +15,7 @@ def login(request):
         return render(request, "terminalUser/terminal_login.html", {})
     else:
         try:
-            username = request.POST.get("username", None).decode
+            username = request.POST.get("username", None)
             password = request.POST.get("password", None)
             print username, password
             if username is None or password is None:

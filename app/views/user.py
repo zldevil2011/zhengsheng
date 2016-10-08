@@ -5,6 +5,10 @@ from django.contrib.auth.models import User
 from app.models import AppUser
 from django.contrib.auth.hashers import check_password
 import math
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 
 @csrf_exempt
 def login(request):
