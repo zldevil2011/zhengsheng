@@ -54,6 +54,10 @@ def admin_device(request):
             pass
 
     total_page = int(math.ceil(device_list.count()/20.0))
+    if total_page < 1:
+        total_page = 1
+    if page > total_page:
+        return HttpResponseRedirect("/admin_device?page=" + str(total_page))
     start_num = (page - 1) * 20
     end_num = page * 20
     device_list = device_list[start_num:end_num]
@@ -212,8 +216,43 @@ def admin_device_remove(request):
         page = int(request.GET.get("page", 1))
         if page < 1:
             return HttpResponseRedirect("/admin_device/remove?page=1")
+        try:
+            city_code = int(request.GET.get("city_code"))
+        except:
+            city_code = 0
+        try:
+            village_code = int(request.GET.get("village_code"))
+        except:
+            village_code = 0
+        print("CV_code:")
+        print(city_code)
+        print(village_code)
+        city_list = City.objects.all()
+        try:
+            city = City.objects.get(city_code=city_code)
+            village_list = Village.objects.filter(city=city)
+        except:
+            village_list = None
+        print("CV:")
+        print(city_list)
+        print(village_list)
+
         device_list = Device.objects.exclude(device_status=u"未安装")
+        if city_code == 0 and village_code == 0:
+            pass
+        elif village_code == 0:
+            device_list = device_list.filter(city_code=city_code)
+        else:
+            try:
+                device_list = device_list.filter(city_code=city_code, village_code=village_code)
+            except:
+                pass
+        # device_list = Device.objects.exclude(device_status=u"未安装")
         total_page = int(math.ceil(device_list.count() / 20.0))
+        if total_page < 1:
+            total_page = 1
+        if page > total_page:
+            return HttpResponseRedirect("/admin_device/remove?page=" + str(page))
         start_num = (page - 1) * 20
         end_num = page * 20
         device_list = device_list[start_num:end_num]
@@ -236,6 +275,10 @@ def admin_device_remove(request):
             "device_list": device_list,
             "page": page,
             "total_page": total_page,
+            "city_list": city_list,
+            "village_list": village_list,
+            "city_code": "c" + str(city_code),
+            "village_code": "v" + str(village_code),
         })
     else:
         device_id = request.POST.get("device_id", None)
@@ -270,15 +313,49 @@ def admin_device_maintain(request):
     except:
         return HttpResponseRedirect("/admin_login/")
     if request.method == "GET":
+        try:
+            city_code = int(request.GET.get("city_code"))
+        except:
+            city_code = 0
+        try:
+            village_code = int(request.GET.get("village_code"))
+        except:
+            village_code = 0
+        print("CV_code:")
+        print(city_code)
+        print(village_code)
+        city_list = City.objects.all()
+        try:
+            city = City.objects.get(city_code=city_code)
+            village_list = Village.objects.filter(city=city)
+        except:
+            village_list = None
+        print("CV:")
+        print(city_list)
+        print(village_list)
+
+        repair_list = Repairing.objects.all().order_by('-time')
+        if city_code == 0 and village_code == 0:
+            pass
+        elif village_code == 0:
+            device_list = repair_list.filter(device__city_code=city_code)
+        else:
+            try:
+                device_list = repair_list.filter(device__city_code=city_code, device__village_code=village_code)
+            except:
+                pass
         page = int(request.GET.get("page", 1))
         if page < 1:
             return HttpResponseRedirect("/admin_device/maintain?page=1")
-        repair_list = Repairing.objects.all().order_by('-time')
+        # repair_list = Repairing.objects.all().order_by('-time')
         total_page = int(math.ceil(repair_list.count()/10.0))
         if total_page < 1:
             total_page = 1
         if page > total_page:
             return HttpResponseRedirect("/admin_device/maintain?page=" + str(total_page))
+        start_num = (page - 1) * 20
+        end_num = page * 20
+        repair_list = repair_list[start_num:end_num]
         repair_list = serializer(repair_list, foreign=True)
         for repair in repair_list:
             device = Device.objects.get(device_id=int(repair["device"]["device_id"]))
@@ -297,6 +374,10 @@ def admin_device_maintain(request):
             "repair_list": repair_list,
             "page": page,
             "total_page": total_page,
+            "city_list": city_list,
+            "village_list": village_list,
+            "city_code": "c" + str(city_code),
+            "village_code": "v" + str(village_code),
         })
     else:
         repair_id = request.POST.get("repair_id", None)

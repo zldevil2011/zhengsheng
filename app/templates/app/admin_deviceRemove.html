@@ -188,4 +188,27 @@
 			return false;
         }
     </script>
+    <script>
+        $("[name=filter_city]").on("click", function(){
+            var city_code = $(this).prop("id");
+            console.log(city_code);
+            var village_code = "v0";
+            console.log("c_id = " + city_code + " ; v_id = " + village_code );
+            FilterDeviceByLocationFun(city_code, village_code);
+        });
+        $("[name=filter_village]").on("click", function(){
+            var city_code = $("[name=filter_city] .active").parents().prop("id");
+            var village_code = $(this).prop("id");
+            console.log("c_id = " + city_code + " ; v_id = " + village_code );
+            FilterDeviceByLocationFun(city_code, village_code);
+        });
+        function FilterDeviceByLocationFun(city_code, village_code){
+            city_code = city_code.substr(1);
+            village_code = village_code.substr(1);
+            console.log(city_code);
+            console.log(village_code);
+{#            return false;#}
+            window.location.href = "/admin_device/remove?page=1&city_code=" + city_code + "&village_code=" + village_code;
+        }
+    </script>
 {% endblock %}
