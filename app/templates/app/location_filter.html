@@ -5,9 +5,9 @@
             <b>地区</b>
         </div>
         <div class="col-md-11 filter-value">
-            <div class="col-md-2 hander" id="c0000" onclick="selectCity(this.id);"><span class="active">不限</span></div>
+            <div name = "filter_city" class="col-md-2 hander" id="c0" onclick="selectCity(this.id);"><span class="">不限</span></div>
             {% for city in city_list %}
-                <div class="col-md-2 hander" id="c{{ city.city_code }}" onclick="selectCity(this.id);"><span>{{ city.city_name }}</span></div>
+                <div name = "filter_city" class="col-md-2 hander" id="c{{ city.city_code }}" onclick="selectCity(this.id);"><span>{{ city.city_name }}</span></div>
             {% endfor %}
         </div>
     </div>
@@ -16,23 +16,32 @@
             <b>小区</b>
         </div>
         <div class="col-md-11 filter-value">
-            <div class="col-md-2 hander" id="v0000" onclick="selectVillage(this.id);"><span class="active">不限</span></div>
+            <div name = "filter_village" class="col-md-2 hander" id="v0" onclick="selectVillage(this.id);"><span class="">不限</span></div>
             {% for village in village_list %}
-                <div class="col-md-2 hander" id="v{{ village.village_code }}" onclick="selectVillage(this.id);"><span>{{ village.village_name }}</span></div>
+                <div name = "filter_village" class="col-md-2 hander" id="v{{ village.village_code }}" onclick="selectVillage(this.id);"><span>{{ village.village_name }}</span></div>
             {% endfor %}
         </div>
     </div>
     <script>
         function selectCity(id){
-            console.log(id);
+{#            console.log(id);#}
             $("#"+ id).children().addClass("active");
             $("#" + id).siblings().children().removeClass("active");
         }
         function selectVillage(id){
-            console.log(id);
+{#            console.log(id);#}
             $("#"+ id).children().addClass("active");
             $("#" + id).siblings().children().removeClass("active");
         }
+        window.onload = function(){
+            var city_code = "{{ city_code }}";
+            var village_code = "{{ village_code }}";
+            $("#"+ city_code).children().addClass("active");
+            $("#" + city_code).siblings().children().removeClass("active");
+            $("#" + village_code).children().addClass("active");
+            $("#" + village_code).siblings().children().removeClass("active");
+        };
+
     </script>
 {#    <div class="clearfix" style="border-bottom: dotted 1px white; margin-bottom: 10px; padding-bottom: 10px;">#}
 {#        <div class="col-md-1 filter-type">#}

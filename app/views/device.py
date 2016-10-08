@@ -21,7 +21,38 @@ def admin_device(request):
     page = int(request.GET.get("page", 1))
     if page < 1:
         return HttpResponseRedirect("/admin_device?page=1")
+    try:
+        city_code = int(request.GET.get("city_code"))
+    except:
+        city_code = 0
+    try:
+        village_code = int(request.GET.get("village_code"))
+    except:
+        village_code = 0
+    print("CV_code:")
+    print(city_code)
+    print(village_code)
+    city_list = City.objects.all()
+    try:
+        city = City.objects.get(city_code=city_code)
+        village_list = Village.objects.filter(city=city)
+    except:
+        village_list = None
+    print("CV:")
+    print(city_list)
+    print(village_list)
+
     device_list = Device.objects.exclude(device_status=u"未安装")
+    if city_code == 0 and village_code == 0:
+        pass
+    elif village_code == 0:
+        device_list = device_list.filter(city_code=city_code)
+    else:
+        try:
+            device_list = device_list.filter(city_code=city_code, village_code=village_code)
+        except:
+            pass
+
     total_page = int(math.ceil(device_list.count()/20.0))
     start_num = (page - 1) * 20
     end_num = page * 20
@@ -44,6 +75,10 @@ def admin_device(request):
         "device_list": device_list,
         "page": page,
         "total_page": total_page,
+        "city_list": city_list,
+        "village_list": village_list,
+        "city_code": "c" + str(city_code),
+        "village_code": "v" + str(village_code),
     })
 
 
