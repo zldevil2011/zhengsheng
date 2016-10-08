@@ -102,16 +102,26 @@ def admin_data(request):
             except Exception, e:
                 print str(e)
                 today_power += 0
-        power_total += (today_power - yesterday_power)
-        if today_power - yesterday_power > power_max:
-            power_max = today_power - yesterday_power
-            day_max = i
-        if today_power - yesterday_power < power_min:
-            power_min = today_power - yesterday_power
-            day_min = i
         month_day.append(i)
-        month_power.append(today_power - yesterday_power)
-        yesterday_power = today_power
+        if today_power != 0:
+            month_power.append(today_power - yesterday_power)
+            power_total += (today_power - yesterday_power)
+            if today_power - yesterday_power > power_max:
+                power_max = today_power - yesterday_power
+                day_max = i
+            if today_power - yesterday_power < power_min:
+                power_min = today_power - yesterday_power
+                day_min = i
+            yesterday_power = today_power
+        else:
+            power_total += 0
+            month_power.append(0)
+            if today_power > power_max:
+                power_max = today_power
+                day_max = i
+            if today_power < power_min:
+                power_min = today_power
+                day_min = i
     day_max = str(day_max) + "日"
     day_min = str(day_min) + "日"
     print "当前小区当月每天的用电总量"
@@ -219,8 +229,6 @@ def admin_user_data(request):
     except:
         return HttpResponseRedirect("/admin_login/")
     # 对于每个用户，有两种数据，当月每天用电量和当年每月用电量
-    # 计算当月每天的用电量，用当天的采集量减去昨天的采集量即为当天的用电量
-    # 首先，计算当月1号 则先获取上月最后一次的采集量
     device_id = request.POST.get("device_id", None)
     if device_id is None:
         return HttpResponse("error")
@@ -233,6 +241,18 @@ def admin_user_data(request):
     year = today.year
     month = today.month
     day = today.day
+    # 计算当月每天的用电量，用当天的采集量减去昨天的采集量即为当天的用电量
+    # 首先，计算当月1号 则先获取上月最后一次的采集量
+    # 统计当前设备当月的用电高峰日期，低谷日期，总用电量
+    try:
+        user_power_min = sys.maxint
+    except:
+        user_power_min = sys.maxsize
+    user_power_max = -1
+    user_day_min = 1
+    user_day_max = 1
+    user_power_total = 0
+
     yesterday = datetime(year,  month, 1) - timedelta(days=1)
     yesterday_power = 0
     try:
@@ -245,6 +265,9 @@ def admin_user_data(request):
         month_day = []
         month_power = []
     except Exception, e:
+        datas_list = None
+        month_day = []
+        month_power = []
         print str(e)
     print "ZZZ"
     for i in range(1, day + 1):
@@ -254,14 +277,71 @@ def admin_user_data(request):
             today_power = 0
         month_day.append(i)
         if today_power != 0:
+            user_power_total += (today_power - yesterday_power)
             month_power.append(today_power - yesterday_power)
+            if today_power - yesterday_power > user_power_max:
+                user_power_max = today_power - yesterday_power
+                user_day_max = i
+            if today_power - yesterday_power < user_power_min:
+                user_power_min = today_power - yesterday_power
+                user_day_min = i
             yesterday_power = today_power
         else:
+            user_power_total += 0
             month_power.append(0)
+            if today_power > user_power_max:
+                user_power_max = today_power
+                user_day_max = i
+            if today_power < user_power_min:
+                user_power_min = today_power
+                user_day_min = i
+
     month_data = {}
     month_data["month_day"] = month_day
     month_data["month_power"] = month_power
     print "xxxxx"
-    return HttpResponse(json.dumps(month_data), "application/json")
+    # 计算当前用户当年每月用电量数据
+    # 从今年1月份开始，用当月最后一天的数据减去上一个月最后一天的数据即为当月所用电量
+    pre_month_last_day = datetime(year, 1, 1) - timedelta(days=1)
+    pre_month_last_power = 0
+    try:
+        pre_month_last_power = Data.objects.filter(device=device, powerT__year=pre_month_last_day.year, powerT__month=pre_month_last_day.month).order_by('-powerT')[0]
+    except:
+        pre_month_last_power = 0
+    print "去年12月份最后一次采集量", pre_month_last_power
+    try:
+        datas_list = Data.objects.filter(device_id=device, powerT__year=year).order_by('-powerT')
+        year_month = []
+        year_power = []
+    except Exception, e:
+        datas_list = None
+        year_month = []
+        year_power = []
+        print str(e)
+    for i in range(1, month + 1):
+        try:
+            month_power = datas_list.filter(powerT__month=i).order_by('-powerT')[0].powerV
+        except:
+            month_power = 0
+        year_month.append(i)
+        if month_power != 0:
+            year_power.append(month_power - pre_month_last_power)
+            pre_month_last_power = month_power
+        else:
+            year_power.append(0)
+    year_data = {}
+    year_data["year_month"] = year_month
+    year_data["year_power"] = year_power
+    ret_data = {}
+    ret_data["month"] = month_data
+    ret_data["year"] = year_data
+    ret_data["user_power_total"] = user_power_total
+    ret_data["user_power_max"] = user_power_max
+    ret_data["user_day_max"] = str(user_day_max) + "号"
+    ret_data["user_power_min"] = user_power_min
+    ret_data["user_day_min"] = str(user_day_min) + "号"
+
+
+    return HttpResponse(json.dumps(ret_data), "application/json")
 
 

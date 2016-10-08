@@ -3,7 +3,7 @@ function sleep(n) { //n表示的毫秒数
     while (true) if (new Date().getTime() - start > n) break;
 }
 $(function(){
-    console.log("xxx");
+    //console.log("xxx");
     $("[name=slide-btn]").on("click", function(){
         console.log("xx");
         console.log($(".side-menu").css("left"));

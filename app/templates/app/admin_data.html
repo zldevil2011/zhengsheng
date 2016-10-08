@@ -111,6 +111,36 @@
             </div>
         </div>
 
+
+{#        <div class="row" style="padding: 10px 30px;background-color: rgba(40, 42, 55,0.75);">#}
+{#            <hr>#}
+{#            <div id="deviceInfoMap" style="width: 100%; height:400px;"></div>#}
+{#        </div>#}
+{#        某一用户的详细使用情况#}
+        <div class="row" style="padding: 10px 30px;background-color: rgba(40, 42, 55,0.75);">
+            <hr>
+            <div class="col-md-12" style="text-align: left;">
+                <h4><span class="icon-user"></span>用户名称：用电量统计</h4>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-6" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
+                    <div id = "UserMonth" style="width: 100%; height:400px;"></div>
+                </div>
+                <div class="col-md-6"  style="margin-bottom:1rem;border: solid 1px #FFFFFF;height: 400px;padding-left: 0;padding-right: 0;">
+                    <ul class="list-group">
+                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">用电高峰：<span name="user_power_max"></span>kwh</span><span style="width: 50%;display: inline-block;">时间：<span name="user_day_max"></span></span></li>
+                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">用电低谷：<span name="user_power_min"></span>kwh</span><span style="width: 50%;display: inline-block;">时间：<span name="user_day_min"></span></span></li>
+                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">总用电量：<span name="user_power_total"></span>kwh</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-12" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
+                <div id = "UserYear" style="width: 100%; height:400px;">该用户月度曲线</div>
+            </div>
+        </div>
+
+
         <div class="row bg-color" style="padding: 10px 30px;">
             <hr>
             <div class="col-md-12" style="text-align: left;">
@@ -140,39 +170,7 @@
                 </div>
             </div>
         </div>
-{#        <div class="row" style="padding: 10px 30px;background-color: rgba(40, 42, 55,0.75);">#}
-{#            <hr>#}
-{#            <div id="deviceInfoMap" style="width: 100%; height:400px;"></div>#}
-{#        </div>#}
-{#        某一用户的详细使用情况#}
-        <div class="row" style="padding: 10px 30px;background-color: rgba(40, 42, 55,0.75);">
-            <hr>
-            <div class="col-md-12" style="text-align: left;">
-                <h4><span class="icon-user"></span>用户名称：用电量统计</h4>
-            </div>
-            <div class="col-md-12">
-                <div class="col-md-6" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
-                    <div id = "UserMonth" style="width: 100%; height:400px;"></div>
-                </div>
-                <div class="col-md-6"  style="margin-bottom:1rem;border: solid 1px #FFFFFF;height: 400px;padding-left: 0;padding-right: 0;">
-                    <ul class="list-group">
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">用电高峰：10000kw</span><span style="width: 50%;display: inline-block;">时间：20：00</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">用电低谷：100kw</span><span style="width: 50%;display: inline-block;">时间：00：00</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">总用电量：100000kwh</span><span style="width: 50%;display: inline-block;">时间：00:00-23:00</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">总发电量：30000kw</span><span style="width: 50%;display: inline-block;">时间：00:00-23:00</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">最高温度：70℃</span><span style="width: 50%;display: inline-block;">时间：14：28</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">最高瞬时电压：240V</span><span style="width: 50%;display: inline-block;">时间：14：28</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">最高瞬时电流：2.5A</span><span style="width: 50%;display: inline-block;">时间：14：28</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">平均有效电压：220V</span><span style="width: 50%;display: inline-block;">时间：14：28</span></li>
-                       <li class="list-group-item"><span style="width: 50%;display: inline-block;">平均有效电流：2.0A</span><span style="width: 50%;display: inline-block;">时间：14：28</span></li>
-                    </ul>
-                </div>
-            </div>
 
-            <div class="col-md-12" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
-                <div id = "UserYear" style="width: 100%; height:400px;">该用户月度曲线</div>
-            </div>
-        </div>
     </div>
 {% endblock %}
 {% block special_js %}
@@ -401,11 +399,11 @@
         var yy = {{ year_data | safe }};
         var year_month = yy["year_month"];
         var year_power = yy["year_power"];
-        console.log(year_month);
+{#        console.log(year_month);#}
         for(var i = 0; i < year_month.length; ++i){
             year_month[i] = year_month[i] + "月";
         }
-        console.log(year_month);
+{#        console.log(year_month);#}
         $('#AllUserYear').highcharts({
             chart: {
                 type: 'column',
@@ -555,7 +553,7 @@
     <script>
 {#        点击该按钮查看当前用户的用电信息#}
         function showUserInfo(id){
-            alertify.success("Id = " + id);
+            alertify.success("设备ID = " + id);
 {#            异步请求该用户的用电信息#}
             $.ajax({
                 url: '/admin_data/userinfo/',
@@ -565,7 +563,16 @@
                     if(data == "error"){
                         alertify.error("数据缺失");
                     }else{
-                        userMonth(data.month_day, data.month_power);
+{#                        console.log(data);#}
+                        var month = data.month;
+                        var year = data.year;
+                        userMonth(month.month_day, month.month_power);
+                        userYear(year.year_month, year.year_power);
+                        $("[name=user_power_max]").html(data.user_power_max);
+                        $("[name=user_power_min]").html(data.user_power_min);
+                        $("[name=user_day_min]").html(data.user_day_min);
+                        $("[name=user_day_max]").html(data.user_day_max);
+                        $("[name=user_power_total]").html(data.user_power_total);
                     }
                 },
                 error: function(data){
@@ -636,6 +643,77 @@
                 series: [{
                     name: 'Tokyo',
                     data: month_power
+                }]
+            });
+        }
+    </script>
+    <script>
+        function userYear(year_month, year_power){
+            for(var i = 0; i < year_month.length; ++i){
+                year_month[i] = year_month[i] + "月";
+            }
+            $('#UserYear').highcharts({
+                chart: {
+                    type: 'column',
+                    margin: [ 50, 50, 100, 80],
+                    backgroundColor: 'rgba(80,81,95,0.1)',
+                },
+                title: {
+                    text: '该用户一年用电量',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                xAxis: {
+                    categories: year_month,
+                    labels: {
+                        rotation: -45,
+                        align: 'right',
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color:'#FFFFFF',
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '用电量(Kwh)',
+                        style: {
+                            color: '#FFFFFF',
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color:'#FFFFFF',
+                        }
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: '用电量: <b>{point.y:.1f} kwh</b>',
+                },
+                series: [{
+                    name: 'Population',
+                    data: year_power,
+                    dataLabels: {
+                        enabled: true,
+                        rotation: -90,
+                        color: '#FFFFFF',
+                        align: 'right',
+                        x: 4,
+                        y: 10,
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif',
+                            textShadow: '0 0 3px black'
+                        }
+                    }
                 }]
             });
         }
