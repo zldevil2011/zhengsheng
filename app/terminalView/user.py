@@ -12,23 +12,28 @@ def login(request):
     if request.method == "GET":
         return render(request, "terminalUser/terminal_login.html", {})
     else:
-        username = request.POST.get("username", None)
-        password = request.POST.get("password", None)
-        print username, password
-        if username is None or password is None:
-            return HttpResponse("error")
         try:
-            user = User.objects.get(username=username)
-            if check_password(password, user.password):
-                appuser = AppUser.objects.get(user=user)
-                print "check ok"
-                request.session['username'] = appuser.username
-                return HttpResponse("success")
-            else:
-                print "not ok"
+            username = request.POST.get("username", None)
+            password = request.POST.get("password", None)
+            print username, password
+            if username is None or password is None:
+                return HttpResponse("error")
+            try:
+                user = User.objects.get(username=username)
+                if check_password(password, user.password):
+                    appuser = AppUser.objects.get(user=user)
+                    print "check ok"
+                    request.session['username'] = appuser.username
+                    return HttpResponse("success")
+                else:
+                    print "not ok"
+                    return HttpResponse("error")
+            except Exception, e:
+                print str(e)
                 return HttpResponse("error")
         except Exception, e:
-            print str(e)
+            print "Get Data"
+            print(str(e))
             return HttpResponse("error")
 
 
