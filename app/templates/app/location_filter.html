@@ -5,7 +5,7 @@
             <b>地区</b>
         </div>
         <div class="col-md-11 filter-value">
-            <div class="col-md-2 hander" onclick="selectCity(id=0000);"><span class="active">不限</span></div>
+            <div class="col-md-2 hander" id="c0000" onclick="selectCity(this.id);"><span class="active">不限</span></div>
             {% for city in city_list %}
                 <div class="col-md-2 hander" id="c{{ city.city_code }}" onclick="selectCity(this.id);"><span>{{ city.city_name }}</span></div>
             {% endfor %}
@@ -16,7 +16,7 @@
             <b>小区</b>
         </div>
         <div class="col-md-11 filter-value">
-            <div class="col-md-2 hander" onclick="selectVillage(id=0000);"><span class="active">不限</span></div>
+            <div class="col-md-2 hander" id="v0000" onclick="selectVillage(this.id);"><span class="active">不限</span></div>
             {% for village in village_list %}
                 <div class="col-md-2 hander" id="v{{ village.village_code }}" onclick="selectVillage(this.id);"><span>{{ village.village_name }}</span></div>
             {% endfor %}
