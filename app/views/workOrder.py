@@ -20,6 +20,8 @@ def index(request):
     if page < 1:
         return HttpResponseRedirect("/admin_work_order?page=1")
     total_page = int(math.ceil(work_order_list.count() / 20.0))
+    if total_page < 1:
+        total_page = 1
     if page > total_page:
         return HttpResponseRedirect("/admin_work_order?page=" + str(total_page))
     start_num = (page - 1) * 20
