@@ -18,29 +18,60 @@ def admin_data(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
+    try:
+        city_code = int(request.GET.get("city_code"))
+    except:
+        city_code = 0
+    try:
+        village_code = int(request.GET.get("village_code"))
+    except:
+        village_code = 0
+    print("CV_code:")
+    print(city_code)
+    print(village_code)
+    city_list = City.objects.all()
+    try:
+        city = City.objects.get(city_code=city_code)
+        village_list = Village.objects.filter(city=city)
+    except:
+        village_list = None
+    print("CV:")
+    print(city_list)
+    print(village_list)
+
+    device_list = Device.objects.exclude(device_status=u"未安装")
+    if city_code == 0 and village_code == 0:
+        pass
+    elif village_code == 0:
+        device_list = device_list.filter(city_code=city_code)
+    else:
+        try:
+            device_list = device_list.filter(city_code=city_code, village_code=village_code)
+        except:
+            pass
     page = int(request.GET.get("page", 1))
     if page < 1:
         return HttpResponseRedirect("/admin_data?page=1")
     start_num = (page - 1) * 10
     end_num = (page) * 10
-    try:
-        city_code = int(request.GET.get("city_code"))
-    except:
-        city_code = 1001
-    try:
-        village_code = int(request.GET.get("village_code"))
-    except:
-        village_code = 1001
-    city_list = City.objects.all()
-    try:
-        village_list = Village.objects.filter(city=city_list[0])
-    except:
-        village_list = None
+    # try:
+    #     city_code = int(request.GET.get("city_code"))
+    # except:
+    #     city_code = 1001
+    # try:
+    #     village_code = int(request.GET.get("village_code"))
+    # except:
+    #     village_code = 1001
+    # city_list = City.objects.all()
+    # try:
+    #     village_list = Village.objects.filter(city=city_list[0])
+    # except:
+    #     village_list = None
 
-    city = City.objects.get(city_code=city_code)
-    village = Village.objects.get(village_code=village_code)
+    # city = City.objects.get(city_code=city_code)
+    # village = Village.objects.get(village_code=village_code)
     # 首先查找出属于该地区的所有终端
-    device_list = Device.objects.filter(city_code=city_code, village_code=village_code)
+    # device_list = Device.objects.filter(city_code=city_code, village_code=village_code)
     total_page = int(math.ceil(device_list.count()/10.0))
     if total_page < 1:
         total_page = 1
@@ -51,7 +82,9 @@ def admin_data(request):
     device_list = device_list[start_num:end_num]
     device_list = serializer(device_list)
     for device in device_list:
-        address = city.city_name + village.village_name
+        city_name = City.objects.get(city_code=int(device["city_code"])).city_name
+        village_name = Village.objects.get(village_code=int(device["village_code"])).village_name
+        address = city_name + village_name
         device["address"] = address
         if str(device["device_id"])[0:1] == "1":
             device["type"] = u"终端"
@@ -115,6 +148,7 @@ def admin_data(request):
                 print str(e)
                 today_power += 0
         month_day.append(i)
+        print "today_power: ", today_power
         if today_power != 0:
             month_power.append(today_power - yesterday_power)
             power_total += (today_power - yesterday_power)
@@ -231,8 +265,12 @@ def admin_data(request):
         "year_data": year_data,
         "pre_year_data": pre_year_data,
         "compare_max": compare_max,
-        "village_list": village_list,
+        # "village_list": village_list,
+        # "city_list": city_list,
         "city_list": city_list,
+        "village_list": village_list,
+        "city_code": "c" + str(city_code),
+        "village_code": "v" + str(village_code),
     })
 
 
