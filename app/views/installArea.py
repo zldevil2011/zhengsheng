@@ -2,13 +2,13 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from app.models import AppUser, City, Village
+from app.models import AppUser, City, Village, Adminer
 from django.contrib.auth.hashers import check_password
 
 
 def area_list(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     try:
@@ -35,4 +35,5 @@ def area_list(request):
         "city_list": city_list,
         "village_list": village_list,
         "city_code": city_code,
+        "user": user,
     })

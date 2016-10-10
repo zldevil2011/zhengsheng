@@ -10,6 +10,7 @@ class Adminer(models.Model):
     area = models.CharField(max_length=32, null=True)
     time = models.DateTimeField(null=True)
     level = models.SmallIntegerField(default=0)
+    user = models.OneToOneField(User)
 
     def __unicode__(self):
         return self.name
@@ -26,7 +27,7 @@ class Device(models.Model):
     manufacture_date = models.DateTimeField(null=True)  # 生产日期
     gateway_code = models.SmallIntegerField(null=True)  # 网关编号，区域内编号
     meter_box = models.SmallIntegerField(null=True)  # 表箱编号
-    device_status = models.CharField(max_length=32, default='Offline')  # 设备状态 是否投入使用
+    device_status = models.CharField(max_length=32, default='未安装')  # 设备状态 是否投入使用
 
     def __unicode__(self):
         return str(self.device_id)

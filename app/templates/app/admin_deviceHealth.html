@@ -266,10 +266,6 @@
 {% endblock %}
 {% block special_js %}
     <script>
-        $("#collapseOne").removeClass("in");
-        $("#collapseTwo").addClass("in");
-    </script>
-    <script>
         $(".taskBoxLinks").on("mousemove", function(e){
             var $mouse = e.pageX - $(this).offset().left;
             var $span = Math.round($mouse/2);

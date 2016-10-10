@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-md-11">
                     {% for city in city_list %}
-                        <div class="col-md-2 mb10">
+                        <div class="col-md-3 mb10 text-center">
                             <div id="{{ city.city_code }}" class="alert alert-blankRed alert-dismissable area-list-item" style="" onclick="changeCity(this.id);">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                     {{ city.city_name }}
@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-md-11 filter-value">
                     {% for village in village_list %}
-                    <div class="col-md-2 mb10">
+                    <div class="col-md-3 mb10 text-center">
                         <div class="alert alert-blankRed alert-dismissable area-list-item" style="">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                 {{ village.village_name }}
@@ -113,6 +113,10 @@
     </div>
 {% endblock %}
 {% block special_js %}
+    <script>
+        $("#collapseOne").removeClass("in");
+        $("#collapseTwo").addClass("in");
+    </script>
     <script>
         $("[name=deleteArea]").on("click", deleteAreaFunc);
         $("[name=saveArea]").on("click", saveAreaFunc);

@@ -2,7 +2,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from app.models import AppUser
+from app.models import AppUser, Adminer
 from django.contrib.auth.hashers import check_password
 import math
 import sys
@@ -15,24 +15,38 @@ def login(request):
     username = request.POST.get('username', None)
     password = request.POST.get('password', None)
     print username, password
+    print "before"
     try:
-        user = User.objects.get(username = username)
+        print "try"
+        try:
+            print "TRY1"
+            user = User.objects.get(username = username)
+        except Exception, e:
+            print "EXP"
+            print str(e)
+            user = None
+            return HttpResponse("error")
         print user.password
+        print check_password(password, user.password)
         if check_password(password, user.password):
-            appuser = AppUser.objects.get(user=user)
+            try:
+                adminer = Adminer.objects.get(user=user)
+            except:
+                return HttpResponse("error")
             print "check ok"
-            request.session['username'] = appuser.username
+            request.session['username'] = adminer.name
             return HttpResponse("success")
         else:
             return HttpResponse("error")
     except AppUser.DoesNotExist:
+        print "except"
         return HttpResponse("error")
 
 
 @csrf_exempt
 def logout(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     del request.session['username']
@@ -42,7 +56,7 @@ def logout(request):
 @csrf_exempt
 def admin_account(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     try:
@@ -62,13 +76,14 @@ def admin_account(request):
     return render(request, 'app/admin_account.html', {
         "userlist" : userlist,
         "page": page,
-        "total_page": total_page
+        "total_page": total_page,
+        "user": user
     })
 
 
 def admin_work_order(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     return render(request, 'app/admin_workOrder.html', {})

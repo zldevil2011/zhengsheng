@@ -3,7 +3,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from app.models import AppUser, Device, City, Village, Repairing
+from app.models import AppUser, Device, City, Village, Repairing, Adminer
 from django.contrib.auth.hashers import check_password,make_password
 from dss.Serializer import serializer
 from datetime import datetime
@@ -15,7 +15,7 @@ from dss.Serializer import serializer
 @csrf_exempt
 def admin_device(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     page = int(request.GET.get("page", 1))
@@ -65,9 +65,9 @@ def admin_device(request):
     for device in device_list:
         device["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(device["manufacture_date"]))
         D = Device.objects.get(device_id=int(device["device_id"]))
-        user = AppUser.objects.get(device=D)
-        device["address"] = user.address
-        device["user"] = user.username
+        user_t = AppUser.objects.get(device=D)
+        device["address"] = user_t.address
+        device["user"] = user_t.username
         print type(device["device_id"])
         if str(device["device_id"])[0:1] == '1':
             device["type"] = u"终端"
@@ -83,13 +83,14 @@ def admin_device(request):
         "village_list": village_list,
         "city_code": "c" + str(city_code),
         "village_code": "v" + str(village_code),
+        "user": user,
     })
 
 
 @csrf_exempt
 def admin_device_filter(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     try:
@@ -139,7 +140,7 @@ def admin_device_filter(request):
 @csrf_exempt
 def admin_device_add(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     if request.method == "GET":
@@ -148,6 +149,7 @@ def admin_device_add(request):
         return render(request, 'app/admin_deviceAdd.html', {
             "city_list":city_list,
             "village_list":village_list,
+            "user": user,
         })
     else:
         city_code = request.POST.get("city_code", None)
@@ -209,9 +211,10 @@ def admin_device_add(request):
 @csrf_exempt
 def admin_device_remove(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
+    print(request.session['username'])
     if request.method == "GET":
         page = int(request.GET.get("page", 1))
         if page < 1:
@@ -260,9 +263,9 @@ def admin_device_remove(request):
         for device in device_list:
             device["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(device["manufacture_date"]))
             D = Device.objects.get(device_id=int(device["device_id"]))
-            user = AppUser.objects.get(device=D)
-            device["address"] = user.address
-            device["user"] = user.username
+            user_t = AppUser.objects.get(device=D)
+            device["address"] = user_t.address
+            device["user"] = user_t.username
             print type(device["device_id"])
             if str(device["device_id"])[0:1] == '1':
                 device["type"] = u"终端"
@@ -270,7 +273,7 @@ def admin_device_remove(request):
                 device["type"] = u"中继"
             else:
                 device["type"] = u"网关"
-
+        print "device remove - user = ", user
         return render(request, 'app/admin_deviceRemove.html', {
             "device_list": device_list,
             "page": page,
@@ -279,6 +282,7 @@ def admin_device_remove(request):
             "village_list": village_list,
             "city_code": "c" + str(city_code),
             "village_code": "v" + str(village_code),
+            "user": user,
         })
     else:
         device_id = request.POST.get("device_id", None)
@@ -300,16 +304,18 @@ def admin_device_remove(request):
 
 def admin_device_location(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
-    return render(request, 'app/admin_deviceLocation.html', {})
+    return render(request, 'app/admin_deviceLocation.html', {
+        "user": user,
+    })
 
 
 @csrf_exempt
 def admin_device_maintain(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     if request.method == "GET":
@@ -378,6 +384,7 @@ def admin_device_maintain(request):
             "village_list": village_list,
             "city_code": "c" + str(city_code),
             "village_code": "v" + str(village_code),
+            "user": user,
         })
     else:
         repair_id = request.POST.get("repair_id", None)
@@ -406,7 +413,7 @@ def admin_device_maintain(request):
 @csrf_exempt
 def admin_device_maintain_filter(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     try:
@@ -456,31 +463,37 @@ def admin_device_maintain_filter(request):
 
 def admin_device_temperature(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
-    return render(request, 'app/admin_temperature.html', {})
+    return render(request, 'app/admin_temperature.html', {
+        "user": user,
+    })
 
 
 def admin_device_health(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
-    return render(request, 'app/admin_deviceHealth.html', {})
+    return render(request, 'app/admin_deviceHealth.html', {
+        "user": user,
+    })
 
 
 def admin_device_leakage(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
-    return render(request, 'app/admin_leakage.html', {})
+    return render(request, 'app/admin_leakage.html', {
+        "user": user,
+    })
 
 
 def list(request):
     try:
-        user = AppUser.objects.get(username = request.session["username"])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     page = request.GET.get("page")
@@ -513,13 +526,14 @@ def list(request):
         "device_list": device_list,
         "page_num": page_num,
         "page" : page,
+        "user": user,
     })
 
 
 @csrf_exempt
 def instock(request):
     try:
-        user = AppUser.objects.get(username = request.session["username"])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     try:
@@ -573,7 +587,7 @@ def instock(request):
 @csrf_exempt
 def device_info(request):
     try:
-        user = AppUser.objects.get(username = request.session["username"])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     if request.method == "POST":

@@ -2,7 +2,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
-from app.models import AppUser, WorkOrder
+from app.models import AppUser, WorkOrder, Adminer
 from django.db.models import Q
 import json
 import time
@@ -12,7 +12,7 @@ import math
 
 def index(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     work_order_list = WorkOrder.objects.all().order_by('-time')
@@ -34,13 +34,14 @@ def index(request):
         'work_order_list': work_order_list,
         'total_page': total_page,
         'page': page,
+        "user":user,
     })
 
 
 @csrf_exempt
 def work_order_filter(request):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except AppUser.DoesNotExist:
         return HttpResponseRedirect("/admin_login/")
     try:
@@ -118,7 +119,7 @@ def work_order_filter(request):
 @csrf_exempt
 def info(request, wo_id):
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except AppUser.DoesNotExist:
         return HttpResponseRedirect("/admin_login/")
     if request.method == "GET":

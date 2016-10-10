@@ -9,6 +9,8 @@ import time
 class DeviceCheck(APIView):
 
     def post(self, request, format=None):
+        print request.data
+        # return Response({"k":"123"}, status=status.HTTP_200_OK)
         request_str = request.data['k']
         request_val_list = request_str.split('=')
         print request_val_list
