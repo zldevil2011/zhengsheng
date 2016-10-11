@@ -49,6 +49,8 @@ urlpatterns = [
     url(r'^admin_user/logout/$', user.logout, name="logout"),
 
     url(r'^admin_area/list/$', installArea.area_list, name="area_list"),
+    url(r'^admin_area/city/add/$', installArea.city_add, name="city_add"),
+    url(r'^admin_area/village/add/$', installArea.village_add, name="village_add"),
 
     url(r'^admin_info/user/$', admin_info.user, name="admin_info_user"),
 ]

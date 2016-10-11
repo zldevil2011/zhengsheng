@@ -310,7 +310,7 @@ def admin_user_data(request):
     yesterday = datetime(year,  month, 1) - timedelta(days=1)
     yesterday_power = 0
     try:
-        yesterday_power = Data.objects.filter(device=device, powerT__year=yesterday.year, powerT__month=yesterday.month).order_by('-powerT')[0]
+        yesterday_power = Data.objects.filter(device_id=device, powerT__year=yesterday.year, powerT__month=yesterday.month).order_by('-powerT')[0]
     except:
         yesterday_power = 0
     print "YYYY"
@@ -378,7 +378,7 @@ def admin_user_data(request):
         except:
             month_power = 0
         year_month.append(i)
-        if month_power != 0:
+        if month_power != 0 and month_power is not None:
             year_power.append(month_power - pre_month_last_power)
             pre_month_last_power = month_power
         else:

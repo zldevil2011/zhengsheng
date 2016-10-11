@@ -50,65 +50,118 @@
             </div>
         </div>
         <div class="bg-color" style="margin: 10px 0;position: relative;padding: 10px 12px;">
-            <div class="clearfix">
+            <div class="clearfix" style="margin: 10px 0;position: relative;">
                 <div class="col-md-3 horizontal-text-center">
-                    <select class="btn btn-info" style="width: 80%;" name="areaType">
-                        <option value ="1">编辑地级市列表</option>
-                        <option value ="2">编辑街道列表</option>
-                        <option value="3">编辑小区列表</option>
+                    <select class="btn btn-info btn-block" style="width: 100%;height: 30px;" id="insertNew">
+                        <option value ="0">请选择操作</option>
+                        <option value ="1">新增省市级城市</option>
+                        <option value ="2">新增小区</option>
                     </select>
                 </div>
+            </div>
+            <div class="clearfix" style="margin: 10px 0;position: relative;display: none;" name="addVillageView">
                 <div class="col-md-3 horizontal-text-center">
-                    <button class="btn btn-success" style="width: 80%;">添加</button>
-                </div>
-                <div class="col-md-3 horizontal-text-center">
-                    <button class="btn btn-danger" style="width: 80%;" name = "deleteArea">删除</button>
-                </div>
-                <div class="col-md-3 horizontal-text-center">
-                    <button class="btn btn-warning" style="width: 80%;" name="saveArea">保存</button>
+                    <select name="fatherCityCode" class="btn btn-info" style="width: 100%;height: 30px;" id="selectCity">
+                        <option value ="0">请选择所属城市</option>
+                        {% for city in city_list %}
+                            <option value ="{{ city.city_code }}">{{ city.city_name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
-            <div class="clearfix" style="margin-top: 20px;">
-                <div class="clearfix" style="margin-bottom: 10px;">
-                    <div class="col-md-2"><span style="height: 100%;line-height: 100%;">添加地级市</span></div>
-                    <div class="col-md-10"><input type="text" class="form-control"></div>
+            <div class="clearfix" style="margin: 10px 0;position: relative;display: none;" name="addVillageView">
+                <div class="col-md-2 horizontal-text-center" style="height: 31px !important; line-height: 31px;">
+                    <span class="btn btn-info btn-block" style="background-color: rgba(101,195,223,0.1)!important;">小区代码 : </span>
                 </div>
-                <div class="clearfix" style="margin-bottom: 10px;">
-                    <div class="col-md-2"><span style="height: 100%;line-height: 100%;">添加街道</span></div>
-                    <div class="col-md-2">
-                        <select class="btn" style="width: 80%;">
-                            <option value ="1">选择上一级地级市</option>
-                            <option value ="2">池州市</option>
-                            <option value="3">池州市1</option>
-                        </select>
-                    </div>
-                    <div class="col-md-8"><input type="text" class="form-control"></div>
+                <div class="col-md-3 horizontal-text-center">
+                    <input name = "newVillageCode" type="text" class="form-control">
                 </div>
-                <div class="clearfix" style="margin-bottom: 10px;">
-                    <div class="col-md-2"><span style="height: 100%;line-height: 100%;">添加小区</span></div>
-                    <div class="col-md-2">
-                        <select class="btn" style="width: 80%;">
-                            <option value ="1">选择上一级街道</option>
-                            <option value ="2">街道1</option>
-                            <option value="3">街道2</option>
-                        </select>
-                    </div>
-                    <div class="col-md-8"><input type="text" class="form-control"></div>
+                <div class="col-md-2 horizontal-text-center" style="height: 31px !important; line-height: 31px;">
+                    <span class="btn btn-info btn-block" style="background-color: rgba(101,195,223,0.1)!important;">小区名称 : </span>
+                </div>
+                <div class="col-md-3 horizontal-text-center">
+                    <input name = "newVillageName" type="text" class="form-control">
+                </div>
+                <div class="col-md-2 horizontal-text-center">
+                    <button class="btn btn-success btn-block" id="addVillage">提交</button>
                 </div>
             </div>
-            <div class="clearfix" style="margin-top: 20px;">
-                <div class="col-md-4">
-                    <div class="btn-danger btn-primary" style="width: 50%;text-align: center;margin: 0 auto;padding: 5px; border-radius: 4px;">选择文件：</div>
+            <div class="clearfix" style="margin: 10px 0;position: relative;display: none;" name="addCityView">
+                <div class="col-md-2 horizontal-text-center" style="height: 31px !important; line-height: 31px;">
+                    <span class="btn btn-info btn-block" style="background-color: rgba(101,195,223,0.1)!important;">城市代码 : </span>
                 </div>
-                <div class="col-md-4 horizontal-text-center">
-                    <button class="btn btn-block" onclick="uploadAreaFile.click();" style="width: 50%;">
-                        <input id = "uploadAreaFile" type="file" style="display: none;"><span>选择上传的文件</span>
-                    </button>
+                <div class="col-md-3 horizontal-text-center">
+                    <input name = "newCityCode" type="text" class="form-control">
                 </div>
-                <div class="col-md-4 horizontal-text-center">
-                    <button class="btn btn-success btn-block" style="width: 50%;">上传</button>
+                <div class="col-md-2 horizontal-text-center" style="height: 31px !important; line-height: 31px;">
+                    <span class="btn btn-info btn-block" style="background-color: rgba(101,195,223,0.1)!important;">城市名称 : </span>
+                </div>
+                <div class="col-md-3 horizontal-text-center">
+                    <input name = "newCityName" type="text" class="form-control">
+                </div>
+                <div class="col-md-2 horizontal-text-center">
+                    <button class="btn btn-success btn-block" id="addCity">提交</button>
                 </div>
             </div>
+{#            <div class="clearfix">#}
+{#                <div class="col-md-3 horizontal-text-center">#}
+{#                    <select class="btn btn-info" style="width: 80%;" name="areaType">#}
+{#                        <option value ="1">编辑地级市列表</option>#}
+{#                        <option value ="2">编辑街道列表</option>#}
+{#                        <option value="3">编辑小区列表</option>#}
+{#                    </select>#}
+{#                </div>#}
+{#                <div class="col-md-3 horizontal-text-center">#}
+{#                    <button class="btn btn-success" style="width: 80%;">添加</button>#}
+{#                </div>#}
+{#                <div class="col-md-3 horizontal-text-center">#}
+{#                    <button class="btn btn-danger" style="width: 80%;" name = "deleteArea">删除</button>#}
+{#                </div>#}
+{#                <div class="col-md-3 horizontal-text-center">#}
+{#                    <button class="btn btn-warning" style="width: 80%;" name="saveArea">保存</button>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="clearfix" style="margin-top: 20px;">#}
+{#                <div class="clearfix" style="margin-bottom: 10px;">#}
+{#                    <div class="col-md-2"><span style="height: 100%;line-height: 100%;">添加地级市</span></div>#}
+{#                    <div class="col-md-10"><input type="text" class="form-control"></div>#}
+{#                </div>#}
+{#                <div class="clearfix" style="margin-bottom: 10px;">#}
+{#                    <div class="col-md-2"><span style="height: 100%;line-height: 100%;">添加街道</span></div>#}
+{#                    <div class="col-md-2">#}
+{#                        <select class="btn" style="width: 80%;">#}
+{#                            <option value ="1">选择上一级地级市</option>#}
+{#                            <option value ="2">池州市</option>#}
+{#                            <option value="3">池州市1</option>#}
+{#                        </select>#}
+{#                    </div>#}
+{#                    <div class="col-md-8"><input type="text" class="form-control"></div>#}
+{#                </div>#}
+{#                <div class="clearfix" style="margin-bottom: 10px;">#}
+{#                    <div class="col-md-2"><span style="height: 100%;line-height: 100%;">添加小区</span></div>#}
+{#                    <div class="col-md-2">#}
+{#                        <select class="btn" style="width: 80%;">#}
+{#                            <option value ="1">选择上一级街道</option>#}
+{#                            <option value ="2">街道1</option>#}
+{#                            <option value="3">街道2</option>#}
+{#                        </select>#}
+{#                    </div>#}
+{#                    <div class="col-md-8"><input type="text" class="form-control"></div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="clearfix" style="margin-top: 20px;">#}
+{#                <div class="col-md-4">#}
+{#                    <div class="btn-danger btn-primary" style="width: 50%;text-align: center;margin: 0 auto;padding: 5px; border-radius: 4px;">选择文件：</div>#}
+{#                </div>#}
+{#                <div class="col-md-4 horizontal-text-center">#}
+{#                    <button class="btn btn-block" onclick="uploadAreaFile.click();" style="width: 50%;">#}
+{#                        <input id = "uploadAreaFile" type="file" style="display: none;"><span>选择上传的文件</span>#}
+{#                    </button>#}
+{#                </div>#}
+{#                <div class="col-md-4 horizontal-text-center">#}
+{#                    <button class="btn btn-success btn-block" style="width: 50%;">上传</button>#}
+{#                </div>#}
+{#            </div>#}
         </div>
     </div>
 {% endblock %}
@@ -118,22 +171,77 @@
         $("#collapseTwo").addClass("in");
     </script>
     <script>
-        $("[name=deleteArea]").on("click", deleteAreaFunc);
-        $("[name=saveArea]").on("click", saveAreaFunc);
-        $(".close").on("click", deleteAreaItemFunc);
-        function deleteAreaFunc(){
-            var areaTypeVal = $("[name=areaType]").val();
-            console.log(areaTypeVal);
-            var areaListName = "level" + areaTypeVal;
-            $("[name=" + areaListName + "] .close").css("display", "block");
-        }
-        function saveAreaFunc(){
-            $(".close").css("display", "none");
-        }
-        function deleteAreaItemFunc(){
-            $(this).parent().parent().css("display", "none");
-        }
+        $("#insertNew").on("change", function(){
+            var val = $(this).val();
+            if(val == 0){
+                $("[name=addVillageView]").css("display", "none");
+                $("[name=addCityView]").css("display", "none");
+                return;
+            }else if(val == 1){
+                $("[name=addVillageView]").css("display", "none");
+                $("[name=addCityView]").css("display", "block");
+            }else{
+                $("[name=addCityView]").css("display", "none");
+                $("[name=addVillageView]").css("display", "block");
+            }
+        });
+        $("#addCity").on("click", function(){
+            var newCityCode = $("[name=newCityCode]").val();
+            var newCityName = $("[name=newCityName]").val();
+            if(newCityCode == "" || newCityName == ""){
+                alertify.error("信息不完整");
+                return false;
+            }
+            $.ajax({
+                url:'/admin_area/city/add/',
+                type:'POST',
+                data:{city_code:newCityCode, city_name:newCityName},
+                success: function(data){
+                    alert(data);
+                },
+                error: function(data){
+                    alertify.error("添加失败，请稍后再试");
+                }
+            })
+        });
+        $("#addVillage").on("click", function(){
+            var fatherCityCode = $("[name=fatherCityCode]").val();
+            var newVillageCode = $("[name=newVillageCode]").val();
+            var newVillageName = $("[name=newVillageName]").val();
+            if(newVillageCode == "" || newVillageName == "" || fatherCityCode == "0"){
+                alertify.error("信息不完整");
+                return false;
+            }
+            $.ajax({
+                url:'/admin_area/village/add/',
+                type:'POST',
+                data:{city_code:fatherCityCode, village_code:newVillageCode, village_name:newVillageName},
+                success: function(data){
+                    alert(data);
+                },
+                error: function(data){
+                    alertify.error("添加失败，请稍后再试");
+                }
+            })
+        })
     </script>
+{#    <script>#}
+{#        $("[name=deleteArea]").on("click", deleteAreaFunc);#}
+{#        $("[name=saveArea]").on("click", saveAreaFunc);#}
+{#        $(".close").on("click", deleteAreaItemFunc);#}
+{#        function deleteAreaFunc(){#}
+{#            var areaTypeVal = $("[name=areaType]").val();#}
+{#            console.log(areaTypeVal);#}
+{#            var areaListName = "level" + areaTypeVal;#}
+{#            $("[name=" + areaListName + "] .close").css("display", "block");#}
+{#        }#}
+{#        function saveAreaFunc(){#}
+{#            $(".close").css("display", "none");#}
+{#        }#}
+{#        function deleteAreaItemFunc(){#}
+{#            $(this).parent().parent().css("display", "none");#}
+{#        }#}
+{#    </script>#}
     <script>
         var city_code = "{{ city_code }}";
         $("#" + city_code).removeClass("alert-blankRed").addClass("alert-success");
@@ -142,6 +250,7 @@
         function changeCity(id){
             $("#"+id).parent().siblings().children().removeClass("alert-success").addClass("alert-blankRed");
             $("#" + id).removeClass("alert-blankRed").addClass("alert-success");
+            window.location.href = "/admin_area/list/?city_code=" + id;
         }
     </script>
 {% endblock %}
