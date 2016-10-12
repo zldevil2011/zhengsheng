@@ -3,7 +3,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from app.models import AppUser, Device, City, Village, Repairing, Adminer
+from app.models import AppUser, Device, City, Village, Repairing, Adminer, Parameter
 from django.contrib.auth.hashers import check_password,make_password
 from dss.Serializer import serializer
 from datetime import datetime
@@ -574,6 +574,14 @@ def instock(request):
             now = time.localtime()
             device.manufacture_date = datetime(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
             device.save()
+            parameter = Parameter()
+            parameter.device = device
+            parameter.temperature_t_length = 0
+            parameter.temperature = 60
+            parameter.power_get_point1 = "00:00"
+            parameter.power_get_point2 = "00:00"
+            parameter.version = 1
+            parameter.save()
         ret_data = {}
         ret_data["type"] = device_type
         ret_data["start_no"] = start_num
@@ -607,3 +615,97 @@ def device_info(request):
         device_id = int(request.GET("device_id"))
 
         return HttpResponse("GET")
+
+
+@csrf_exempt
+def admin_device_gateway_parameter(request):
+    try:
+        user = Adminer.objects.get(name=request.session['username'])
+    except:
+        return HttpResponseRedirect("/admin_login/")
+    if request.method == "GET":
+        page = int(request.GET.get("page", 1))
+        if page < 1:
+            return HttpResponseRedirect("/admin_device?page=1")
+        try:
+            city_code = int(request.GET.get("city_code"))
+        except:
+            city_code = 0
+        try:
+            village_code = int(request.GET.get("village_code"))
+        except:
+            village_code = 0
+        city_list = City.objects.all()
+        try:
+            city = City.objects.get(city_code=city_code)
+            village_list = Village.objects.filter(city=city)
+        except:
+            village_list = None
+        gateway_list = Parameter.objects.filter()
+        if city_code == 0 and village_code == 0:
+            pass
+        elif village_code == 0:
+            gateway_list = gateway_list.filter(device__city_code=city_code)
+        else:
+            try:
+                gateway_list = gateway_list.filter(device__city_code=city_code, device__village_code=village_code)
+            except:
+                pass
+        total_page = int(math.ceil(len(gateway_list))/15.0)
+        if total_page < 1:
+            total_page = 1
+        if page < total_page:
+            return HttpResponseRedirect("/admin_device/gateway/parameter/?page="+str(total_page))
+        gateway_list = serializer(gateway_list, datetime_format='string', foreign=True)
+        for gateway in gateway_list:
+            print gateway
+            device = Device.objects.get(device_id=int(gateway["device"]["device_id"]))
+            try:
+                city_name = City.objects.get(city_code=device.city_code).city_name
+            except:
+                city_name = ""
+            try:
+                village_name = Village.objects.get(village_code=device.village_code).village_name
+            except:
+                village_name = ""
+            if city_name == "" and village_name == "":
+                gateway["address"] = u"未安装"
+            else:
+                gateway["address"] = city_name + "" + village_name
+            parameter = Parameter.objects.get(id=int(gateway["id"]))
+            gateway["power_get_point1"] = str(parameter.power_get_point1)
+            gateway["power_get_point2"] = str(parameter.power_get_point2)
+
+        return render(request, "app/admin_gateway_parameter.html",{
+            "gateway_list": gateway_list,
+            "city_list": city_list,
+            "village_list": village_list,
+            "page": page,
+            "total_page": total_page,
+            "user": user,
+            "city_code": "c" + str(city_code),
+            "village_code": "v" + str(village_code),
+        })
+    else:
+        try:
+            id = int(request.POST.get("id"))
+            temperature_t_length = int(request.POST.get("temperature_t_length"))
+            temperature = float(request.POST.get("temperature"))
+            power_get_point1 = request.POST.get("power_get_point1")
+            power_get_point2 = request.POST.get("power_get_point2")
+            print(id)
+            print(temperature)
+            print(temperature_t_length)
+            print(power_get_point1)
+            print(power_get_point2)
+            parameter = Parameter.objects.get(id=id)
+            parameter.temperature_t_length = temperature_t_length
+            parameter.temperature = temperature
+            parameter.power_get_point1 = power_get_point1
+            parameter.power_get_point2 = power_get_point2
+            parameter.save()
+            return HttpResponse("success")
+        except Exception, e:
+            print(str(e))
+            return HttpResponse("error")
+        return HttpResponse("POST")

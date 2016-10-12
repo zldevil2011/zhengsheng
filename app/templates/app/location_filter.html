@@ -1,24 +1,24 @@
 <hr>
 <div class="col-md-12 column location-filter" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
     <div class="clearfix" style="border-bottom: dotted 1px white; margin-bottom: 10px; padding-bottom: 10px;">
-        <div class="col-md-1 filter-type">
+        <div class="col-md-1 filter-type" style="margin-top: 10px;">
             <b>地区</b>
         </div>
         <div class="col-md-11 filter-value">
-            <div name = "filter_city" class="col-md-3 hander" id="c0" onclick="selectCity(this.id);"><span class="">不限</span></div>
+            <div name = "filter_city" class="col-md-3 hander" id="c0" onclick="selectCity(this.id);" style="margin-top: 10px;"><span class="">不限</span></div>
             {% for city in city_list %}
-                <div name = "filter_city" class="col-md-3 hander" id="c{{ city.city_code }}" onclick="selectCity(this.id);"><span>{{ city.city_name }}</span></div>
+                <div name = "filter_city" class="col-md-3 hander" id="c{{ city.city_code }}" onclick="selectCity(this.id);" style="margin-top: 10px;"><span>{{ city.city_name }}</span></div>
             {% endfor %}
         </div>
     </div>
     <div class="clearfix" style="border-bottom: dotted 1px white; margin-bottom: 10px; padding-bottom: 10px;">
-        <div class="col-md-1 filter-type">
+        <div class="col-md-1 filter-type" style="margin-top: 10px;">
             <b>小区</b>
         </div>
         <div class="col-md-11 filter-value">
-            <div name = "filter_village" class="col-md-3 hander" id="v0" onclick="selectVillage(this.id);"><span class="">不限</span></div>
+            <div name = "filter_village" class="col-md-3 hander" id="v0" onclick="selectVillage(this.id);" style="margin-top: 10px;"><span class="">不限</span></div>
             {% for village in village_list %}
-                <div name = "filter_village" class="col-md-3 hander" id="v{{ village.village_code }}" onclick="selectVillage(this.id);"><span>{{ village.village_name }}</span></div>
+                <div name = "filter_village" class="col-md-3 hander" id="v{{ village.village_code }}" onclick="selectVillage(this.id);" style="margin-top: 10px;"><span>{{ village.village_name }}</span></div>
             {% endfor %}
         </div>
     </div>

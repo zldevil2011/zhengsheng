@@ -1,0 +1,201 @@
+{% extends "app/base.html" %}
+{% block title %}网关参数设定{% endblock %}
+{% block main_body %}
+    <div class="main-body">
+{#        bread direction#}
+        <div class="bg-color" style="margin: 10px 0;position: relative;padding: 10px 12px;">
+            <span class="glyphicon glyphicon-home" style="display: inline-block;"></span>
+            <ul class="breadcrumb breadcrumb-my" style="display: inline-block;">
+				<li>
+					 <a href="#">主页</a>
+				</li>
+				<li>
+					 <a href="#">设备</a>
+				</li>
+				<li class="active">
+					网关参数列表
+				</li>
+			</ul>
+        </div>
+        <div class="row bg-color" style="padding: 10px 30px;">
+            {% include 'app/location_filter.html' %}
+            <div class="col-md-12 column" style="">
+                <table class="table device-list">
+                    <thead>
+                        <tr style="background-color: rgba(39,25,25,0.35);">
+                            <th>
+                                设备编号
+                            </th>
+                            <th>
+                                设备地址
+                            </th>
+                            <th>
+                                温度采集间隔
+                            </th>
+                            <th>
+                                温度阈值设定
+                            </th>
+                            <th>
+                                电能采集点1
+                            </th>
+                            <th>
+                                电能采集点2
+                            </th>
+                            <th>
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody name="device_list_tr">
+                    {% for gateway in gateway_list %}
+                        <tr>
+                            <td>{{ gateway.device.device_id }}</td>
+                            <td>{{ gateway.address }}</td>
+                            <td>{{ gateway.temperature_t_length }}</td>
+                            <td>{{ gateway.temperature }}</td>
+                            <td>{{ gateway.power_get_point1 }}</td>
+                            <td>{{ gateway.power_get_point2 }}</td>
+                            <td>
+                                <a href="#modal-{{ gateway.id }}" role="button" class="btn btn-success" data-toggle="modal">编辑参数</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="col-md-12 column" style="text-align: right;">
+                    <ul class="pagination account-pagination" style="">
+                        <li>
+                             <a href="/admin_device/gateway/parameter/?page={{ page|add:-1 }}">上一页</a>
+                        </li>
+                        <li>
+                             <a href="#"><span name="page">{{ page }}</span> / <span name="total_page">{{ total_page }}</span></a>
+                        </li>
+                        <li>
+                             <a href="/admin_device/gateway/parameter/?page={{ page|add:1 }}">下一页</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for gateway in gateway_list %}
+        <div class="modal fade" id="modal-{{ gateway.id }}" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="color:black;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            {{ gateway.device.device_id }}号设备参数编辑
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="" class="col-md-3 colo-sm-6 control-label">温度采集间隔</label>
+                                <div class="col-md-9 colo-sm-6">
+                                    <input type="number" class="form-control" id="" value="{{ gateway.temperature_t_length }}" style="color: black !important;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="" class="col-md-3 colo-sm-6 control-label">温度阈值设定</label>
+                              <div class="col-md-9 colo-sm-6">
+                                  <input type="number" class="form-control" value="{{ gateway.temperature }}" style="color: black !important;">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="" class="col-md-3 colo-sm-6 control-label">电能采集点1</label>
+                              <div class="col-md-9 colo-sm-6">
+                                  <input type="time" id = "getPoint{{ gateway.id }}1" class="form-control" style="color: black !important;">
+                                  <script>
+                                      var id = "getPoint" + "{{ gateway.id }}" + "1";
+                                      var point1 = "{{ gateway.power_get_point1 }}";
+                                      document.getElementById(id).value = point1;
+                                  </script>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="" class="col-md-3 colo-sm-6 control-label">电能采集点2</label>
+                              <div class="col-md-9 colo-sm-6">
+                                  <input type="time" id = "getPoint{{ gateway.id }}2" class="form-control" style="color: black !important;">
+                                  <script>
+                                      var id = "getPoint" + "{{ gateway.id }}" + "2";
+                                      var point2 = "{{ gateway.power_get_point2 }}";
+                                      document.getElementById(id).value = point2;
+                                  </script>
+                              </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button id = "{{ gateway.id }}" name = "updateParameter" type="button" class="btn btn-primary" style="background: black;">保存</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    {% endfor %}
+{% endblock %}
+{% block special_js %}
+    <script>
+        $("[name=updateParameter]").on("click", function(){
+            var id = $(this).prop("id");
+{#            console.log(id);#}
+            var temperature_t_length = $($($(this).parent().prev().children().children().get(0)).children().get(1)).children().val();
+            var temperature = $($($(this).parent().prev().children().children().get(1)).children().get(1)).children().val();
+            var power_get_point1 = $($($(this).parent().prev().children().children().get(2)).children().get(1)).children().val();
+            var power_get_point2 = $($($(this).parent().prev().children().children().get(3)).children().get(1)).children().val();
+            console.log(temperature_t_length);
+            console.log(temperature);
+            console.log(power_get_point1);
+            console.log(power_get_point2);
+            $.ajax({
+                url: '/admin_device/gateway/parameter/',
+                type: 'POST',
+                data: {id:id, temperature_t_length:temperature_t_length, temperature:temperature, power_get_point1:power_get_point1, power_get_point2:power_get_point2},
+                success: function(data){
+                    if(data == "error"){
+                        alertify.error("修改失败，请检查参数是否正确");
+                    }else{
+                        alertify.success("修改成功");
+                        window.location.reload();
+                    }
+                },
+                error: function(data){
+                    alertify.error("修改失败，请稍后再试");
+                }
+            })
+        });
+    </script>
+    <script>
+        $("#"+ id).children().addClass("active");
+        $("#" + id).siblings().children().removeClass("active");
+    </script>
+    <script>
+        $("#deviceChild").addClass("in");
+        $("#collapseTwo").removeClass("in");
+    </script>
+    <script>
+        $("[name=filter_city]").on("click", function(){
+            var city_code = $(this).prop("id");
+            console.log(city_code);
+            var village_code = "v0";
+            console.log("c_id = " + city_code + " ; v_id = " + village_code );
+            FilterDeviceByLocationFun(city_code, village_code);
+        });
+        $("[name=filter_village]").on("click", function(){
+            var city_code = $("[name=filter_city] .active").parents().prop("id");
+            var village_code = $(this).prop("id");
+            console.log("c_id = " + city_code + " ; v_id = " + village_code );
+            FilterDeviceByLocationFun(city_code, village_code);
+        });
+        function FilterDeviceByLocationFun(city_code, village_code){
+            city_code = city_code.substr(1);
+            village_code = village_code.substr(1);
+            console.log(city_code);
+            console.log(village_code);
+            window.location.href = "/admin_device/gateway/parameter/?page=1&city_code=" + city_code + "&village_code=" + village_code;
+        }
+    </script>
+{% endblock %}
