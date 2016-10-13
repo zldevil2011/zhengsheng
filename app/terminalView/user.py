@@ -22,6 +22,9 @@ def login(request):
                 return HttpResponse("error")
             try:
                 user = User.objects.get(username=username)
+                print user
+                print password
+                print user.password
                 if check_password(password, user.password):
                     appuser = AppUser.objects.get(user=user)
                     print "check ok"
