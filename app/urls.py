@@ -56,6 +56,7 @@ urlpatterns = [
     url(r'^admin_area/village/add/$', installArea.village_add, name="village_add"),
 
     url(r'^admin_info/user/$', admin_info.user, name="admin_info_user"),
+    url(r'^admin_info/user/sendMail/$', admin_info.sendMail, name="sendMail"),
 ]
 urlpatterns += {
     url(r'^device/list/$', device.list, name="device_list"),

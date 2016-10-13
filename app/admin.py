@@ -14,7 +14,7 @@ class ParameterAdmin(admin.ModelAdmin):
 
 
 class AdminerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'telephone', 'area')
+    list_display = ('id', 'name', 'telephone', 'area', 'email')
 
 
 class DataAdmin(admin.ModelAdmin):

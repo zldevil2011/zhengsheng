@@ -8,6 +8,7 @@ class Adminer(models.Model):
     name = models.CharField(max_length=32)
     telephone = models.CharField(max_length=20, default="000")
     area = models.CharField(max_length=32, null=True)
+    email = models.CharField(max_length=200, null=True)
     time = models.DateTimeField(null=True)
     level = models.SmallIntegerField(default=0)
     user = models.OneToOneField(User)
