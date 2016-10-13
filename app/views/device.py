@@ -3,7 +3,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from app.models import AppUser, Device, City, Village, Repairing, Adminer, Parameter
+from app.models import AppUser, Device, City, Village, Repairing, Adminer, Parameter, Data
 from django.contrib.auth.hashers import check_password,make_password
 from dss.Serializer import serializer
 from datetime import datetime
@@ -476,8 +476,86 @@ def admin_device_health(request):
         user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
+    # 查看高温报警 / 故障检测待定
+    try:
+        page = int(request.GET.get("page"))
+    except Exception, e:
+        print(str(e))
+        page = 1
+    print "page=", page
+    if page < 1:
+        print "okokoko"
+        return HttpResponseRedirect("/admin_device/health/?page=1")
+    city_code = int(request.GET.get("city_code", 0))
+    village_code = int(request.GET.get("village_code", 0))
+
+    city_list = City.objects.all()
+    try:
+        city = City.objects.get(city_code=city_code)
+        village_list = Village.objects.filter(city=city)
+    except:
+        village_list = None
+
+    today = datetime.today()
+    today = datetime(today.year, today.month, today.day)
+    print today
+    device_list = Data.objects.filter(tempBT__gte=today)
+    try:
+        if city_code == 0 and village_code == 0:
+            pass
+        elif village_code == 0:
+            device_list = device_list.filter(device_id__city_code=city_code)
+        elif city_code != 0 and village_code != 0:
+            device_list = device_list.filter(device_id__city_code=city_code, device_id__village_code=village_code)
+        else:
+            pass
+    except Exception, e:
+        print(str(e))
+        pass
+    total_page = int(math.ceil(len(device_list)/15.0))
+    if total_page < 1:
+        total_page = 1
+    if page > total_page:
+        return HttpResponseRedirect("/admin_device/health/?page="+str(total_page))
+    start_num = (page - 1) * 15
+    end_num = page * 15
+    device_list = device_list[start_num:end_num]
+    device_list = serializer(device_list, foreign=True)
+    for device in device_list:
+        try:
+            device["tempBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(device["tempBT"])))
+        except Exception, e:
+            print(str(e))
+            device["tempBT"] = ""
+        try:
+            print device["tempB"]
+            print type(device["tempB"])
+            if device["tempB"] == 1:
+                device["tempB"] = u"报警"
+            elif device["tempB"] == 0:
+                device["tempB"] = u"取消报警"
+        except:
+            device["tempB"] = u"正常"
+        try:
+            city = City.objects.get(city_code=int(device["device_id"]["city_code"]))
+            city_name = city.city_name
+            village_name = Village.objects.get(city=city, village_code=int(device["device_id"]["village_code"])).village_name
+            address = city_name + village_name
+        except Exception, e:
+            print(str(e))
+            address = u"未安装"
+        device["address"] = address
+
+    print device_list
     return render(request, 'app/admin_deviceHealth.html', {
+        "page": page,
+        "page_num": total_page,
         "user": user,
+        "city_code": "c" + str(city_code),
+        "village_code": "v" + str(village_code),
+        "device_list": device_list,
+        "city_list": city_list,
+        "village_list": village_list,
     })
 
 
