@@ -18,7 +18,7 @@ class AdminerAdmin(admin.ModelAdmin):
 
 
 class DataAdmin(admin.ModelAdmin):
-    list_display = ('id', 'temp', 'tempB', 'faultB')
+    list_display = ('id', 'device_id', 'powerV', 'powerT', 'temp', 'tempB', 'faultB')
 
 
 class DeviceAdmin(admin.ModelAdmin):

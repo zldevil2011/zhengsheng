@@ -21,7 +21,7 @@
                                 <td>温度</td>
                                 <td>{{ data.temp }}℃</td>
                                 <td>总用电量</td>
-                                <td>{{ data.powerV }}V</td>
+                                <td>{{ data.powerV }}Kwh</td>
                             </tr>
                         </tbody>
                     </table>
@@ -37,37 +37,37 @@
             </div>
         </div>
 
-        <div class="clearfix">
-            <div class="col-md-12 tab-tip tab-blue">
-                设备控制
-            </div>
-            <div class="clearfix">
-                <div class="col-md-12 device-info" style="margin-top: 10px;">
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <td>开关</td>
-                                <td>ON/OFF</td>
-                                <td>阈值</td>
-                                <td>50℃</td>
-                            </tr>
-                            <tr>
-                                <td>设定</td>
-                                <td colspan="3">
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-success">
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col-md-12 save-btn-green">
-                <button class="btn-success save-btn">保存</button>
-            </div>
-        </div>
+{#        <div class="clearfix">#}
+{#            <div class="col-md-12 tab-tip tab-blue">#}
+{#                设备控制#}
+{#            </div>#}
+{#            <div class="clearfix">#}
+{#                <div class="col-md-12 device-info" style="margin-top: 10px;">#}
+{#                    <table class="table table-bordered">#}
+{#                        <tbody>#}
+{#                            <tr>#}
+{#                                <td>开关</td>#}
+{#                                <td>ON/OFF</td>#}
+{#                                <td>阈值</td>#}
+{#                                <td>50℃</td>#}
+{#                            </tr>#}
+{#                            <tr>#}
+{#                                <td>设定</td>#}
+{#                                <td colspan="3">#}
+{#                                    <div class="progress progress-striped active">#}
+{#                                        <div class="progress-bar progress-success">#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </td>#}
+{#                            </tr>#}
+{#                        </tbody>#}
+{#                    </table>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-12 save-btn-green">#}
+{#                <button class="btn-success save-btn">保存</button>#}
+{#            </div>#}
+{#        </div>#}
 
     </div>
 {% endblock %}
