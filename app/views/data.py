@@ -310,7 +310,7 @@ def admin_user_data(request):
     yesterday = datetime(year,  month, 1) - timedelta(days=1)
     yesterday_power = 0
     try:
-        yesterday_power = Data.objects.filter(device_id=device, powerT__year=yesterday.year, powerT__month=yesterday.month).order_by('-powerT')[0]
+        yesterday_power = Data.objects.filter(device_id=device, powerT__year=yesterday.year, powerT__month=yesterday.month).order_by('-powerT')[0].powerV
     except:
         yesterday_power = 0
     print "YYYY"
@@ -325,31 +325,38 @@ def admin_user_data(request):
         print str(e)
     print "ZZZ"
     for i in range(1, day + 1):
+        print(i)
         try:
             today_power = datas_list.filter(powerT__day=i).order_by('-powerT')[0].powerV
-        except:
+        except Exception,e:
+            print(str(e))
             today_power = 0
+        print("check")
+        print("today_power:" + str(today_power))
         month_day.append(i)
-        if today_power != 0:
-            user_power_total += (today_power - yesterday_power)
-            month_power.append(today_power - yesterday_power)
-            if today_power - yesterday_power > user_power_max:
-                user_power_max = today_power - yesterday_power
-                user_day_max = i
-            if today_power - yesterday_power < user_power_min:
-                user_power_min = today_power - yesterday_power
-                user_day_min = i
-            yesterday_power = today_power
-        else:
-            user_power_total += 0
-            month_power.append(0)
-            if today_power > user_power_max:
-                user_power_max = today_power
-                user_day_max = i
-            if today_power < user_power_min:
-                user_power_min = today_power
-                user_day_min = i
-
+        try:
+            if today_power != 0:
+                user_power_total += (today_power - yesterday_power)
+                month_power.append(today_power - yesterday_power)
+                if today_power - yesterday_power > user_power_max:
+                    user_power_max = today_power - yesterday_power
+                    user_day_max = i
+                if today_power - yesterday_power < user_power_min:
+                    user_power_min = today_power - yesterday_power
+                    user_day_min = i
+                yesterday_power = today_power
+            else:
+                user_power_total += 0
+                month_power.append(0)
+                if today_power > user_power_max:
+                    user_power_max = today_power
+                    user_day_max = i
+                if today_power < user_power_min:
+                    user_power_min = today_power
+                    user_day_min = i
+        except Exception, e:
+            print(str(e))
+    print("get user today info")
     month_data = {}
     month_data["month_day"] = month_day
     month_data["month_power"] = month_power

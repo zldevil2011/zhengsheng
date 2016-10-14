@@ -20,41 +20,41 @@
 {#        account list#}
         <div class="row bg-color" style="padding: 10px 30px;">
             {% include 'app/location_filter.html' %}
-            <div class="form-group">
-                <form class="form-horizontal" role="form" onsubmit="return false;">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="" class="col-sm-4 control-label">设备编号</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="" class="col-sm-3 control-label">安装时间</label>
-                            <div class="col-sm-4">
-                                <input type="date" class="form-control" id="" />
-                            </div>
-                            <label for="" class="col-sm-1 control-label">至</label>
-                            <div class="col-sm-4">
-                                <input type="date" class="form-control" id="" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label for="" class="col-sm-2 control-label">关键字</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" id="" />
-                            </div>
-                            <div class="col-sm-4">
-                                <button class="btn btn-block btn-success">查找</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
+{#            <div class="form-group">#}
+{#                <form class="form-horizontal" role="form" onsubmit="return false;">#}
+{#                    <div class="col-md-3">#}
+{#                        <div class="form-group">#}
+{#                            <label for="" class="col-sm-4 control-label">设备编号</label>#}
+{#                            <div class="col-sm-8">#}
+{#                                <input type="text" class="form-control" id="" />#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="col-md-4">#}
+{#                        <div class="form-group">#}
+{#                            <label for="" class="col-sm-3 control-label">安装时间</label>#}
+{#                            <div class="col-sm-4">#}
+{#                                <input type="date" class="form-control" id="" />#}
+{#                            </div>#}
+{#                            <label for="" class="col-sm-1 control-label">至</label>#}
+{#                            <div class="col-sm-4">#}
+{#                                <input type="date" class="form-control" id="" />#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="col-md-5">#}
+{#                        <div class="form-group">#}
+{#                            <label for="" class="col-sm-2 control-label">关键字</label>#}
+{#                            <div class="col-sm-6">#}
+{#                                <input type="text" class="form-control" id="" />#}
+{#                            </div>#}
+{#                            <div class="col-sm-4">#}
+{#                                <button class="btn btn-block btn-success">查找</button>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </form>#}
+{#            </div>#}
             <div class="col-md-12 column" style="">
                 <table class="table device-list">
                     <thead>
@@ -63,25 +63,19 @@
                                 设备编号
                             </th>
                             <th>
-                                设备名称
-                            </th>
-                            <th>
-                                缩略图
-                            </th>
-                            <th>
-                                设备类型
+                                当前温度
                             </th>
                             <th>
                                 设备地址
                             </th>
                             <th>
-                                设备温度
+                                设备状态
                             </th>
                             <th>
                                 设备所有者
                             </th>
                             <th>
-                                安装时间
+                                生产时间
                             </th>
                             <th>
                                 操作
@@ -89,242 +83,168 @@
                         </tr>
                     </thead>
                     <tbody class="temperature-test">
+                    {% for device in device_list %}
                         <tr>
-                            <td>1</td>
-                            <td>IMG98电箱</td>
-                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
-                            <td>电箱</td>
-                            <td>阳光路12号3301</td>
-                            <td><span class="normal">28℃</span></td>
-                            <td>李三</td>
-                            <td>2016-07-14 14:06:59</td>
+                            <td>{{ device.device_id }}</td>
+                            <td>{{ device.temperature }}</td>
+                            <td>{{ device.address }}</td>
+                            <td>{{ device.device_status }}</td>
+                            <td>{{ device.user }}</td>
+                            <td>{{ device.manufacture_date }}</td>
                             <td><button class="btn btn-success">查看</button></td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>IMG98电箱</td>
-                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
-                            <td>电箱</td>
-                            <td>阳光路12号3301</td>
-                            <td><span class="danger-tag danger">37℃</span></td>
-                            <td>李三</td>
-                            <td>2016-07-14 14:06:59</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>IMG98电箱</td>
-                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
-                            <td>电箱</td>
-                            <td>阳光路12号3301</td>
-                            <td><span class="normal">28℃</span></td>
-                            <td>李三</td>
-                            <td>2016-07-14 14:06:59</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>IMG98电箱</td>
-                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
-                            <td>电箱</td>
-                            <td>阳光路12号3301</td>
-                            <td><span class="warning-tag warning">30℃</span></td>
-                            <td>李三</td>
-                            <td>2016-07-14 14:06:59</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>IMG98电箱</td>
-                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
-                            <td>电箱</td>
-                            <td>阳光路12号3301</td>
-                            <td><span class="warning-tag warning">31℃</span></td>
-                            <td>李三</td>
-                            <td>2016-07-14 14:06:59</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>IMG98电箱</td>
-                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
-                            <td>电箱</td>
-                            <td>阳光路12号3301</td>
-                            <td><span class="danger-tag danger">38℃</span></td>
-                            <td>李三</td>
-                            <td>2016-07-14 14:06:59</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>IMG98电箱</td>
-                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
-                            <td>电箱</td>
-                            <td>阳光路12号3301</td>
-                            <td><span class="normal">28℃</span></td>
-                            <td>李三</td>
-                            <td>2016-07-14 14:06:59</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>IMG98电箱</td>
-                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
-                            <td>电箱</td>
-                            <td>阳光路12号3301</td>
-                            <td><span class="normal">28℃</span></td>
-                            <td>李三</td>
-                            <td>2016-07-14 14:06:59</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>IMG98电箱</td>
-                            <td><img src="/site_media/images/cloud.jpg" width="50px" height="50px" class="img-rounded"></td>
-                            <td>电箱</td>
-                            <td>阳光路12号3301</td>
-                            <td><span class="warning-tag warning">31℃</span></td>
-                            <td>李三</td>
-                            <td>2016-07-14 14:06:59</td>
-                            <td><button class="btn btn-success">查看</button></td>
-                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
                 <div class="col-md-12 column" style="text-align: right;">
                     <ul class="pagination account-pagination" style="">
                         <li>
-                             <a href="#">Prev</a>
+                             <a href="/admin_device/temperature/?page={{ page|add:-1 }}">上一页</a>
                         </li>
                         <li>
-                             <a href="#">1</a>
+                             <a href="#"><span name="page">{{ page }}</span> / <span name="total_page">{{ total_page }}</span></a>
                         </li>
                         <li>
-                             <a href="#">2</a>
-                        </li>
-                        <li>
-                             <a href="#">3</a>
-                        </li>
-                        <li>
-                             <a href="#">4</a>
-                        </li>
-                        <li>
-                             <a href="#">5</a>
-                        </li>
-                        <li>
-                             <a href="#">Next</a>
+                             <a href="/admin_device/temperature/?page={{ page|add:1 }}">下一页</a>
                         </li>
                     </ul>
                 </div>
-                <div id="device-list-page" style="width: 100%; height: 400px;"></div>
+{#                <div id="device-list-page" style="width: 100%; height: 400px;"></div>#}
             </div>
         </div>
     </div>
 
 {% endblock %}
 {% block special_js %}
+     <script>
+        $("#deviceChild").addClass("in");
+        $("#collapseTwo").removeClass("in");
+    </script>
+    <script>
+        $("[name=filter_city]").on("click", function(){
+            var city_code = $(this).prop("id");
+            console.log(city_code);
+            var village_code = "v0";
+            console.log("c_id = " + city_code + " ; v_id = " + village_code );
+            FilterDeviceByLocationFun(city_code, village_code);
+        });
+        $("[name=filter_village]").on("click", function(){
+            var city_code = $("[name=filter_city] .active").parents().prop("id");
+            var village_code = $(this).prop("id");
+            console.log("c_id = " + city_code + " ; v_id = " + village_code );
+            FilterDeviceByLocationFun(city_code, village_code);
+        });
+        function FilterDeviceByLocationFun(city_code, village_code){
+            city_code = city_code.substr(1);
+            village_code = village_code.substr(1);
+            console.log(city_code);
+            console.log(village_code);
+            window.location.href = "/admin_device/temperature/?page=1&city_code=" + city_code + "&village_code=" + village_code;
+        }
+    </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WZVN4DbW3hfB9MSgMmwVQBHU8ZV8jRxW"></script>
     <script async src="http://c.cnzz.com/core.php"></script>
-    <script>
+{#    <script>#}
 {#            console.log(e.parent().prev().prev().prev().prev().prev().html());#}
 {#            console.log(e);#}
 {#            console.log(e.hasClass("danger"));#}
-        $(".temperature-test tr td span").each(function(){
-            flush($(this));
-        });
-        function flush(e){
-            if(e.hasClass("danger-tag")){
-                setInterval(function(){
-                    if(e.hasClass("danger")){
-                        e.removeClass("danger");
-                    }else{
-                        e.addClass("danger");
-                    }
-                }, 300);
-            }else if(e.hasClass("warning-tag")){
-                setInterval(function(){
-                    if(e.hasClass("warning")){
-                        e.removeClass("warning");
-                    }else{
-                        e.addClass("warning");
-                    }
-                }, 1000);
-            }
-
-        }
-    </script>
-    <script>
-        var map = new BMap.Map("device-list-page");          // 创建地图实例
-        var point = new BMap.Point(117.48, 30.67);  // 创建点坐标
-        //创建多个覆盖点，同时绑定点击事件
-        var indexArr = new Array();
-        var infoWindowArr = new Array();
-        var markerArr = new Array();
-        var X = 117.48, Y = 30.67;
-        var ArrX = new Array();
-        var ArrY = new Array();
-        var dirX = -1;
-        var dirY = -1;
-        for(var i = 0; i < 100; ++i){
-            X = X + dirX * (Math.random()*10 * 0.0001);
-            Y = Y + dirY * (Math.random()*10 * 0.0001);
-            ArrX.push(X);
-            ArrY.push(Y);
-            dirX *= -1;
-            dirY *= -1;
-        }
-        for(var i = 0; i < 100; ++i){
-            indexArr.push(i);
-            if(i%3 == 0){
-                var myIconT = new BMap.Icon("/site_media/images/normal.png", new BMap.Size(20,32), {anchor:new BMap.Size(10,30)});
-                var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：<span style="color:green;">正常</span></td></tr>' +
-                '<tr><td>温度：' + i + '℃</td><td>电压：220V</td></tr><tr><td>电流：'+ i + 'A</td><td>电话：' + i*10000000 + '</td></tr></table></div>';
-            }else if(i%3==1){
-                var myIconT = new BMap.Icon("/site_media/images/danger.png", new BMap.Size(20,32), {anchor:new BMap.Size(10,30)});
-                var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：<span style="color:red;">过热</span></td></tr>' +
-                '<tr><td>温度：' + i + '℃</td><td>电压：220V</td></tr><tr><td>电流：'+ i + 'A</td><td>电话：' + i*10000000 + '</td></tr></table></div>';
-            }else{
-                var myIconT = new BMap.Icon("/site_media/images/warning.png", new BMap.Size(20,32), {anchor:new BMap.Size(10,30)});
-                var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：<span style="color:#fcab46;">略热</span></td></tr>' +
-                '<tr><td>温度：' + i + '℃</td><td>电压：220V</td></tr><tr><td>电流：'+ i + 'A</td><td>电话：' + i*10000000 + '</td></tr></table></div>';
-            }
-            infoWindowArr.push(new BMap.InfoWindow(sContent));
-            var marker = new BMap.Marker(new BMap.Point( ArrX[i], ArrY[i] ),{icon:myIconT});
+{#        $(".temperature-test tr td span").each(function(){#}
+{#            flush($(this));#}
+{#        });#}
+{#        function flush(e){#}
+{#            if(e.hasClass("danger-tag")){#}
+{#                setInterval(function(){#}
+{#                    if(e.hasClass("danger")){#}
+{#                        e.removeClass("danger");#}
+{#                    }else{#}
+{#                        e.addClass("danger");#}
+{#                    }#}
+{#                }, 300);#}
+{#            }else if(e.hasClass("warning-tag")){#}
+{#                setInterval(function(){#}
+{#                    if(e.hasClass("warning")){#}
+{#                        e.removeClass("warning");#}
+{#                    }else{#}
+{#                        e.addClass("warning");#}
+{#                    }#}
+{#                }, 1000);#}
+{#            }#}
+{##}
+{#        }#}
+{#    </script>#}
+{#    <script>#}
+{#        var map = new BMap.Map("device-list-page");          // 创建地图实例#}
+{#        var point = new BMap.Point(117.48, 30.67);  // 创建点坐标#}
+{#        //创建多个覆盖点，同时绑定点击事件#}
+{#        var indexArr = new Array();#}
+{#        var infoWindowArr = new Array();#}
+{#        var markerArr = new Array();#}
+{#        var X = 117.48, Y = 30.67;#}
+{#        var ArrX = new Array();#}
+{#        var ArrY = new Array();#}
+{#        var dirX = -1;#}
+{#        var dirY = -1;#}
+{#        for(var i = 0; i < 100; ++i){#}
+{#            X = X + dirX * (Math.random()*10 * 0.0001);#}
+{#            Y = Y + dirY * (Math.random()*10 * 0.0001);#}
+{#            ArrX.push(X);#}
+{#            ArrY.push(Y);#}
+{#            dirX *= -1;#}
+{#            dirY *= -1;#}
+{#        }#}
+{#        for(var i = 0; i < 100; ++i){#}
+{#            indexArr.push(i);#}
+{#            if(i%3 == 0){#}
+{#                var myIconT = new BMap.Icon("/site_media/images/normal.png", new BMap.Size(20,32), {anchor:new BMap.Size(10,30)});#}
+{#                var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：<span style="color:green;">正常</span></td></tr>' +#}
+{#                '<tr><td>温度：' + i + '℃</td><td>电压：220V</td></tr><tr><td>电流：'+ i + 'A</td><td>电话：' + i*10000000 + '</td></tr></table></div>';#}
+{#            }else if(i%3==1){#}
+{#                var myIconT = new BMap.Icon("/site_media/images/danger.png", new BMap.Size(20,32), {anchor:new BMap.Size(10,30)});#}
+{#                var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：<span style="color:red;">过热</span></td></tr>' +#}
+{#                '<tr><td>温度：' + i + '℃</td><td>电压：220V</td></tr><tr><td>电流：'+ i + 'A</td><td>电话：' + i*10000000 + '</td></tr></table></div>';#}
+{#            }else{#}
+{#                var myIconT = new BMap.Icon("/site_media/images/warning.png", new BMap.Size(20,32), {anchor:new BMap.Size(10,30)});#}
+{#                var sContent ='<div"><table class="table"><tr><td>XXX989x' + i + '</td><td>状态：<span style="color:#fcab46;">略热</span></td></tr>' +#}
+{#                '<tr><td>温度：' + i + '℃</td><td>电压：220V</td></tr><tr><td>电流：'+ i + 'A</td><td>电话：' + i*10000000 + '</td></tr></table></div>';#}
+{#            }#}
+{#            infoWindowArr.push(new BMap.InfoWindow(sContent));#}
+{#            var marker = new BMap.Marker(new BMap.Point( ArrX[i], ArrY[i] ),{icon:myIconT});#}
 {#            var marker = new BMap.Marker(new BMap.Point( ArrX[i], ArrY[i] ));#}
-            markerArr.push(marker);
-        }
+{#            markerArr.push(marker);#}
+{#        }#}
 {#        console.log(markerArr);#}
 {#        console.log(infoWindowArr);#}
-        for(var i = 0; i < 100; ++i){
-            map.addOverlay(markerArr[i]);
-            var P = indexArr[i];
-            var ope = new markerClick(i);
-            markerArr[i].addEventListener("click", ope.clickFunc);
-        }
-        function markerClick(i){
-            this.clickFunc = function() {
-                console.log(i);
-                this.openInfoWindow(infoWindowArr[i]);
-            }
-        }
-        var sContent_danger ='<div"><table class="table"><tr><td>XXX989000</td><td>状态：<span style="color:red">过热</span></td></tr>' +
-                '<tr><td>温度：' + 38 + '℃</td><td>电压：220V</td></tr><tr><td>电流：4A</td><td>电话：188888888</td></tr></table></div>';
-        var pt = new BMap.Point(117.49, 30.67);
-        var myIcon = new BMap.Icon("/site_media/images/danger.png", new BMap.Size(20,32), {anchor:new BMap.Size(10,30)});
-        var marker2 = new BMap.Marker(pt,{icon:myIcon});  // 创建标注
-        marker2.addEventListener("click", function(){
-            this.openInfoWindow(new BMap.InfoWindow(sContent_danger));
-        });
-        map.addOverlay(marker2);              // 将标注添加到地图中
-
-        marker2.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-        map.addControl(new BMap.NavigationControl());
-        map.addControl(new BMap.ScaleControl());
-        map.addControl(new BMap.OverviewMapControl());
-        map.addControl(new BMap.MapTypeControl());
-        map.centerAndZoom(point, 19);                 // 初始化地图，设置中心点坐标和地图级别
-        map.enableScrollWheelZoom();
-
-        map.enableInertialDragging();
-        map.enableContinuousZoom();
-    </script>
+{#        for(var i = 0; i < 100; ++i){#}
+{#            map.addOverlay(markerArr[i]);#}
+{#            var P = indexArr[i];#}
+{#            var ope = new markerClick(i);#}
+{#            markerArr[i].addEventListener("click", ope.clickFunc);#}
+{#        }#}
+{#        function markerClick(i){#}
+{#            this.clickFunc = function() {#}
+{#                console.log(i);#}
+{#                this.openInfoWindow(infoWindowArr[i]);#}
+{#            }#}
+{#        }#}
+{#        var sContent_danger ='<div"><table class="table"><tr><td>XXX989000</td><td>状态：<span style="color:red">过热</span></td></tr>' +#}
+{#                '<tr><td>温度：' + 38 + '℃</td><td>电压：220V</td></tr><tr><td>电流：4A</td><td>电话：188888888</td></tr></table></div>';#}
+{#        var pt = new BMap.Point(117.49, 30.67);#}
+{#        var myIcon = new BMap.Icon("/site_media/images/danger.png", new BMap.Size(20,32), {anchor:new BMap.Size(10,30)});#}
+{#        var marker2 = new BMap.Marker(pt,{icon:myIcon});  // 创建标注#}
+{#        marker2.addEventListener("click", function(){#}
+{#            this.openInfoWindow(new BMap.InfoWindow(sContent_danger));#}
+{#        });#}
+{#        map.addOverlay(marker2);              // 将标注添加到地图中#}
+{##}
+{#        marker2.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画#}
+{#        map.addControl(new BMap.NavigationControl());#}
+{#        map.addControl(new BMap.ScaleControl());#}
+{#        map.addControl(new BMap.OverviewMapControl());#}
+{#        map.addControl(new BMap.MapTypeControl());#}
+{#        map.centerAndZoom(point, 19);                 // 初始化地图，设置中心点坐标和地图级别#}
+{#        map.enableScrollWheelZoom();#}
+{##}
+{#        map.enableInertialDragging();#}
+{#        map.enableContinuousZoom();#}
+{#    </script>#}
 {% endblock %}
