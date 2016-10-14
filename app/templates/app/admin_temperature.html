@@ -109,27 +109,10 @@
                         </li>
                     </ul>
                 </div>
-{#                <div id="device-list-page" style="width: 100%; height: 400px;"></div>#}
-            </div>
-        </div>
-    </div>
-{#    悬浮窗口展示，展示每一台设备当日的温度曲线图#}
-    <div class="modal fade" id="modal-temp-line" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">
-                        <span id="device_id"></span>
-                    </h4>
-                </div>
-                <div class="modal-body" style="position:relative;">
-                    <div id="tem_line_graph" style="height: 400px; width: 400px;position: relative;">
-
+                <div class="clearfix">
+                    <div class="col-md-12" style="margin-top: 10px;">
+                        <div id="device-list-page" style="height: 400px; width: 100%"></div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
@@ -138,11 +121,6 @@
 {% block special_js %}
     <script>
         function showTodayTem(id){
-            var dialog = $("#modal-temp-line");
-            var $device_id = $("#device_id");
-            var $item_line_graph = $("#tem_line_graph");
-            $device_id.html(id);
-            $item_line_graph.html("");
             $.ajax({
                 url: '/admin_device/temperature/',
                 type: 'POST',
@@ -154,46 +132,46 @@
                         console.log(data);
                         var today_hour = data.today_hour;
                         var today_power = data.today_temp;
-                        $("#modal-temp-line").modal();
-                        $(function () {
-                            $('#tem_line_graph').highcharts({
+                    $(function () {
+                        $('#device-list-page').highcharts({
+                                title: {
+                                    text: '今日数据',
+                                    x: -20 //center
+                                },
+                                subtitle: {
+                                    text: '数据来源：征圣云平台',
+                                    x: -20
+                                },
+                                xAxis: {
+                                    categories: today_hour
+                                },
+                                yAxis: {
                                     title: {
-                                        text: '今日数据',
-                                        x: -20 //center
+                                        text: '温度 (摄氏度)'
                                     },
-                                    subtitle: {
-                                        text: '数据来源：征圣云平台',
-                                        x: -20
-                                    },
-                                    xAxis: {
-                                        categories: today_hour
-                                    },
-                                    yAxis: {
-                                        title: {
-                                            text: '电量 (Kwh)'
-                                        },
-                                        plotLines: [{
-                                            value: 0,
-                                            width: 1,
-                                            color: '#808080'
-                                        }]
-                                    },
-                                    tooltip: {
-                                        valueSuffix: '度'
-                                    },
-                                    legend: {
-                                        layout: 'vertical',
-                                        align: 'right',
-                                        verticalAlign: 'middle',
-                                        borderWidth: 0
-                                    },
-                                    series: [{
-                                        name: '电量',
-                                        data: today_power
-                                    },
-                                    ]
-                                });
+                                    plotLines: [{
+                                        value: 0,
+                                        width: 1,
+                                        color: '#00ff00'
+                                    }]
+                                },
+                                tooltip: {
+                                    valueSuffix: '度'
+                                },
+                                legend: {
+                                    layout: 'vertical',
+                                    align: 'right',
+                                    verticalAlign: 'middle',
+                                    borderWidth: 0
+                                },
+                                series: [{
+                                    name: '温度',
+                                    data: today_power,
+                                    color:"#ff0000"
+                                },
+                                ]
                             });
+                        });
                     }
                 },
                 error: function(data){
