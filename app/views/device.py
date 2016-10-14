@@ -461,94 +461,115 @@ def admin_device_maintain_filter(request):
         return HttpResponse("error")
 
 
+@csrf_exempt
 def admin_device_temperature(request):
     try:
         user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
-    try:
-        page = int(request.GET.get("page"))
-    except Exception, e:
-        print(str(e))
-        page = 1
-    print "page=", page
-    if page < 1:
-        print "okokoko"
-        return HttpResponseRedirect("/admin_device/temperature/?page=1")
-    city_code = int(request.GET.get("city_code", 0))
-    village_code = int(request.GET.get("village_code", 0))
+    if request.method == "GET":
+        try:
+            page = int(request.GET.get("page"))
+        except Exception, e:
+            print(str(e))
+            page = 1
+        print "page=", page
+        if page < 1:
+            print "okokoko"
+            return HttpResponseRedirect("/admin_device/temperature/?page=1")
+        city_code = int(request.GET.get("city_code", 0))
+        village_code = int(request.GET.get("village_code", 0))
 
-    city_list = City.objects.all()
-    try:
-        city = City.objects.get(city_code=city_code)
-        village_list = Village.objects.filter(city=city)
-    except:
-        village_list = None
+        city_list = City.objects.all()
+        try:
+            city = City.objects.get(city_code=city_code)
+            village_list = Village.objects.filter(city=city)
+        except:
+            village_list = None
 
-    today = datetime.today()
-    today = datetime(today.year, today.month, today.day)
-    print today
-    device_list = Device.objects.exclude(device_status=u"未安装")
-    try:
-        if city_code == 0 and village_code == 0:
-            pass
-        elif village_code == 0:
-            device_list = device_list.filter(city_code=city_code)
-        else:
-            try:
-                device_list = device_list.filter(city_code=city_code, village_code=village_code)
-            except:
+        today = datetime.today()
+        today = datetime(today.year, today.month, today.day)
+        print today
+        device_list = Device.objects.exclude(device_status=u"未安装")
+        try:
+            if city_code == 0 and village_code == 0:
                 pass
-    except:
-        pass
-    total_page = int(math.ceil(len(device_list)/15.0))
-    if total_page < 1:
-        total_page = 1
-    if page > total_page:
-        return HttpResponseRedirect("/admin_device/temperature/?page="+str(total_page))
-    start_num = (page - 1) * 15
-    end_num = page * 15
-    device_list = device_list[start_num:end_num]
-    device_list = serializer(device_list, foreign=True)
-    for device in device_list:
-        try:
-            city = City.objects.get(city_code=int(device["city_code"]))
-            village = Village.objects.get(city=city, village_code=int(device["village_code"]))
-            city_name = city.city_name
-            village_name = village.village_name
-            address = city_name + village_name
+            elif village_code == 0:
+                device_list = device_list.filter(city_code=city_code)
+            else:
+                try:
+                    device_list = device_list.filter(city_code=city_code, village_code=village_code)
+                except:
+                    pass
         except:
-            address = ""
-        try:
-            device_tmp = Device.objects.get(device_id=int(device["device_id"]))
-            user_new = AppUser.objects.get(device=device_tmp).username
-        except:
-            user_new = ""
-        try:
-            manufacture_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(device["manufacture_date"])))
-        except:
-            manufacture_date = ""
-        try:
-            device_tmp = Device.objects.get(device_id=int(device["device_id"]))
-            temperature = Data.objects.filter(device_id=device_tmp).order_by('-tempT')[0].temp
-        except:
-            temperature = u"未监测到"
-        device["address"] = address
-        device["user"] = user_new
-        device["manufacture_date"] = manufacture_date
-        device["temperature"] = temperature
+            pass
+        total_page = int(math.ceil(len(device_list)/15.0))
+        if total_page < 1:
+            total_page = 1
+        if page > total_page:
+            return HttpResponseRedirect("/admin_device/temperature/?page="+str(total_page))
+        start_num = (page - 1) * 15
+        end_num = page * 15
+        device_list = device_list[start_num:end_num]
+        device_list = serializer(device_list, foreign=True)
+        for device in device_list:
+            try:
+                city = City.objects.get(city_code=int(device["city_code"]))
+                village = Village.objects.get(city=city, village_code=int(device["village_code"]))
+                city_name = city.city_name
+                village_name = village.village_name
+                address = city_name + village_name
+            except:
+                address = ""
+            try:
+                device_tmp = Device.objects.get(device_id=int(device["device_id"]))
+                user_new = AppUser.objects.get(device=device_tmp).username
+            except:
+                user_new = ""
+            try:
+                manufacture_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(device["manufacture_date"])))
+            except:
+                manufacture_date = ""
+            try:
+                device_tmp = Device.objects.get(device_id=int(device["device_id"]))
+                temperature = Data.objects.filter(device_id=device_tmp).order_by('-tempT')[0].temp
+            except:
+                temperature = u"未监测到"
+            device["address"] = address
+            device["user"] = user_new
+            device["manufacture_date"] = manufacture_date
+            device["temperature"] = temperature
 
-    print(device_list)
-    return render(request, 'app/admin_temperature.html', {
-        "device_list": device_list,
-        "user": user,
-        "page": page,
-        "total_page": total_page,
-        "city_list": city_list,
-        "village_list": village_list,
-        "city_code": "c" + str(city_code),
-        "village_code": "v" + str(village_code),
-    })
+        print(device_list)
+        return render(request, 'app/admin_temperature.html', {
+            "device_list": device_list,
+            "user": user,
+            "page": page,
+            "total_page": total_page,
+            "city_list": city_list,
+            "village_list": village_list,
+            "city_code": "c" + str(city_code),
+            "village_code": "v" + str(village_code),
+        })
+    else:
+        try:
+            device_id = int(request.POST.get("device_id"))
+            device = Device.objects.get(device_id=device_id)
+            today = datetime.today()
+            today = datetime(today.year, today.month, today.day)
+            data_list = Data.objects.filter(tempBT__gte=today, device_id=device).order_by('tempT')
+            today_temp = []
+            today_hour = []
+            for d in data_list:
+                if d.temp is not None:
+                    today_temp.append(d.temp)
+                    today_hour.append(str(d.tempT.hour) + '时')
+            today_data = {}
+            today_data["today_temp"] = today_temp
+            today_data["today_hour"] = today_hour
+            return HttpResponse(json.dumps(today_data), "application/json")
+        except:
+            return HttpResponse("error")
 
 
 def admin_device_health(request):
