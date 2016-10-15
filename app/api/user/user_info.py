@@ -69,11 +69,11 @@ class UserInfo(APIView):
             for i in range(1, day + 1):
                 try:
                     data = datas.filter(powerT__year=year, powerT__month=month, powerT__day=i).order_by('-powerT')[0]
-                    month_day.append(str(data.powerT.day) + '号')
+                    month_day.append(data.powerT.day)
                     month_power.append(data.powerV - pre_total)
                     pre_total = data.powerV
                 except:
-                    month_day.append(str(i) + '号')
+                    month_day.append(i)
                     month_power.append(0)
         except:
             pass
@@ -98,11 +98,11 @@ class UserInfo(APIView):
                 try:
                     month_days = calendar.monthrange(year, i)[1]
                     data = datas.filter(powerT__year=year, powerT__month=i).order_by('-powerT')[0]
-                    year_month.append(data.powerT.month + '月')
+                    year_month.append(int(data.powerT.month))
                     year_power.append(data.powerV - pre_total)
                     pre_total = data.powerV
                 except:
-                    year_month.append(str(i) + '月')
+                    year_month.append(i)
                     year_power.append(0)
         except:
             pre_total = 0
@@ -113,7 +113,7 @@ class UserInfo(APIView):
             power = data - pre_total
         except:
             power = 0
-        year_month.append(str(month) + u"月")
+        year_month.append(month)
         year_power.append(power)
         print "year Data"
         print year_month
@@ -126,4 +126,4 @@ class UserInfo(APIView):
         except:
             data = None
 
-        return Response({'user': year_data, 'today_data': today_data}, status=status.HTTP_200_OK)
+        return Response({'month_data': month_data, 'today_data': today_data}, status=status.HTTP_200_OK)
