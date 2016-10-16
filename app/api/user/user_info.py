@@ -1,6 +1,6 @@
 # coding=utf-8
 from rest_framework import status
-from app.models import AppUser, Data
+from app.models import AppUser, Data, WorkOrder
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.serializer import AppUserSerializer
@@ -126,4 +126,9 @@ class UserInfo(APIView):
         except:
             data = None
 
-        return Response({'month_data': month_data, 'today_data': today_data}, status=status.HTTP_200_OK)
+        workorder_len = WorkOrder.objects.filter(appuser=user).count()
+        today = datetime.today()
+        today = datetime(today.year, today.month, today.day)
+        tempalert_len = Data.objects.filter(device_id=device, tempB=1).order_by('-tempT').count()
+
+        return Response({'month_data': month_data, 'today_data': today_data, 'workorder_len': workorder_len, 'tempalert_len': tempalert_len}, status=status.HTTP_200_OK)

@@ -1,5 +1,5 @@
 # coding=utf-8
-from app.models import AppUser, Device, Data, Parameter
+from app.models import AppUser, Device, Data, Parameter, WorkOrder
 from rest_framework import serializers
 
 class AppUserSerializer(serializers.ModelSerializer):
@@ -23,3 +23,20 @@ class DeviceSerializer(serializers.ModelSerializer):
             'room_code', 'manufacture_date', 'gateway_code',
             'meter_box', 'device_status'
         )
+
+
+class WorkOrderSerializer(serializers.ModelSerializer):
+    appuser = serializers.SerializerMethodField()
+    time = serializers.SerializerMethodField()
+    class Meta:
+        model = WorkOrder
+        fields = (
+            'num', 'type', 'appuser', 'content', 'status', 'time'
+        )
+
+    def get_appuser(self, obj):
+        appuser = obj.appuser
+        return AppUserSerializer(appuser).data
+
+    def get_time(self, obj):
+        return obj.time.strftime('%Y-%m-%d %H:%M:%S')
