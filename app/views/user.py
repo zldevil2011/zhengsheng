@@ -71,6 +71,8 @@ def admin_account(request):
     end_num = page * 10
     userlist = AppUser.objects.all()
     total_page = int(math.ceil(userlist.count()/10.0))
+    if total_page < 1:
+        total_page = 1
     if page > total_page:
         return HttpResponseRedirect("/admin_account?page=" +str(total_page))
     return render(request, 'app/admin_account.html', {
