@@ -58,7 +58,10 @@ def index(request):
 
     datas = serializer(datas, foreign=True)
     for data in datas:
-        data["powerT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(data["powerT"]))
+        if data["powerT"] == None:
+            pass
+        else:
+            data["powerT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(data["powerT"]))
     return render(request, 'terminalUser/terminal_details.html', {
         'user': user,
         'datas': datas,

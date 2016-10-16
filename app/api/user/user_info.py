@@ -47,7 +47,7 @@ class UserInfo(APIView):
         for d in data:
             if d.powerV is not None:
                 today_power.append(d.powerV)
-                today_hour.append(str(d.powerT.hour) + '时')
+                today_hour.append(d.powerT.hour)
         today_power.reverse()
         today_hour.reverse()
         print "Day Data"
