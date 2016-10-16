@@ -3,11 +3,16 @@ from app.models import AppUser, Device, Data, Parameter
 from rest_framework import serializers
 
 class AppUserSerializer(serializers.ModelSerializer):
+    device = serializers.SerializerMethodField()
     class Meta:
         model = AppUser
         fields = (
-            'id', 'username', 'telephone', 'email'
+            'id', 'username', 'telephone', 'email', 'device'
         )
+
+    def get_device(self, obj):
+        device = obj.device
+        return DeviceSerializer(device).data
 
 
 class DeviceSerializer(serializers.ModelSerializer):

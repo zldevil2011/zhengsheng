@@ -19,9 +19,14 @@ class Login(APIView):
             user = User.objects.get(username=username)
             if check_password(password, user.password):
                 print "check ok"
-                serializer = AppUserSerializer(user)
+                appuser = AppUser.objects.get(user=user)
+                print user
+                serializer = AppUserSerializer(appuser)
+                print "serializer", serializer
                 return Response({'user': serializer.data}, status=status.HTTP_200_OK)
             else:
+                print "403"
                 return Response(status=status.HTTP_403_FORBIDDEN)
-        except:
+        except Exception, e:
+            print(str(e))
             return Response(status=status.HTTP_403_FORBIDDEN)
