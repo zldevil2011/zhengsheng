@@ -2,6 +2,8 @@
 from django.conf.urls import url
 from django.views.generic import TemplateView
 from app.views import index, user, device, data, mobile, installArea, admin_info,workOrder
+from django.views.generic import TemplateView
+
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name="app/welcome.html")),
@@ -62,4 +64,6 @@ urlpatterns += {
     url(r'^device/list/$', device.list, name="device_list"),
     url(r'^device/instock/$', device.instock, name="device_instock"),
     url(r'^device/info/$', device.device_info, name="device_info"),
+
+    url(r'^contactUs$', TemplateView.as_view(template_name="app/contactUs.html")),
 }
