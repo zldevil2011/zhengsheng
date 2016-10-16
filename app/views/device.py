@@ -882,6 +882,7 @@ def admin_device_gateway_parameter(request):
             parameter.temperature = temperature
             parameter.power_get_point1 = power_get_point1
             parameter.power_get_point2 = power_get_point2
+            parameter.version += 1
             parameter.save()
             return HttpResponse("success")
         except Exception, e:
