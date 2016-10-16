@@ -40,3 +40,20 @@ class WorkOrderSerializer(serializers.ModelSerializer):
 
     def get_time(self, obj):
         return obj.time.strftime('%Y-%m-%d %H:%M:%S')
+
+
+class DataSerializer(serializers.ModelSerializer):
+    device_id = serializers.SerializerMethodField()
+    tempBT = serializers.SerializerMethodField()
+    class Meta:
+        model = Data
+        fields = (
+            'device_id', 'temp', 'tempT', 'powerV', 'powerI', 'powerT', 'tempB', 'tempBT', 'faultB', 'faultBT'
+        )
+
+    def get_device_id(self, obj):
+        device = obj.device_id
+        return DeviceSerializer(device).data
+
+    def get_tempBT(self, obj):
+        return obj.tempBT.strftime('%Y-%m-%d %H:%M:%S')
