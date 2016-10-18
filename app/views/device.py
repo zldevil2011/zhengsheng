@@ -557,16 +557,17 @@ def admin_device_temperature(request):
             device = Device.objects.get(device_id=device_id)
             today = datetime.today()
             today = datetime(today.year, today.month, today.day)
-            data_list = Data.objects.filter(tempBT__gte=today, device_id=device).order_by('tempT')
+            data_list = Data.objects.filter(tempT__gte=today, device_id=device).order_by('tempT')
             today_temp = []
             today_hour = []
             for d in data_list:
                 if d.temp is not None:
                     today_temp.append(d.temp)
-                    today_hour.append(str(d.tempT.hour) + '时')
+                    today_hour.append(str(d.tempT))
             today_data = {}
             today_data["today_temp"] = today_temp
             today_data["today_hour"] = today_hour
+            print today_data
             return HttpResponse(json.dumps(today_data), "application/json")
         except:
             return HttpResponse("error")
