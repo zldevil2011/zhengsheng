@@ -22,15 +22,25 @@ def area_list(request):
     print city_code
     print village_code
     if city_code == 0 and village_code == 0:
-        city = City.objects.all()[0]
-        village_list = Village.objects.filter(city=city)
-        city_list = City.objects.all()
-        city_code = city.city_code
+        try:
+            city = City.objects.all()[0]
+            village_list = Village.objects.filter(city=city)
+            city_list = City.objects.all()
+            city_code = city.city_code
+        except:
+            city_list = None
+            village_list = None
+            city_code = None
     else:
-        city = City.objects.get(city_code = city_code)
-        village_list = Village.objects.filter(city=city)
-        city_list = City.objects.all()
-        city_code = city.city_code
+        try:
+            city = City.objects.get(city_code = city_code)
+            village_list = Village.objects.filter(city=city)
+            city_list = City.objects.all()
+            city_code = city.city_code
+        except:
+            city_list = None
+            village_list = None
+            city_code = None
 
     return render(request, 'app/admin_area.html', {
         "city_list": city_list,
@@ -79,7 +89,7 @@ def village_add(request):
     print "111"
     try:
         city_code = int(request.POST.get("city_code"))
-        village_code = int(request.POST.get("city_code"))
+        village_code = int(request.POST.get("village_code"))
     except Exception, e:
         print(str(e))
         return HttpResponse("error")
@@ -89,6 +99,7 @@ def village_add(request):
         city = City.objects.get(city_code=city_code)
         village_name = request.POST.get("village_name", None)
         print(village_name)
+        print(village_code)
         if village_name is None:
             return HttpResponse("error")
         try:

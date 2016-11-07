@@ -689,19 +689,22 @@ def list(request):
         page = page_num
     start_num = (page - 1) * 10
     end_num = page * 10
-    device_list = Device.objects.all().order_by('-id')[start_num:end_num]
-    device_list = serializer(device_list)
-    for device in device_list:
-        device_id = str(device["device_id"])
-        if device_id[0] == '1':
-            device["type"] = u"终端"
-        elif device_id[0] == '2':
-            device["type"] = u"中继"
-        else:
-            device["type"] = u"网关"
-        str_time = time.strftime("%Y年%m月%d日 %H:%M:%S", time.localtime(int(device["manufacture_date"])))
-        device["manufacture_date"] = str_time
-    print device_list
+    try:
+        device_list = Device.objects.all().order_by('-id')[start_num:end_num]
+        device_list = serializer(device_list)
+        for device in device_list:
+            device_id = str(device["device_id"])
+            if device_id[0] == '1':
+                device["type"] = u"终端"
+            elif device_id[0] == '2':
+                device["type"] = u"中继"
+            else:
+                device["type"] = u"网关"
+            str_time = time.strftime("%Y年%m月%d日 %H:%M:%S", time.localtime(int(device["manufacture_date"])))
+            device["manufacture_date"] = str_time
+    except:
+        device_list = None
+    # print device_list
     return render(request, "app/device_list.html", {
         "device_list": device_list,
         "page_num": page_num,
@@ -723,29 +726,33 @@ def instock(request):
             return HttpResponse("error")
         device_number = int(device_number)
         start_num = 0
-        if device_type == "1":
+        print type(device_type)
+        print device_type
+        device_type = int(device_type)
+        if device_type == 1:
             d_num = Device.objects.filter(device_id__lt=200000000).order_by('-id')
             if len(d_num) > 0:
                 start_num = d_num[0].device_id
             else:
-                start_num = 100000000
+                start_num = 100000000 - 1
             device_type = u"终端"
-        elif device_type == "2":
-            d_num = Device.objects.filter(device_id__gt=200000000, device_id__lt=300000000).order_by('-id')
+        elif device_type == 2:
+            d_num = Device.objects.filter(device_id__gte=200000000, device_id__lt=300000000).order_by('-id')
             if len(d_num) > 0:
                 start_num = d_num[0].device_id
             else:
-                start_num = 200000000
+                start_num = 200000000 - 1
             device_type = u"中继"
         else:
-            d_num = Device.objects.filter(device_id__gt=300000000).order_by('-id')
+            d_num = Device.objects.filter(device_id__gte=300000000).order_by('-id')
             if len(d_num) > 0:
                 start_num = d_num[0].device_id
             else:
-                start_num = 300000000
+                start_num = 300000000 - 1
             device_type = u"网关"
         start_num = int(start_num)
-        start_num += 1
+        # start_num += 1
+        start_no = start_num + 1
         for i in range(device_number):
             start_num += 1
             device = Device()
@@ -764,7 +771,7 @@ def instock(request):
             parameter.save()
         ret_data = {}
         ret_data["type"] = device_type
-        ret_data["start_no"] = start_num
+        ret_data["start_no"] = start_no
         ret_data["end_no"] = start_num
         return HttpResponse(json.dumps(ret_data), "application/json")
     except Exception, e:

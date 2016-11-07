@@ -140,6 +140,10 @@
             var device_number = $("[name=device_number]").val();
             console.log(device_type);
             console.log(device_number);
+            if(device_number < 1){
+                alertify.error("无效数字");
+                return false;
+            }
             $.ajax({
                 type : 'POST',
                 url : '/device/instock/',

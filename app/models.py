@@ -82,7 +82,7 @@ class Parameter(models.Model):
 
 # 城市编码
 class City(models.Model):
-    city_code = models.PositiveSmallIntegerField(null=True)     # 城市代码
+    city_code = models.IntegerField(null=True)     # 城市代码
     city_name = models.CharField(max_length=32, null=True)     # 城市名称
 
     def __unicode__(self):
