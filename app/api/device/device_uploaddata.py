@@ -65,8 +65,15 @@ class DeviceUploadData(APIView):
                         else:
                             pass
                     new_data.save()
-                    if device.city_code is None or device.village_code is None or device.building_code is None or device.unit_code is None or device.room_code is None:
-                        ExtInfoID.append(device_id)
+                    if device_id < 200000000:
+                        if device.city_code is None or device.village_code is None or device.building_code is None or device.unit_code is None or device.room_code is None:
+                            ExtInfoID.append(device_id)
+                    elif device_id < 300000000:
+                        if device.city_code is None or device.village_code is None or device.building_code is None or device.unit_code is None:
+                            ExtInfoID.append(device_id)
+                    else:
+                        if device.city_code is None or device.village_code is None:
+                            ExtInfoID.append(device_id)
                 except Exception, e:
                     print str(e)
                     device_id = int(device_data_list[0].split('=')[1])
