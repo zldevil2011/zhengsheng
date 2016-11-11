@@ -1,5 +1,5 @@
 # coding=utf-8
-from app.models import AppUser, Device, Data, Parameter, WorkOrder
+from app.models import AppUser, Device, Data, Parameter, WorkOrder, Event
 from rest_framework import serializers
 
 class AppUserSerializer(serializers.ModelSerializer):
@@ -57,3 +57,11 @@ class DataSerializer(serializers.ModelSerializer):
 
     def get_tempBT(self, obj):
         return obj.tempBT.strftime('%Y-%m-%d %H:%M:%S')
+
+
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = (
+            'name_no', 'name', 'time', 'content'
+        )

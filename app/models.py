@@ -135,5 +135,16 @@ class Fund(models.Model):
         return str(self.id)
 
 
+# 时间管理
+class Event(models.Model):
+    name_no = models.IntegerField(default=0)
+    device = models.ForeignKey(Device, related_name='event', null=True)
+    name = models.CharField(max_length=32, default=0)
+    time = models.DateTimeField(null=True)
+    content = models.CharField(max_length=32, null=True)
+
+    def __unicode__(self):
+        return str(self.pk)
+
 
 # Create your models here.

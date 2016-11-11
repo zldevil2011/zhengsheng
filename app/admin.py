@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app.models import City, Village, Parameter, Adminer, Data, Device, AppUser, WorkOrder, Repairing, Fund
+from app.models import City, Village, Parameter, Adminer, Data, Device, AppUser, WorkOrder, Repairing, Fund, Event
 
 class CityAdmin(admin.ModelAdmin):
     list_display = ('id', 'city_code', 'city_name')
@@ -40,6 +40,11 @@ class RepairingAdmin(admin.ModelAdmin):
 class FundAdmin(admin.ModelAdmin):
     list_display = ('id', 'appuser', 'total_num')
 
+
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'time')
+
+
 admin.site.register(City, CityAdmin)
 admin.site.register(Village, VillageAdmin)
 admin.site.register(Parameter, ParameterAdmin)
@@ -50,5 +55,6 @@ admin.site.register(AppUser, AppUserAdmin)
 admin.site.register(WorkOrder, WorkOrderAdmin)
 admin.site.register(Repairing, RepairingAdmin)
 admin.site.register(Fund, FundAdmin)
+admin.site.register(Event, EventAdmin)
 
 # Register your models here.
