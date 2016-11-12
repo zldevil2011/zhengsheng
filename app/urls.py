@@ -39,6 +39,8 @@ urlpatterns = [
 
     url(r'^admin_device/leakage/$', device.admin_device_leakage, name="admin_device_leakage"),
 
+    url(r'^admin_device/(?P<device_id>\d+)/$', device.admin_device_info, name="admin_device_info"),
+
     # 网关参数设定
     url(r'^admin_device/gateway/parameter/$', device.admin_device_gateway_parameter, name="admin_device_gateway_parameter"),
 

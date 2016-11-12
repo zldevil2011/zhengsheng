@@ -897,3 +897,19 @@ def admin_device_gateway_parameter(request):
             print(str(e))
             return HttpResponse("error")
         return HttpResponse("POST")
+
+
+@csrf_exempt
+def admin_device_info(request, device_id):
+    try:
+        user = Adminer.objects.get(name=request.session['username'])
+    except AppUser.DoesNotExist:
+        return HttpResponseRedirect("/admin_login/")
+    if request.method == "GET":
+        try:
+            device = Device.objects.get(device_id=device_id)
+            return HttpResponse(json.dumps(serializer(device)))
+        except Device.DoesNotExist:
+            return HttpResponse("error")
+    else:
+        return HttpResponse("error")

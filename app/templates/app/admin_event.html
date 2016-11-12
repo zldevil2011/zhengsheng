@@ -51,8 +51,8 @@
                             <td>{{ event.name }}</td>
                             <td>{{ event.time }}</td>
                             <td>{{ event.content }}</td>
-                            <td>{{ event.device_id }}</td>
-                            <td><button class="btn btn-success" onclick="viewWO(this.id);" id="{{ workOrder.id }}">查看</button></td>
+                            <td>{{ event.device.device_id }}</td>
+                            <td><button class="btn btn-success" onclick="viewDevice(this.id);" id="{{ event.device.device_id }}">查看设备</button></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -69,22 +69,22 @@
                     <li>
                          <a href="/admin_event/?page={{ page|add:1 }}">下一页</a>
                     </li>
-                    <li>
-                         <a href="#">跳转至</a>
-                    </li>
-                    <li>
-                         <input type="number" style="width: 50px;margin-left: 10px;line-height: 1.8571;border-radius: 4px; float: left;">
-                    </li>
-                    <li>
-                         <a href="" class="">确定</a>
-                    </li>
+{#                    <li>#}
+{#                         <a href="#">跳转至</a>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                         <input type="number" style="width: 50px;margin-left: 10px;line-height: 1.8571;border-radius: 4px; float: left;">#}
+{#                    </li>#}
+{#                    <li>#}
+{#                         <a href="" class="">确定</a>#}
+{#                    </li>#}
                 </ul>
             </div>
         </div>
 
     </div>
 {#    显示工单详细信息的悬浮窗#}
-    <div class="modal fade" id="workOrder-Info" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="color:black;">
+    <div class="modal fade" id="device-Info" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="color:black;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -110,40 +110,26 @@
             </div>
         </div>
     </div>
+    <div name="device-id" style="display: none;"></div>
 {% endblock %}
 {% block special_js %}
     <script>
-        $(function(){
-            var event_list = "{{ event_list | safe}}";
-            console.log(event_list);
-        });
-{#        点击按钮查看具体信息#}
-        $('#workOrder-Info').on('show.bs.modal', function (e) {
-            var wo_id = $("[name=targetWO-id]").html();
-            console.log(wo_id);
+{#        点击按钮显示当前设备的具体信息#}
+        $('#device-Info').on('show.bs.modal', function (e) {
+            var device_id = $("[name=device-id]").html();
+            console.log(device_id);
+            var targetURL = '/admin_device/' + device_id + '/';
+            alert(targetURL);
             $.ajax({
-                url: '/admin_work_order/' + wo_id + '/',
+                url: targetURL,
                 type: 'GET',
                 cache: false,
                 processData: false
             }).done(function(res){
                 if(res != "error"){
-                    var wo_json = JSON.parse(res);
-{#                    console.log(res);#}
-                    $("[name=wo-user]").html(wo_json.appuser.username);
-                    $("[name=wo-title]").html(wo_json.type);
-                    $("[name=wo-content]").html(wo_json.content);
-                    $("[name=wo-id]").html(wo_json.id);
-                    $("[name=ret_content]").val("");
-                    if(wo_json.status == "待处理"){
-                        $("[name=wo-status]").html(wo_json.status).css("color", "red");
-                    }else if(wo_json.status == "正在处理"){
-                        $("[name=wo-status]").html(wo_json.status).css("color", "#e09d32");
-                    }else{
-                        $("[name=wo-status]").html(wo_json.status).css("color", "green");
-                        $("[name=ret_content]").remove();
-                        $("[name=updateBtn]").remove();
-                    }
+                    alert(res);
+                    var device_json = JSON.parse(res);
+                    alert(device_json);
                 }else{
                     alert("数据错误");
                     return;
@@ -153,36 +139,10 @@
                 return;
             });
         });
-        function viewWO(id){
-            $("[name=targetWO-id]").html(id);
-            $("#workOrder-Info").modal({
+        function viewDevice(id){
+            $("[name=device-id]").html(id);
+            $("#device-Info").modal({
                 keyboard: false
-            })
-        }
-        function updateWO(){
-            var wo_id = $("[name=wo-id]").html();
-            var formdata = new FormData();
-            var ret_content = $("[name=ret_content]").val();
-            console.log(ret_content);
-            formdata.append("ret_content", ret_content);
-            $.ajax({
-                url: '/admin_work_order/' + wo_id + '/',
-                type: 'POST',
-                data: formdata,
-                cache: false,
-                processData: false,
-                contentType: false
-            }).done(function(res){
-                if(res != "error"){
-                    alert("提交成功");
-                    $('#workOrder-Info').modal('hide')
-                }else{
-                    alert("数据错误");
-                    return;
-                }
-            }).fail(function(res){
-                alert("服务器错误");
-                return;
             })
         }
     </script>

@@ -32,7 +32,7 @@ def admin_event(request):
     start_num = (page - 1) * 10
     end_num = page * 10
     event_list = event_list[start_num:end_num]
-    event_list = serializer(event_list)
+    event_list = serializer(event_list, foreign=True)
     for event in event_list:
         event["time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(event["time"]))
     return render(request, 'app/admin_event.html', {
