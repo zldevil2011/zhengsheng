@@ -908,8 +908,11 @@ def admin_device_info(request, device_id):
     if request.method == "GET":
         try:
             device = Device.objects.get(device_id=device_id)
-            return HttpResponse(json.dumps(serializer(device)))
-        except Device.DoesNotExist:
+            device_serializer = serializer(device)
+            device_serializer["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(device_serializer["manufacture_date"]))
+            return HttpResponse(json.dumps(device_serializer))
+        except Exception, e:
+            print str(e)
             return HttpResponse("error")
     else:
         return HttpResponse("error")

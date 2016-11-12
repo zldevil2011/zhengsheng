@@ -88,24 +88,23 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title" id="myModalLabel">
-                        <span name="wo-user"></span>
-                        <span name="wo-id" class="hidden"></span>
+                        <span name="d-id"></span>
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <p name="wo-title"></p>
-                    <p name="wo-content"></p>
-                    <p>
-                        <h5>回复意见 : </h5>
-                        <textarea cols="10" rows="10" style="width: 100%;" name="ret_content"></textarea>
-                    </p>
-                    <p name="wo-status"></p>
+                    <p>城市：<span name="d-cityCode"></span></p>
+                    <p>小区：<span name="d-villageCode"></span></p>
+                    <p>楼号：<span name="d-buildingCode"></span></p>
+                    <p>单元：<span name="d-unitCode"></span></p>
+                    <p>房间：<span name="d-roomCode"></span></p>
+                    <p>生产日期：<span name="d-manufactureDate"></span></p>
+                    <p>设备状态：<span name="d-status"></span></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button name = "updateBtn" type="button" class="btn btn-success" onclick="updateWO()">保存</button>
+{#                    <button name = "updateBtn" type="button" class="btn btn-success" onclick="updateWO()">保存</button>#}
                 </div>
             </div>
         </div>
@@ -117,9 +116,8 @@
 {#        点击按钮显示当前设备的具体信息#}
         $('#device-Info').on('show.bs.modal', function (e) {
             var device_id = $("[name=device-id]").html();
-            console.log(device_id);
+{#            console.log(device_id);#}
             var targetURL = '/admin_device/' + device_id + '/';
-            alert(targetURL);
             $.ajax({
                 url: targetURL,
                 type: 'GET',
@@ -127,9 +125,14 @@
                 processData: false
             }).done(function(res){
                 if(res != "error"){
-                    alert(res);
                     var device_json = JSON.parse(res);
-                    alert(device_json);
+                    $("[name=d-cityCode]").html(device_json.city_code);
+                    $("[name=d-villageCode]").html(device_json.village_code);
+                    $("[name=d-buildingCode]").html(device_json.building_code);
+                    $("[name=d-unitCode]").html(device_json.unit_code);
+                    $("[name=d-roomCode]").html(device_json.room_code);
+                    $("[name=d-manufactureDate]").html(device_json.manufacture_date);
+                    $("[name=d-status]").html(device_json.device_status);
                 }else{
                     alert("数据错误");
                     return;
