@@ -1,7 +1,7 @@
 #coding=utf-8
 from django.conf.urls import url
 from django.views.generic import TemplateView
-from app.views import index, user, device, data, mobile, installArea, admin_info,workOrder
+from app.views import index, user, device, data, mobile, installArea, admin_info,workOrder, event
 from django.views.generic import TemplateView
 
 
@@ -59,6 +59,8 @@ urlpatterns = [
 
     url(r'^admin_info/user/$', admin_info.user, name="admin_info_user"),
     url(r'^admin_info/user/sendMail/$', admin_info.sendMail, name="sendMail"),
+
+    url(r'^admin_event/$', event.admin_event, name="admin_event"),
 ]
 urlpatterns += {
     url(r'^device/list/$', device.list, name="device_list"),

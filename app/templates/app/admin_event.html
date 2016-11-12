@@ -1,0 +1,189 @@
+{% extends "app/base.html" %}
+{% block title %}事件管理{% endblock %}
+{% block main_body %}
+    <div class="main-body">
+{#        bread direction#}
+        <div class="bg-color" style="margin: 10px 0;position: relative;padding: 10px 12px;">
+            <span class="glyphicon glyphicon-home" style="display: inline-block;"></span>
+            <ul class="breadcrumb breadcrumb-my" style="display: inline-block;">
+				<li>
+					 <a href="#">Home</a>
+				</li>
+				<li>
+					 <a href="#">Device</a>
+				</li>
+				<li class="active">
+					Event
+				</li>
+			</ul>
+        </div>
+{#        account list#}
+        <div class="row bg-color" style="padding: 10px 30px;">
+            <hr>
+            <div class="col-md-12 column" style="">
+                <table class="table">
+                    <thead>
+                        <tr style="background-color: rgba(39,25,25,0.35);">
+                            <th>
+                                事件编号
+                            </th>
+                            <th>
+                                事件名称
+                            </th>
+                            <th>
+                                提交时间
+                            </th>
+                            <th>
+                                事件内容
+                            </th>
+                            <th>
+                                设备ID
+                            </th>
+                            <th>
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="workOrderList">
+                    {% for event in event_list %}
+                        <tr style="max-height: 20px;">
+                            <td>{{ event.name_no }}</td>
+                            <td>{{ event.name }}</td>
+                            <td>{{ event.time }}</td>
+                            <td>{{ event.content }}</td>
+                            <td>{{ event.device_id }}</td>
+                            <td><button class="btn btn-success" onclick="viewWO(this.id);" id="{{ workOrder.id }}">查看</button></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12 column" style="text-align: right;">
+                <ul class="pagination account-pagination" style="">
+                    <li>
+                         <a href="/admin_event/?page={{ page|add:-1 }}">上一页</a>
+                    </li>
+                    <li>
+                         <a href="#" name="pageInfo">第{{ page }}页/共{{ total_page }}页</a>
+                    </li>
+                    <li>
+                         <a href="/admin_event/?page={{ page|add:1 }}">下一页</a>
+                    </li>
+                    <li>
+                         <a href="#">跳转至</a>
+                    </li>
+                    <li>
+                         <input type="number" style="width: 50px;margin-left: 10px;line-height: 1.8571;border-radius: 4px; float: left;">
+                    </li>
+                    <li>
+                         <a href="" class="">确定</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+{#    显示工单详细信息的悬浮窗#}
+    <div class="modal fade" id="workOrder-Info" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="color:black;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <span name="wo-user"></span>
+                        <span name="wo-id" class="hidden"></span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <p name="wo-title"></p>
+                    <p name="wo-content"></p>
+                    <p>
+                        <h5>回复意见 : </h5>
+                        <textarea cols="10" rows="10" style="width: 100%;" name="ret_content"></textarea>
+                    </p>
+                    <p name="wo-status"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button name = "updateBtn" type="button" class="btn btn-success" onclick="updateWO()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block special_js %}
+    <script>
+        $(function(){
+            var event_list = "{{ event_list | safe}}";
+            console.log(event_list);
+        });
+{#        点击按钮查看具体信息#}
+        $('#workOrder-Info').on('show.bs.modal', function (e) {
+            var wo_id = $("[name=targetWO-id]").html();
+            console.log(wo_id);
+            $.ajax({
+                url: '/admin_work_order/' + wo_id + '/',
+                type: 'GET',
+                cache: false,
+                processData: false
+            }).done(function(res){
+                if(res != "error"){
+                    var wo_json = JSON.parse(res);
+{#                    console.log(res);#}
+                    $("[name=wo-user]").html(wo_json.appuser.username);
+                    $("[name=wo-title]").html(wo_json.type);
+                    $("[name=wo-content]").html(wo_json.content);
+                    $("[name=wo-id]").html(wo_json.id);
+                    $("[name=ret_content]").val("");
+                    if(wo_json.status == "待处理"){
+                        $("[name=wo-status]").html(wo_json.status).css("color", "red");
+                    }else if(wo_json.status == "正在处理"){
+                        $("[name=wo-status]").html(wo_json.status).css("color", "#e09d32");
+                    }else{
+                        $("[name=wo-status]").html(wo_json.status).css("color", "green");
+                        $("[name=ret_content]").remove();
+                        $("[name=updateBtn]").remove();
+                    }
+                }else{
+                    alert("数据错误");
+                    return;
+                }
+            }).fail(function(res){
+                alert("服务器错误");
+                return;
+            });
+        });
+        function viewWO(id){
+            $("[name=targetWO-id]").html(id);
+            $("#workOrder-Info").modal({
+                keyboard: false
+            })
+        }
+        function updateWO(){
+            var wo_id = $("[name=wo-id]").html();
+            var formdata = new FormData();
+            var ret_content = $("[name=ret_content]").val();
+            console.log(ret_content);
+            formdata.append("ret_content", ret_content);
+            $.ajax({
+                url: '/admin_work_order/' + wo_id + '/',
+                type: 'POST',
+                data: formdata,
+                cache: false,
+                processData: false,
+                contentType: false
+            }).done(function(res){
+                if(res != "error"){
+                    alert("提交成功");
+                    $('#workOrder-Info').modal('hide')
+                }else{
+                    alert("数据错误");
+                    return;
+                }
+            }).fail(function(res){
+                alert("服务器错误");
+                return;
+            })
+        }
+    </script>
+{% endblock %}
