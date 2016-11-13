@@ -62,6 +62,44 @@ class Data(models.Model):
     tempBT = models.DateTimeField(null=True)        # 高温报警时间
     faultB = models.SmallIntegerField(null=True)        # 通信故障报警标示 1，0
     faultBT = models.DateTimeField(null=True)       # 通信故障报警时间
+    voltage = models.FloatField(null=True)          # 电压有效值
+    electric_current = models.FloatField(null=True)  # 电流有效值
+    power_factor = models.FloatField(null=True)     # 功率因数
+    active_power = models.FloatField(null=True)     # 有功功率
+    reactive_power = models.FloatField(null=True)   # 无功功率
+    data_date = models.DateField(null=True)         # 新增数据采集日期
+    date_time = models.TimeField(null=True)         # 新增数据采集时间
+
+    def __unicode__(self):
+        return str(self.id)
+
+
+# 中继数据，涉及到3相数据
+class Relay(models.Model):
+    device_id = models.ForeignKey(Device, related_name='relay', null=True)
+    a_voltage = models.FloatField(null=True)    # A相电压有效值
+    b_voltage = models.FloatField(null=True)    # B相电压有效值
+    c_voltage = models.FloatField(null=True)    # C相电压有效值
+    a_electric_current = models.FloatField(null=True)   # A相电流有效值
+    b_electric_current = models.FloatField(null=True)   # B相电流有效值
+    c_electric_current = models.FloatField(null=True)   # C相电流有效值
+    a_power_factor = models.FloatField(null=True)     # A相功率因数
+    b_power_factor = models.FloatField(null=True)     # B相功率因数
+    c_power_factor = models.FloatField(null=True)     # C相功率因数
+    a_active_power = models.FloatField(null=True)     # A相有功功率
+    b_active_power = models.FloatField(null=True)     # B相有功功率
+    c_active_power = models.FloatField(null=True)     # C相有功功率
+    a_reactive_power = models.FloatField(null=True)   # A相无功功率
+    b_reactive_power = models.FloatField(null=True)   # B相无功功率
+    c_reactive_power = models.FloatField(null=True)   # C相无功功率
+    a_powerV = models.FloatField(null=True)           # A相有功电能
+    b_powerV = models.FloatField(null=True)           # B相有功电能
+    c_powerV = models.FloatField(null=True)           # C相有功电能
+    t_powerV = models.FloatField(null=True)           # 总有功电能
+    a_powerI = models.FloatField(null=True)           # A相无功电能
+    b_powerI = models.FloatField(null=True)           # B相无功电能
+    c_powerI = models.FloatField(null=True)           # C相无功电能
+    t_powerI = models.FloatField(null=True)           # 总无功电能
 
     def __unicode__(self):
         return str(self.id)
