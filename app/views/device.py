@@ -838,7 +838,10 @@ def admin_device_gateway_parameter(request):
                 gateway_list = gateway_list.filter(device__city_code=city_code, device__village_code=village_code)
             except:
                 pass
+        start_num = (page - 1) * 15
+        end_num = page * 15
         total_page = int(math.ceil(len(gateway_list))/15.0)
+        gateway_list = gateway_list[start_num, end_num]
         if total_page < 1:
             total_page = 1
             return HttpResponseRedirect("/admin_device/gateway/parameter/?page=" + str(total_page))
