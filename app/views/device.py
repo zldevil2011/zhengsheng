@@ -813,7 +813,7 @@ def admin_device_gateway_parameter(request):
     if request.method == "GET":
         page = int(request.GET.get("page", 1))
         if page < 1:
-            return HttpResponseRedirect("/admin_device?page=1")
+            return HttpResponseRedirect("/admin_device/gateway/parameter/?page=1")
         try:
             city_code = int(request.GET.get("city_code"))
         except:
