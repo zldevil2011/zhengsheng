@@ -67,8 +67,7 @@ class Data(models.Model):
     power_factor = models.FloatField(null=True)     # 功率因数
     active_power = models.FloatField(null=True)     # 有功功率
     reactive_power = models.FloatField(null=True)   # 无功功率
-    data_date = models.DateField(null=True)         # 新增数据采集日期
-    date_time = models.TimeField(null=True)         # 新增数据采集时间
+    date_time = models.DateTimeField(null=True)         # 新增数据采集时间
 
     def __unicode__(self):
         return str(self.id)
@@ -100,6 +99,7 @@ class Relay(models.Model):
     b_powerI = models.FloatField(null=True)           # B相无功电能
     c_powerI = models.FloatField(null=True)           # C相无功电能
     t_powerI = models.FloatField(null=True)           # 总无功电能
+    data_time = models.DateTimeField(null=True)       # 数据采集时间
 
     def __unicode__(self):
         return str(self.id)
