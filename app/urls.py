@@ -57,7 +57,11 @@ urlpatterns = [
 
     url(r'^admin_area/list/$', installArea.area_list, name="area_list"),
     url(r'^admin_area/city/add/$', installArea.city_add, name="city_add"),
+    url(r'^admin_area/city/delete/$', installArea.city_delete, name="city_delete"),
+
     url(r'^admin_area/village/add/$', installArea.village_add, name="village_add"),
+    url(r'^admin_area/city/village_list/$', installArea.city_village_list, name="city_village_list"),
+    url(r'^admin_area/city/delete/$', installArea.village_delete, name="village_delete"),
 
     url(r'^admin_info/user/$', admin_info.user, name="admin_info_user"),
     url(r'^admin_info/user/sendMail/$', admin_info.sendMail, name="sendMail"),

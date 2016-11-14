@@ -56,6 +56,8 @@
                         <option value ="0">请选择操作</option>
                         <option value ="1">新增省市级城市</option>
                         <option value ="2">新增小区</option>
+                        <option value ="-1">移除省市级城市</option>
+                        <option value ="-2">移除小区</option>
                     </select>
                 </div>
             </div>
@@ -101,6 +103,37 @@
                 </div>
                 <div class="col-md-2 horizontal-text-center">
                     <button class="btn btn-success btn-block" id="addCity">提交</button>
+                </div>
+            </div>
+            <div class="clearfix" style="margin: 10px 0;position: relative;display: none;" name="deleteCityView">
+                <div class="col-md-3 horizontal-text-center">
+                    <select name="deleteCity" class="btn btn-info" style="width: 100%;height: 30px;" id="selectCity">
+                        <option value ="0">请选择城市</option>
+                        {% for city in city_list %}
+                            <option value ="{{ city.city_code }}">{{ city.city_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2 horizontal-text-center">
+                    <button class="btn btn-danger btn-block" id="deleteCityBtn">移除</button>
+                </div>
+            </div>
+            <div class="clearfix" style="margin: 10px 0;position: relative;display: none;" name="deleteVillageView">
+                <div class="col-md-3 horizontal-text-center">
+                    <select name="deleteFatherCity" class="btn btn-info" style="width: 100%;height: 30px;" id="selectCity">
+                        <option value ="0">请选择城市</option>
+                        {% for city in city_list %}
+                            <option value ="{{ city.city_code }}">{{ city.city_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3 horizontal-text-center">
+                    <select name="deleteVillage" class="btn btn-info" style="width: 100%;height: 30px;" id="selectCity">
+                        <option value ="0" name="villageTemplate">请选择小区</option>
+                    </select>
+                </div>
+                <div class="col-md-2 horizontal-text-center">
+                    <button class="btn btn-danger btn-block" id="deleteVillageBtn">移除</button>
                 </div>
             </div>
 {#            <div class="clearfix">#}
@@ -180,9 +213,17 @@
             }else if(val == 1){
                 $("[name=addVillageView]").css("display", "none");
                 $("[name=addCityView]").css("display", "block");
-            }else{
+            }else if(val == 2){
                 $("[name=addCityView]").css("display", "none");
                 $("[name=addVillageView]").css("display", "block");
+            }else if(val == -1){
+                var $first_view = $($("[name=deleteCityView]").css("display", "block").siblings().get(0));
+                $("[name=deleteCityView]").css("display", "block").siblings().css("display", "none");
+                $first_view.css("display", "block");
+            }else if(val == -2){
+                var $first_view = $($("[name=deleteVillageView]").css("display", "block").siblings().get(0));
+                $("[name=deleteVillageView]").css("display", "block").siblings().css("display", "none");
+                $first_view.css("display", "block");
             }
         });
         $("#addCity").on("click", function(){
@@ -223,7 +264,94 @@
                     alertify.error("添加失败，请稍后再试");
                 }
             })
-        })
+        });
+        $("[name=deleteFatherCity]").on("change", function(){
+            var city_code = $(this).val();
+            console.log(city_code);
+            $.ajax({
+                url:'/admin_area/city/village_list/',
+                type:'POST',
+                data:{city_code:city_code},
+                success: function(data){
+                    data = JSON.parse(data);
+                    var village_len = data.length;
+                    var $tmp = $("[name=villageTemplate]").clone();
+                    $("[name=deleteVillage]").html($tmp);
+                    for(var i = 0; i < village_len; ++i){
+                        var village = data[i];
+                        var $tmp_c = $("[name=villageTemplate]").clone();
+                        $tmp_c.val(village.village_code);
+                        $tmp_c.html(village.village_name);
+                        $tmp_c.attr("name", "");
+                        $("[name=deleteVillage]").append($tmp_c);
+                    }
+                },
+                error: function(data){
+                    alertify.error("获取子节点失败");
+                }
+            })
+        });
+    </script>
+    <script>
+{#    删除现在已经存在的城市#}
+    $("#deleteCityBtn").on("click", function(){
+        var city_code = $("[name=deleteCity]").val();
+        if(city_code == 0){
+            alertify.error("请选择城市");
+            return;
+        }
+        var res = confirm("删除改城市也将已安装在该城市的设备移除并恢复出厂设备状态，您确认删除吗？");
+        if(res == true){
+            $.ajax({
+                url:'/admin_area/city/delete/',
+                type:'POST',
+                data:{city_code:city_code},
+                success:function(data){
+                    if(data == "success"){
+                        alert("移除成功");
+                        window.location.reload();
+                    }else{
+                        alertify.error("移除失败，请联系管理员");
+                    }
+                },
+                error:function(data){
+                    alert("error");
+                }
+            })
+        }else{
+            alert("取消删除");
+        }
+    });
+{#    删除现在已经存在的小区#}
+    $("#deleteVillageBtn").on("click", function(){
+        var city_code = $("[name=deleteFatherCity]").val();
+        var village_code = $("[name=deleteVillage]").val();
+        if(city_code == 0 || village_code == 0){
+            alertify.error("请选择城市和对应小区");
+            return;
+        }
+        var res = confirm("删除该小区也将已安装在该小区的设备移除并恢复出厂设备状态，您确认删除吗？");
+        if(res == true){
+            $.ajax({
+                url:'/admin_area/village/delete/',
+                type:'POST',
+                data:{city_code:city_code, village_code:village_code},
+                success:function(data){
+                    if(data == "success"){
+                        alert("移除成功");
+                        window.location.reload();
+                    }else{
+                        alertify.error("移除失败，请联系管理员");
+                    }
+                },
+                error:function(data){
+                    alert("error");
+                }
+            })
+        }else {
+            ;
+        }
+    });
     </script>
 {#    <script>#}
 {#        $("[name=deleteArea]").on("click", deleteAreaFunc);#}
