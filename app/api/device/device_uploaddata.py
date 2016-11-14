@@ -63,11 +63,11 @@ class DeviceUploadData(APIView):
                             elif key == "faultBT":
                                 new_data.faultBT = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                             elif key == "vol":
-                                new_data.voltage = float(val)
+                                new_data.voltage = float(val)/10.0
                             elif key == "elec":
-                                new_data.electric_current = float(val)
+                                new_data.electric_current = float(val)/10.0
                             elif key == "powerF":
-                                new_data.power_factor = float(val)
+                                new_data.power_factor = float(val)/1000.0
                             elif key == "powerA":
                                 new_data.active_power = float(val)
                             elif key == "powerR":
@@ -85,23 +85,23 @@ class DeviceUploadData(APIView):
                             val = data.split('=')[1].strip()
                             print key, ":", val
                             if key == "a_vol":
-                                relay.a_voltage = float(val)
+                                relay.a_voltage = float(val)/10.0
                             elif key == "b_vol":
-                                relay.b_voltage = float(val)
+                                relay.b_voltage = float(val)/10.0
                             elif key == "c_vol":
-                                relay.c_voltage = float(val)
+                                relay.c_voltage = float(val)/10.0
                             elif key == "a_elec":
-                                relay.a_electric_current = float(val)
+                                relay.a_electric_current = float(val)/10.0
                             elif key == "b_elec":
-                                relay.b_electric_current = float(val)
+                                relay.b_electric_current = float(val)/10.0
                             elif key == "c_elec":
-                                relay.c_electric_current = float(val)
+                                relay.c_electric_current = float(val)/10.0
                             elif key == "a_powerF":
-                                relay.a_power_factor = float(val)
+                                relay.a_power_factor = float(val)/1000.0
                             elif key == "b_powerF":
-                                relay.b_power_factor = float(val)
+                                relay.b_power_factor = float(val)/1000.0
                             elif key == "c_powerF":
-                                relay.c_power_factor = float(val)
+                                relay.c_power_factor = float(val)/1000.0
                             elif key == "a_powerA":
                                 relay.a_active_power = float(val)
                             elif key == "b_powerA":
