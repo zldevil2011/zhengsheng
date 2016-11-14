@@ -119,11 +119,29 @@
 {#        某一用户的详细使用情况#}
         <div class="row" style="padding: 10px 30px;background-color: rgba(40, 42, 55,0.75);">
             <hr>
+            <div class="col-md-12" style="text-align: left;">
+                <h4><span class="icon-user"></span>用户名称：用电量统计</h4>
+            </div>
             <div class="col-md-12" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
                 <div id = "userToday" style="width: 100%; height:400px;">该用户今日采集曲线</div>
             </div>
-            <div class="col-md-12" style="text-align: left;">
-                <h4><span class="icon-user"></span>用户名称：用电量统计</h4>
+            <div class="col-md-12"  style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;height: auto;">
+                <div class="col-md-12" style="width: 100%; height: auto !important; min-height: 30px;font-size: 14px;
+                background-color: #544949; overflow: hidden;line-height: 30px;">
+                    <span class="">其他数据</span>
+                    <ul name = "otherParameter" style="display: inline-block;margin-bottom: 0px;!important; float: right; " class="li-tab">
+                        <li name="voltage" class="li-round-sm active" style="display: inline-block;">电压有效值</li>
+                        <li name="electricity" class="li-round-sm" style="display: inline-block;">电流有效值</li>
+                        <li name="power_factor" class="li-round-sm" style="display: inline-block;">功率因数</li>
+                        <li name="active_power" class="li-round-sm" style="display: inline-block;">有功功率</li>
+                        <li name="reactive_power" class="li-round-sm" style="display: inline-block;">无功功率</li>
+                    </ul>
+                </div>
+                <div name="data-graph" class="col-md-12" id="voltage_graph" style="display: block;"></div>
+                <div name="data-graph" class="col-md-12" id="electricity_graph" style="display: block;"></div>
+                <div name="data-graph" class="col-md-12" id="power_factor_graph" style="display: block;"></div>
+                <div name="data-graph" class="col-md-12" id="active_power_graph" style="display: block;"></div>
+                <div name="data-graph" class="col-md-12" id="reactive_power_graph" style="display: block;"></div>
             </div>
             <div class="col-md-12">
                 <div class="col-md-6" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
@@ -181,6 +199,15 @@
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WZVN4DbW3hfB9MSgMmwVQBHU8ZV8jRxW"></script>
     <script async src="http://c.cnzz.com/core.php"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+    <script>
+        $("[name=otherParameter] li").on("click", function(){
+            $(this).addClass("active").siblings().removeClass("active");
+            var id = $(this).attr("name") + "_graph";
+            var $first = $($("#"+id).siblings().get(0));
+            $("#"+id).css("display", "block").siblings().css("display", "none");
+            $first.css("display", "block");
+        });
+    </script>
 {#    <script type="text/javascript">#}
 {#        var map = new BMap.Map("deviceInfoMap");          // 创建地图实例#}
 {##}
@@ -570,12 +597,23 @@
 {#                        console.log(data);#}
                         var month = data.month;
                         var year = data.year;
-                        var today = data.day;
-                        console.log(today);
-                        userDay(today.day_x, today.day_y);
-
                         userMonth(month.month_day, month.month_power);
                         userYear(year.year_month, year.year_power);
+
+                        var today = data.day;
+                        userDay(today.day_x, today.day_y);
+                        var reactive_power_data = data.reactive_power_data;
+                        userReactivePower(reactive_power_data.reactive_power_x, reactive_power_data.reactive_power_y);
+                        var active_power_data = data.active_power_data;
+                        userActivepower(active_power_data.active_power_x, active_power_data.active_power_y);
+                        var power_factor_data = data.power_factor_data;
+                        userPowerfactor(power_factor_data.power_factor_x, power_factor_data.power_factor_y);
+                        var electric_current_data = data.electric_current_data;
+                        userElectricity(electric_current_data.electric_current_x, electric_current_data.electric_current_y);
+                        var voltage_data = data.voltage_data;
+                        userVoltage(voltage_data.voltage_x, voltage_data.voltage_y);
+
+                        $("[name=data-graph]").css("display", "none");
                         $("[name=user_power_max]").html(data.user_power_max);
                         $("[name=user_power_min]").html(data.user_power_min);
                         $("[name=user_day_min]").html(data.user_day_min);
@@ -590,10 +628,380 @@
         }
     </script>
     <script>
+        function userVoltage(xx, yy) {
+            var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
+            Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
+                 return {
+                     radialGradient: { cx:0, cy: -0.8,r:2.3 },
+                     stops: [[0, color], [2, Highcharts.Color(color).brighten(14).get('rgb')] // darken
+                     ]
+                 };
+             });
+            $('#voltage_graph').highcharts({
+
+                chart: {
+                    type: 'column',
+                    backgroundColor: 'rgba(80,81,95,0.1)',
+                },
+                title: {
+                    text: '电压有效值',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                subtitle: {
+                    text: '来源：电表箱',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                credits: false,
+                xAxis: {
+                    categories: xx,
+                    crosshair: true,
+                    labels: {
+                        style: {
+                            fontSize: '8px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color:'#FFFFFF',
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '电压有效值'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} V</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    zones: [{
+                        value: 100,
+                        color: colors[1]
+                    }, {
+                        value: 240,
+                        color: colors[2]
+                    }],
+                    name: '电压有效值',
+                    data: yy,
+                }]
+            });
+        }
+        function userElectricity(xx, yy) {
+            var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
+            Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
+                 return {
+                     radialGradient: { cx:0, cy: -0.8,r:2.3 },
+                     stops: [[0, color], [2, Highcharts.Color(color).brighten(14).get('rgb')] // darken
+                     ]
+                 };
+             });
+            $('#electricity_graph').highcharts({
+
+                chart: {
+                    type: 'column',
+                    backgroundColor: 'rgba(80,81,95,0.1)',
+                },
+                title: {
+                    text: '电流有效值',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                subtitle: {
+                    text: '来源：电表箱',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                credits: false,
+                xAxis: {
+                    categories: xx,
+                    crosshair: true,
+                    labels: {
+                        style: {
+                            fontSize: '8px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color:'#FFFFFF',
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '电流有效值'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} A</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    zones: [{
+                        value: 0.2,
+                        color: colors[1]
+                    }, {
+                        value: 1,
+                        color: colors[2]
+                    }],
+                    name: '电流有效值',
+                    data: yy
+                }]
+            });
+        }
+        function userPowerfactor(xx, yy) {
+            var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
+            Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
+                 return {
+                     radialGradient: { cx:0, cy: -0.8,r:2.3 },
+                     stops: [[0, color], [2, Highcharts.Color(color).brighten(14).get('rgb')] // darken
+                     ]
+                 };
+             });
+            $('#power_factor_graph').highcharts({
+
+                chart: {
+                    type: 'column',
+                    backgroundColor: 'rgba(80,81,95,0.1)',
+                },
+                title: {
+                    text: '功率因数',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                subtitle: {
+                    text: '来源：电表箱',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                credits: false,
+                xAxis: {
+                    categories: xx,
+                    crosshair: true,
+                    labels: {
+                        style: {
+                            fontSize: '8px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color:'#FFFFFF',
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '功率因数'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    zones: [{
+                        value: 0.3,
+                        color: colors[1]
+                    }, {
+                        value: 0.6,
+                        color: colors[2]
+                    }],
+                    name: '功率因数',
+                    data: yy
+                }]
+            });
+        }
+        function userActivepower(xx,yy) {
+            var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
+            Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
+                 return {
+                     radialGradient: { cx:0, cy: -0.8,r:2.3 },
+                     stops: [[0, color], [2, Highcharts.Color(color).brighten(14).get('rgb')] // darken
+                     ]
+                 };
+             });
+            $('#active_power_graph').highcharts({
+
+                chart: {
+                    type: 'column',
+                    backgroundColor: 'rgba(80,81,95,0.1)',
+                },
+                title: {
+                    text: '有功功率',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                subtitle: {
+                    text: '来源：电表箱',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                credits: false,
+                xAxis: {
+                    categories: xx,
+                    crosshair: true,
+                    labels: {
+                        style: {
+                            fontSize: '8px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color:'#FFFFFF',
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '有功功率/kW'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} kW</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    zones: [{
+                        value: 100,
+                        color: colors[1]
+                    }, {
+                        value: 150,
+                        color: colors[2]
+                    }],
+                    name: '有功功率',
+                    data: yy
+                }]
+            });
+        }
+        function userReactivePower(xx, yy) {
+            var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
+            Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
+                 return {
+                     radialGradient: { cx:0, cy: -0.8,r:2.3 },
+                     stops: [[0, color], [2, Highcharts.Color(color).brighten(14).get('rgb')] // darken
+                     ]
+                 };
+             });
+            $('#reactive_power_graph').highcharts({
+
+                chart: {
+                    type: 'spline',
+                    backgroundColor: 'rgba(80,81,95,0.1)',
+                },
+                title: {
+                    text: '无功功率',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                subtitle: {
+                    text: '来源：电表箱',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                credits: false,
+                xAxis: {
+                    categories: xx,
+                    crosshair: true,
+                    labels: {
+                        style: {
+                            fontSize: '8px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color:'#FFFFFF',
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '无功功率/kVar'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} kVar</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    zones: [{
+                        value: 100,
+                        color: colors[1]
+                    }, {
+                        value: 150,
+                        color: colors[2]
+                    }],
+                    name: '无功功率',
+                    data: yy
+                }]
+            });
+        }
+    </script>
+    <script>
         function userDay(month_day, month_power){
+            var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
+            Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
+                 return {
+                     radialGradient: { cx:0, cy: -0.8,r:2.3 },
+                     stops: [[0, color], [2, Highcharts.Color(color).brighten(14).get('rgb')] // darken
+                     ]
+                 };
+             });
             $('#userToday').highcharts({
                 chart: {
-                    type: 'line',
+                    type: 'column',
                     backgroundColor: 'rgba(80,81,95,0.1)',
                 },
                 title: {
