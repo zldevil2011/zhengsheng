@@ -8,6 +8,11 @@ from datetime import datetime
 
 class EventUpload(APIView):
 
+    def get_event_name(self, id):
+        name_list = ["正常", "上电", "掉电", "清零", "参数设置", "校时","通信故障","失压","失流","断相","功率因数越限",
+                     "电压偏差越限","电压、电流不平衡越限","温度过限",]
+        return name_list[id]
+
     def post(self, request, format=None):
         try:
             request_str = request.data['k']
@@ -26,7 +31,8 @@ class EventUpload(APIView):
                         print key, ":", val
                         if key == "event":
                             event.name_no = int(val)
-                        elif key == "evenT":
+                            event.name = self.get_event_name(int(val))
+                        elif key == "eventT":
                             event.time = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                         elif key == "eventC":
                             event.content = val
