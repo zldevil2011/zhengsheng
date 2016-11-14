@@ -295,6 +295,19 @@ def admin_user_data(request):
     year = today.year
     month = today.month
     day = today.day
+    # 获取当前设备的今日采集数据
+    day_data = {}
+    day_x = []
+    day_y = []
+    try:
+        datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month, powerT__day=day)
+        for data in datas_list_today:
+            day_x.append(str(data.powerT))
+            day_y.append(data.powerV)
+    except:
+        datas_list_today = None
+    day_data["day_x"] = day_x
+    day_data["day_y"] = day_y
     # 计算当月每天的用电量，用当天的采集量减去昨天的采集量即为当天的用电量
     # 首先，计算当月1号 则先获取上月最后一次的采集量
     # 统计当前设备当月的用电高峰日期，低谷日期，总用电量
@@ -390,19 +403,25 @@ def admin_user_data(request):
             pre_month_last_power = month_power
         else:
             year_power.append(0)
-    year_data = {}
-    year_data["year_month"] = year_month
-    year_data["year_power"] = year_power
-    ret_data = {}
-    ret_data["month"] = month_data
-    ret_data["year"] = year_data
-    ret_data["user_power_total"] = user_power_total
-    ret_data["user_power_max"] = user_power_max
-    ret_data["user_day_max"] = str(user_day_max) + "号"
-    ret_data["user_power_min"] = user_power_min
-    ret_data["user_day_min"] = str(user_day_min) + "号"
-
-
-    return HttpResponse(json.dumps(ret_data), "application/json")
-
-
+    print "xppxpxpxp"
+    try:
+        print "ok1"
+        year_data = {}
+        year_data["year_month"] = year_month
+        year_data["year_power"] = year_power
+        ret_data = {}
+        ret_data["day"] = day_data
+        ret_data["month"] = month_data
+        ret_data["year"] = year_data
+        ret_data["user_power_total"] = user_power_total
+        ret_data["user_power_max"] = user_power_max
+        ret_data["user_day_max"] = str(user_day_max) + "号"
+        ret_data["user_power_min"] = user_power_min
+        ret_data["user_day_min"] = str(user_day_min) + "号"
+        print "ok2"
+        return HttpResponse(json.dumps(ret_data), "application/json")
+    except Exception, e:
+        print "not ok 1"
+        ret_data = {}
+        print str(e)
+        return HttpResponse(json.dumps(ret_data), "application/json")

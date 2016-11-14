@@ -119,6 +119,9 @@
 {#        某一用户的详细使用情况#}
         <div class="row" style="padding: 10px 30px;background-color: rgba(40, 42, 55,0.75);">
             <hr>
+            <div class="col-md-12" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
+                <div id = "userToday" style="width: 100%; height:400px;">该用户今日采集曲线</div>
+            </div>
             <div class="col-md-12" style="text-align: left;">
                 <h4><span class="icon-user"></span>用户名称：用电量统计</h4>
             </div>
@@ -567,6 +570,10 @@
 {#                        console.log(data);#}
                         var month = data.month;
                         var year = data.year;
+                        var today = data.day;
+                        console.log(today);
+                        userDay(today.day_x, today.day_y);
+
                         userMonth(month.month_day, month.month_power);
                         userYear(year.year_month, year.year_power);
                         $("[name=user_power_max]").html(data.user_power_max);
@@ -583,6 +590,69 @@
         }
     </script>
     <script>
+        function userDay(month_day, month_power){
+            $('#userToday').highcharts({
+                chart: {
+                    type: 'line',
+                    backgroundColor: 'rgba(80,81,95,0.1)',
+                },
+                title: {
+                    text: '该用户当月用电量',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                subtitle: {
+                    text: '数据来源：电表箱',
+                    style: {
+                        color: '#FFFFFF',
+                    }
+                },
+                xAxis: {
+                    categories: month_day,
+                    labels: {
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color:'#FFFFFF',
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: '用电量(Kwh)',
+                        style: {
+                            color: '#FFFFFF',
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif',
+                            color:'#FFFFFF',
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: false,
+                    formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+this.x +': '+ this.y +'°C';
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: false
+                    }
+                },
+                series: [{
+                    name: '电量',
+                    data: month_power
+                }]
+            });
+        }
 {#        当前用户当月用电量统计#}
         function userMonth(month_day, month_power){
             $('#UserMonth').highcharts({
@@ -642,7 +712,7 @@
                     }
                 },
                 series: [{
-                    name: 'Tokyo',
+                    name: '电量',
                     data: month_power
                 }]
             });
