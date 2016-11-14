@@ -763,10 +763,10 @@ def instock(request):
             device.save()
             parameter = Parameter()
             parameter.device = device
-            parameter.temperature_t_length = 0
+            parameter.temperature_t_length = 60
             parameter.temperature = 60
             parameter.power_get_point1 = "00:00"
-            parameter.power_get_point2 = "00:00"
+            parameter.power_get_point2 = "12:00"
             parameter.version = 1
             parameter.save()
         ret_data = {}
@@ -841,7 +841,8 @@ def admin_device_gateway_parameter(request):
         total_page = int(math.ceil(len(gateway_list))/15.0)
         if total_page < 1:
             total_page = 1
-        if page < total_page:
+            return HttpResponseRedirect("/admin_device/gateway/parameter/?page=" + str(total_page))
+        if page > total_page:
             return HttpResponseRedirect("/admin_device/gateway/parameter/?page="+str(total_page))
         gateway_list = serializer(gateway_list, datetime_format='string', foreign=True)
         for gateway in gateway_list:
