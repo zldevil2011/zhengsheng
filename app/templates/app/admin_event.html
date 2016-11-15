@@ -46,13 +46,13 @@
                     </thead>
                     <tbody class="workOrderList">
                     {% for event in event_list %}
-                        <tr style="max-height: 20px;">
+                        <tr style="max-height: 20px;" id="{{ event.id }}">
                             <td>{{ event.name_no }}</td>
                             <td>{{ event.name }}</td>
                             <td>{{ event.time }}</td>
                             <td>{{ event.content }}</td>
                             <td>{{ event.device.device_id }}</td>
-                            <td><button class="btn btn-success" onclick="viewDevice(this.id);" id="{{ event.device.device_id }}">查看设备</button></td>
+                            <td><button class="btn btn-success" onclick="viewDevice(this.id);" id="{{ event.device.device_id }}={{ event.id }}">查看设备</button></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -101,6 +101,12 @@
                     <p>房间：<span name="d-roomCode"></span></p>
                     <p>生产日期：<span name="d-manufactureDate"></span></p>
                     <p>设备状态：<span name="d-status"></span></p>
+                    <p>采集事件：<span name="d-event"></span></p>
+{#                    <div class="clearfix">#}
+{#                        <div class="col-md-offset-6 col-md-6 col-sm-12">#}
+{#                            <button class="btn btn-danger btn-block">邮件通知该用户</button>#}
+{#                        </div>#}
+{#                    </div>#}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -110,12 +116,15 @@
         </div>
     </div>
     <div name="device-id" style="display: none;"></div>
+    <div name="event-id" style="display: none;"></div>
 {% endblock %}
 {% block special_js %}
     <script>
 {#        点击按钮显示当前设备的具体信息#}
         $('#device-Info').on('show.bs.modal', function (e) {
             var device_id = $("[name=device-id]").html();
+            var event_id = $("[name=event-id]").html();
+            var event_name = $($("#"+event_id).children().get(1)).html();
 {#            console.log(device_id);#}
             var targetURL = '/admin_device/' + device_id + '/';
             $.ajax({
@@ -133,6 +142,7 @@
                     $("[name=d-roomCode]").html(device_json.room_code);
                     $("[name=d-manufactureDate]").html(device_json.manufacture_date);
                     $("[name=d-status]").html(device_json.device_status);
+                    $("[name=d-event]").html(event_name);
                 }else{
                     alert("数据错误");
                     return;
@@ -143,7 +153,10 @@
             });
         });
         function viewDevice(id){
-            $("[name=device-id]").html(id);
+            var device_id = id.split("=")[0];
+            var event_id = id.split("=")[1];
+            $("[name=device-id]").html(device_id);
+            $("[name=event-id]").html(event_id);
             $("#device-Info").modal({
                 keyboard: false
             })
