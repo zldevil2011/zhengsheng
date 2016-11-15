@@ -10,6 +10,8 @@ import math
 from datetime import datetime, date, timedelta
 import sys
 import json
+from django.core.mail import send_mail
+from zhengsheng import settings
 
 @csrf_exempt
 def admin_event(request):
@@ -42,3 +44,29 @@ def admin_event(request):
         "user": user,
     })
 
+
+@csrf_exempt
+def user_send_mail(request):
+    try:
+        user = Adminer.objects.get(name=request.session['username'])
+    except:
+        return HttpResponseRedirect("/admin_login/")
+    try:
+        event_id = int(request.POST.get("event_id"))
+        event = Event.objects.get(id=event_id)
+        subject = u"事件通知"
+        text_content = u"您的设备（ID:" + str(event.device.device_id) + u")在" + str(event.time) + u"发生了" + str(event.name) + u"事件，请您及时查看或联系供电公司"
+        from_email = settings.EMAIL_HOST_USER
+        appuser = AppUser.objects.get(device=event.device)
+        to = appuser.email
+        try:
+            send_mail(subject, text_content, from_email, [to], fail_silently=False)
+            return HttpResponse("success")
+        except Exception as e:
+            print "level1"
+            print(str(e))
+            return HttpResponse("error")
+    except Exception, e:
+        print "level2"
+        print(str(e))
+        return HttpResponse("error")

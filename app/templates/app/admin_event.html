@@ -102,11 +102,11 @@
                     <p>生产日期：<span name="d-manufactureDate"></span></p>
                     <p>设备状态：<span name="d-status"></span></p>
                     <p>采集事件：<span name="d-event"></span></p>
-{#                    <div class="clearfix">#}
-{#                        <div class="col-md-offset-6 col-md-6 col-sm-12">#}
-{#                            <button class="btn btn-danger btn-block">邮件通知该用户</button>#}
-{#                        </div>#}
-{#                    </div>#}
+                    <div class="clearfix">
+                        <div class="col-md-offset-6 col-md-6 col-sm-12">
+                            <button class="btn btn-danger btn-block" onclick="sendMainFun();">邮件通知该用户</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -160,6 +160,28 @@
             $("#device-Info").modal({
                 keyboard: false
             })
+        }
+    </script>
+    <script>
+        function sendMainFun(){
+            var event_id = $("[name=event-id]").html();
+            alertify.success("正在发送中");
+            $.ajax({
+                url: '/admin_event/user/sendMail/',
+                type: 'POST',
+                data: {event_id:event_id},
+                success: function(data){
+
+                    if(data == "success"){
+                        alertify.success("发送成功");
+                    }else{
+                        alertify.error("发送失败，请检查内容");
+                    }
+                },
+                error: function(data){
+                    alertify.error("发送失败，请稍后再试");
+                }
+            });
         }
     </script>
 {% endblock %}

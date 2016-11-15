@@ -67,6 +67,7 @@ urlpatterns = [
     url(r'^admin_info/user/sendMail/$', admin_info.sendMail, name="sendMail"),
 
     url(r'^admin_event/$', event.admin_event, name="admin_event"),
+    url(r'^admin_event/user/sendMail/$', event.user_send_mail, name="user_send_mail"),
 ]
 urlpatterns += {
     url(r'^device/list/$', device.list, name="device_list"),
