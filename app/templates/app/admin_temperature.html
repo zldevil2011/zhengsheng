@@ -133,6 +133,14 @@
                         var today_hour = data.today_hour;
                         var today_power = data.today_temp;
                     $(function () {
+                        var colors = ['#00ff00'];
+                        Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
+                             return {
+                                 radialGradient: { cx:0, cy: -0.8,r:2.3 },
+                                 stops: [[0, color], [2, Highcharts.Color(color).brighten(14).get('rgb')] // darken
+                                 ]
+                             };
+                         });
                         $('#device-list-page').highcharts({
                                 title: {
                                     text: '今日数据',
@@ -149,10 +157,21 @@
                                     title: {
                                         text: '温度 (摄氏度)'
                                     },
-                                    plotLines: [{
-                                        value: 0,
-                                        width: 1,
-                                        color: '#00ff00'
+{#                                    plotLines: [{#}
+{#                                        value: 0,#}
+{#                                        width: 1,#}
+{#                                        color: '#00ff00'#}
+{#                                    }],#}
+                                    plotLines:[{
+                                        color:'yellow',           //线的颜色，定义为黄色
+                                        dashStyle:'solid',     //默认值，这里定义为实线
+                                        value:30,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                                        width:4                //标示线的宽度，2px
+                                    },{
+                                        color:'red',           //线的颜色，定义为红色
+                                        dashStyle:'solid',     //默认值，这里定义为实线
+                                        value:40,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                                        width:4                //标示线的宽度，2px
                                     }]
                                 },
                                 tooltip: {
@@ -167,7 +186,7 @@
                                 series: [{
                                     name: '温度',
                                     data: today_power,
-                                    color:"#ff0000"
+                                    color:"#4e505d"
                                 },
                                 ]
                             });
