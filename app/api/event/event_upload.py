@@ -1,10 +1,12 @@
 # coding=utf-8
 from rest_framework import status
-from app.models import Event, Device
+from app.models import Event, Device, City, Village
 from rest_framework.views import APIView
 from rest_framework.response import Response
 import time
 from datetime import datetime
+from django.core.mail import send_mail
+from zhengsheng import settings
 
 class EventUpload(APIView):
 
@@ -46,6 +48,27 @@ class EventUpload(APIView):
                     device = Device.objects.get(device_id=device_id)
                     event.device = device
                     event.save()
+                    try:
+                        city = City.objects.get(city_code=int(device.city_code))
+                        village = Village.objects.get(city=city, village_code=int(device.village_code))
+                        try:
+                            address = city.city_name + village.village_name + str(device.building_code) + u"号楼" + \
+                                    str(device.unit_code) + u"单元" + str(device.room_code) + u"房间"
+                        except:
+                            address = city.city_name + village.village_name
+                    except:
+                        address = u"未安装"
+                    subject = u"事件通知"
+                    text_content = u"设备（ID:" + str(event.device.device_id) + u")在" + str(event.time) + u"发生了" + str(
+                        event.name) + u"事件（设备地址：" + address +  u")，请您及时查看"
+                    from_email = settings.EMAIL_HOST_USER
+                    to = "34985488@qq.com"
+                    try:
+                        send_mail(subject, text_content, from_email, [to], fail_silently=False)
+                    except:
+                        pass
+
+
                 except Exception, e:
                     print str(e)
                     event_id = int(event_data_list[0].split('=')[1])
