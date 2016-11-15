@@ -207,14 +207,24 @@
         $("#insertNew").on("change", function(){
             var val = $(this).val();
             if(val == 0){
-                $("[name=addVillageView]").css("display", "none");
-                $("[name=addCityView]").css("display", "none");
+{#                $("[name=addVillageView]").css("display", "none");#}
+{#                $("[name=addCityView]").css("display", "none");#}
+                var $first_view = $($("[name=addCityView]").siblings().get(0));
+                $("[name=addCityView]").css("display", "none").siblings().css("display", "none");
+                $first_view.css("display", "block");
                 return;
             }else if(val == 1){
-                $("[name=addVillageView]").css("display", "none");
-                $("[name=addCityView]").css("display", "block");
+{#                $("[name=addVillageView]").css("display", "none");#}
+{#                $("[name=addCityView]").css("display", "block");#}
+                var $first_view = $($("[name=addCityView]").css("display", "block").siblings().get(0));
+                $("[name=addCityView]").css("display", "block").siblings().css("display", "none");
+                $first_view.css("display", "block");
             }else if(val == 2){
-                $("[name=addCityView]").css("display", "none");
+{#                $("[name=addCityView]").css("display", "none");#}
+{#                $("[name=addVillageView]").css("display", "block");#}
+                var $first_view = $($("[name=addVillageView]").css("display", "block").siblings().get(0));
+                $("[name=addVillageView]").css("display", "block").siblings().css("display", "none");
+                $first_view.css("display", "block");
                 $("[name=addVillageView]").css("display", "block");
             }else if(val == -1){
                 var $first_view = $($("[name=deleteCityView]").css("display", "block").siblings().get(0));
