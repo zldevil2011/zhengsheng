@@ -23,7 +23,7 @@ def admin_event(request):
         page = int(request.GET.get('page'))
     except:
         page = 1
-    event_list = Event.objects.all()
+    event_list = Event.objects.all().order_by('-time')
     total_page = int(math.ceil(event_list.count() / 10.0))
     if total_page < 1:
         total_page = 1
