@@ -913,6 +913,13 @@ def admin_device_info(request, device_id):
         try:
             device = Device.objects.get(device_id=device_id)
             device_serializer = serializer(device)
+            try:
+                city = City.objects.get(city_code=int(device_serializer["city_code"]))
+                device_serializer["city_code"] = city.city_name
+                village = Village.objects.get(village_code=int(device_serializer["village_code"]), city=city)
+                device_serializer["village_code"] = village.village_name
+            except:
+                pass
             device_serializer["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(device_serializer["manufacture_date"]))
             return HttpResponse(json.dumps(device_serializer))
         except Exception, e:
