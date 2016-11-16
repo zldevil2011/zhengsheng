@@ -66,7 +66,13 @@ def admin_device(request):
         device["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(device["manufacture_date"]))
         D = Device.objects.get(device_id=int(device["device_id"]))
         user_t = AppUser.objects.get(device=D)
-        device["address"] = user_t.address
+        try:
+            city_t = City.objects.get(city_code=int(D.city_code))
+            village_t = Village.objects.get(city=city_t, village_code=int(D.village_code))
+            address = city_t.city_name + village_t.village_name
+        except:
+            address = user_t.address
+        device["address"] = address
         device["user"] = user_t.username
         print type(device["device_id"])
         if str(device["device_id"])[0:1] == '1':
@@ -180,22 +186,45 @@ def admin_device_add(request):
                 device = Device.objects.get(device_id=int(device_id))
                 device.device_status = u"正常"
                 device.save()
-                user = User()
-                user.username = request.POST.get('username')
-                password = request.POST.get('telephone', '123456')
-                password = make_password(password, None, 'pbkdf2_sha256')
-                user.password = password
-                user.save()
-                appuser = AppUser()
-                appuser.user = user
-                appuser.username = request.POST.get('username','')
-                appuser.address = request.POST.get('address','')
-                appuser.register_time = datetime.now()
-                appuser.telephone = request.POST.get('telephone', '')
-                appuser.email = request.POST.get('email', '')
-                appuser.password = request.POST.get('telephone', '123456')
-                appuser.device = device
-                appuser.save()
+                try:
+                    # 如果设备对应的用户存在，则对用户信息进行更新
+                    appuser = AppUser.objects.get(device=device)
+                    user = appuser.user
+                    user.username = request.POST.get('username').strip()
+                    password = request.POST.get('telephone', '123456').strip()
+                    if len(password) == 0:
+                        password = '123456'
+                    print "password", password
+                    secret_password = make_password(password, None, 'pbkdf2_sha256')
+                    user.password = secret_password
+                    user.save()
+                    appuser.username = request.POST.get('username').strip()
+                    appuser.address = request.POST.get('address', '').strip()
+                    appuser.register_time = datetime.now()
+                    appuser.telephone = request.POST.get('telephone', '').strip()
+                    appuser.email = request.POST.get('email', '').strip()
+                    appuser.password = password
+                    appuser.save()
+                except:
+                    # 否则则创建新的用户
+                    user = User()
+                    user.username = request.POST.get('username').strip()
+                    password = request.POST.get('telephone', '123456').strip()
+                    if len(password) == 0:
+                        password = '123456'
+                    secret_password = make_password(password, None, 'pbkdf2_sha256')
+                    user.password = secret_password
+                    user.save()
+                    appuser = AppUser()
+                    appuser.user = user
+                    appuser.username = request.POST.get('username').strip()
+                    appuser.address = request.POST.get('address','').strip()
+                    appuser.register_time = datetime.now()
+                    appuser.telephone = request.POST.get('telephone', '').strip()
+                    appuser.email = request.POST.get('email', '').strip()
+                    appuser.password = password
+                    appuser.device = device
+                    appuser.save()
                 return HttpResponse("success")
             except Exception, e:
                 print str(e)

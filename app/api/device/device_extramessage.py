@@ -1,11 +1,16 @@
 # coding=utf-8
 from rest_framework import status
-from app.models import Device
+from app.models import Device, AppUser, User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from app.serializer import DeviceSerializer
 import time
+import string
+import random
+from django.contrib.auth.hashers import check_password,make_password
+from datetime import datetime
 
+dict = ['z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a']
 class DeviceExtramessage(APIView):
 
     def post(self, request, format=None):
@@ -42,6 +47,32 @@ class DeviceExtramessage(APIView):
                         else:
                             pass
                     device.save()
+                    try:
+                        appuser = AppUser.objects.get(device=device)
+                    except AppUser.DoesNotExist:
+                        if device.device_id < 200000000:
+                            print u"用户不存在，创建新用户"
+                            device.device_status = u"正常"
+                            device.save()
+                            user = User()
+                            while 1:
+                                rand_username = string.join(random.sample(dict, 10)).replace(' ', '')
+                                try:
+                                    appuser = AppUser.objects.get(username=rand_username)
+                                except AppUser.DoesNotExist:
+                                    break
+                            user.username = rand_username
+                            password = '123456'
+                            password = make_password(password, None, 'pbkdf2_sha256')
+                            user.password = password
+                            user.save()
+                            appuser = AppUser()
+                            appuser.user = user
+                            appuser.username = rand_username
+                            appuser.register_time = datetime.now()
+                            appuser.password = '123456'
+                            appuser.device = device
+                            appuser.save()
                 except:
                     device_id = int(device_attr_list[0].split('=')[1])
                     print "failed = " + str(device_id)
