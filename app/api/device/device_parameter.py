@@ -23,7 +23,7 @@ class DeviceParameter(APIView):
                 up = '1'
 
             parVer=parameter.version
-            TempSet = int(parameter.temperature * 100)
+            TempSet = int(parameter.temperature * 10)
             TempTSet = parameter.temperature_t_length
             PUTime1 = parameter.power_get_point1
             PUTime2 = parameter.power_get_point2
