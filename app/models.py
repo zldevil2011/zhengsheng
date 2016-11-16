@@ -173,7 +173,7 @@ class Fund(models.Model):
         return str(self.id)
 
 
-# 时间管理
+# 事件管理
 class Event(models.Model):
     name_no = models.IntegerField(default=0)
     device = models.ForeignKey(Device, related_name='event', null=True)
