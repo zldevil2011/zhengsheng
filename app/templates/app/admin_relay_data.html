@@ -46,7 +46,7 @@
                             <td>{{ device.address }}</td>
                             <td>{{ device.device_status }}</td>
                             <td>{{ device.manufacture_date }}</td>
-                            <td><button id = "{{ device.device_id }}" class="btn btn-success" onclick="showUserInfo(this.id);">查看</button></td>
+                            <td><button id = "{{ device.device_id }}" class="btn btn-success" onclick="showDeviceInfo(this.id);">查看</button></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -73,6 +73,12 @@
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WZVN4DbW3hfB9MSgMmwVQBHU8ZV8jRxW"></script>
     <script async src="http://c.cnzz.com/core.php"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+    <script>
+{#    点击查看按钮查看设备的数据信息#}
+    function showDeviceInfo(device_id){
+
+    }
+    </script>
     <script>
 {#        城市筛选进行URL变更#}
         $("[name=filter_city]").on("click", function(){
