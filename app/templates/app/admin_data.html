@@ -361,6 +361,7 @@
         var mm = {{ month_data | safe }};
         var month_day = mm["month_day"];
         var month_power = mm["month_power"];
+{#        当前选择区域的用户当月用电量统计#}
         $('#AllUserMonth').highcharts({
             chart: {
                 type: 'line',
@@ -425,8 +426,6 @@
                 data: month_power
             }]
         });
-    </script>
-    <script>
         var yy = {{ year_data | safe }};
         var year_month = yy["year_month"];
         var year_power = yy["year_power"];
@@ -435,6 +434,7 @@
             year_month[i] = year_month[i] + "月";
         }
 {#        console.log(year_month);#}
+{#        当前选择区域的用户当年用电量统计#}
         $('#AllUserYear').highcharts({
             chart: {
                 type: 'column',
@@ -499,8 +499,6 @@
                 }
             }]
         });
-    </script>
-    <script>
         var yy = {{ year_data | safe }};
         var year_month = yy["year_month"];
         var year_power = yy["year_power"];
@@ -512,6 +510,7 @@
         }
         var chart,
             categories = year_month;
+{#        当前选择区域的用户近两年用电量统计#}
         $(document).ready(function() {
             $('#AllUserYearCompare').highcharts({
                 chart: {
@@ -626,8 +625,7 @@
                 }
             });
         }
-    </script>
-    <script>
+{#        用户电压有效值#}
         function userVoltage(xx, yy) {
             var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
@@ -700,6 +698,7 @@
                 }]
             });
         }
+{#        用户电流有效值#}
         function userElectricity(xx, yy) {
             var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
@@ -772,6 +771,7 @@
                 }]
             });
         }
+{#        用户功率因数#}
         function userPowerfactor(xx, yy) {
             var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
@@ -844,6 +844,7 @@
                 }]
             });
         }
+{#        用户有功功率#}
         function userActivepower(xx,yy) {
             var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
@@ -916,6 +917,7 @@
                 }]
             });
         }
+{#        用户无功功率#}
         function userReactivePower(xx, yy) {
             var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
@@ -990,6 +992,7 @@
         }
     </script>
     <script>
+    {#        当前用户当天用电量统计#}
         function userDay(month_day, month_power){
             var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
@@ -1125,8 +1128,7 @@
                 }]
             });
         }
-    </script>
-    <script>
+        {# 当前用户当年用电量统计#}
         function userYear(year_month, year_power){
             for(var i = 0; i < year_month.length; ++i){
                 year_month[i] = year_month[i] + "月";
@@ -1198,6 +1200,7 @@
         }
     </script>
     <script>
+{#        城市筛选进行URL变更#}
         $("[name=filter_city]").on("click", function(){
             var city_code = $(this).prop("id");
             console.log(city_code);
@@ -1216,7 +1219,6 @@
             village_code = village_code.substr(1);
             console.log(city_code);
             console.log(village_code);
-{#            return false;#}
             window.location.href = "/admin_data?page=1&city_code=" + city_code + "&village_code=" + village_code;
         }
     </script>
