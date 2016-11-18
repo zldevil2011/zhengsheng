@@ -958,7 +958,11 @@ def admin_device_info(request, device_id):
         return HttpResponse("error")
 
 
+
+from datetime import timedelta
+import calendar
 # 管理中继采集到的数据
+@csrf_exempt
 def admin_relay_data(request):
     try:
         user = Adminer.objects.get(name=request.session['username'])
@@ -1031,5 +1035,106 @@ def admin_relay_data(request):
         except:
             return HttpResponse("error")
         device = Device.objects.get(device_id=device_id)
+        print device
         relay_list = Relay.objects.filter(device_id=device)
-        return HttpResponse(relay_list)
+        # 最近12条实时信息
+        latest = relay_list[0:12]
+        # 最近一月日用电量统计/用电总量及高峰低谷统计
+        today = datetime.today()
+        year = today.year
+        month = today.month
+        day = today.day
+        init_day = datetime(year, month, day)
+        pre_day = init_day - timedelta(days=1)
+        month_data = []
+        power_sum = 0
+        try:
+            data = relay_list.filter(data_time__year=pre_day.year, data_time__month=pre_day.month, data_time__day=pre_day.day)[0]
+            data_1 = relay_list.filter(data_time__year=year, data_time__month=month, data_time__day=day)[0]
+            data_dic = {}
+            data_dic["a_powerV"] = data_1.a_powerV - data.a_powerV
+            data_dic["b_powerV"] = data_1.b_powerV - data.b_powerV
+            data_dic["c_powerV"] = data_1.c_powerV - data.c_powerV
+            data_dic["t_powerV"] = data_1.t_powerV - data.t_powerV
+            data_dic["day"] = 1
+            max_powerV = data_dic["t_powerV"]
+            min_powerV = data_dic["t_powerV"]
+            power_sum += data_dic["t_powerV"]
+            month_data.append(data_dic)
+        except:
+            data_dic = {}
+            data_dic["a_powerV"] = 0
+            data_dic["b_powerV"] = 0
+            data_dic["c_powerV"] = 0
+            data_dic["t_powerV"] = 0
+            data_dic["day"] = 1
+            max_powerV = data_dic["t_powerV"]
+            min_powerV = data_dic["t_powerV"]
+            power_sum += data_dic["t_powerV"]
+            month_data.append(data_dic)
+        # month_days_num = calendar.monthrange(year, month)[1]
+        for i in range(2, day + 1):
+            print i
+            data_today = datetime(year, month, i)
+            print data_today
+            try:
+                yesterday_data = relay_list.filter(data_time__lt=data_today).order_by('-data_time')[0]
+                print "yes", yesterday_data
+                data_today = data_today + timedelta(days=1)
+                today_data = relay_list.filter(data_time__lt=data_today).order_by('-data_time')[0]
+                print "Tod", today_data
+                data_dic = {}
+                data_dic["a_powerV"] = today_data.a_powerV - yesterday_data.a_powerV
+                data_dic["b_powerV"] = today_data.b_powerV - yesterday_data.b_powerV
+                data_dic["c_powerV"] = today_data.c_powerV - yesterday_data.c_powerV
+                data_dic["t_powerV"] = today_data.t_powerV - yesterday_data.t_powerV
+                data_dic["day"] = i
+                if data_dic["t_powerV"] < min_powerV:
+                    min_powerV = data_dic["t_powerV"]
+                if data_dic["t_powerV"] > max_powerV:
+                    max_powerV = data_dic["t_powerV"]
+                power_sum += data_dic["t_powerV"]
+                month_data.append(data_dic)
+            except Exception,e:
+                print str(1), str(i),str(e)
+                try:
+                    data_today = data_today + timedelta(days=1)
+                    print data_today
+                    today_data = relay_list.filter(data_time__lt=data_today).order_by('-data_time')[0]
+                    data_dic = {}
+                    data_dic["a_powerV"] = today_data.a_powerV
+                    data_dic["b_powerV"] = today_data.b_powerV
+                    data_dic["c_powerV"] = today_data.c_powerV
+                    data_dic["t_powerV"] = today_data.t_powerV
+                    data_dic["day"] = i
+                    if data_dic["t_powerV"] < min_powerV:
+                        min_powerV = data_dic["t_powerV"]
+                    if data_dic["t_powerV"] > max_powerV:
+                        max_powerV = data_dic["t_powerV"]
+                    power_sum += data_dic["t_powerV"]
+                    month_data.append(data_dic)
+                except Exception,e:
+                    print str(2), str(i),str(e)
+                    data_dic = {}
+                    data_dic["a_powerV"] = 0
+                    data_dic["b_powerV"] = 0
+                    data_dic["c_powerV"] = 0
+                    data_dic["t_powerV"] = 0
+                    data_dic["day"] = i
+                    if data_dic["t_powerV"] < min_powerV:
+                        min_powerV = data_dic["t_powerV"]
+                    if data_dic["t_powerV"] > max_powerV:
+                        max_powerV = data_dic["t_powerV"]
+                    power_sum += data_dic["t_powerV"]
+                    month_data.append(data_dic)
+        ret_data = {}
+        ret_data["latest"] = serializer(latest)
+        ret_data["month_data"] = month_data
+        ret_data["max_powerV"] = max_powerV
+        ret_data["min_powerV"] = min_powerV
+        ret_data["power_sum"] = power_sum
+        try:
+            return HttpResponse(json.dumps(ret_data))
+        except Exception, e:
+            print(str(e))
+            return HttpResponse("error")

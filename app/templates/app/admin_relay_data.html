@@ -76,7 +76,21 @@
     <script>
 {#    点击查看按钮查看设备的数据信息#}
     function showDeviceInfo(device_id){
+        $.ajax({
+            url: '/admin_relay/data/',
+            type: 'POST',
+            data: {device_id: device_id},
+            success: function(data){
+                console.log(JSON.parse(data));
 
+                if(data == "error"){
+                    alertify.error("获取信息失败，请联系管理员");
+                }
+            },
+            error: function(data){
+                alertify.error("获取信息失败，请联系管理员");
+            }
+        });
     }
     </script>
     <script>
