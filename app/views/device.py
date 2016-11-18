@@ -1056,10 +1056,10 @@ def admin_relay_data(request):
             data = relay_list.filter(data_time__year=pre_day.year, data_time__month=pre_day.month, data_time__day=pre_day.day)[0]
             data_1 = relay_list.filter(data_time__year=year, data_time__month=month, data_time__day=day)[0]
             data_dic = {}
-            data_dic["a_powerV"] = data_1.a_powerV - data.a_powerV
-            data_dic["b_powerV"] = data_1.b_powerV - data.b_powerV
-            data_dic["c_powerV"] = data_1.c_powerV - data.c_powerV
-            data_dic["t_powerV"] = data_1.t_powerV - data.t_powerV
+            data_dic["a_powerV"] = round(data_1.a_powerV - data.a_powerV,2)
+            data_dic["b_powerV"] = round(data_1.b_powerV - data.b_powerV,2)
+            data_dic["c_powerV"] = round(data_1.c_powerV - data.c_powerV,2)
+            data_dic["t_powerV"] = round(data_1.t_powerV - data.t_powerV,2)
             data_dic["day"] = 1
             max_powerV = data_dic["t_powerV"]
             min_powerV = data_dic["t_powerV"]
@@ -1089,10 +1089,10 @@ def admin_relay_data(request):
                 today_data = relay_list.filter(data_time__lt=data_today).order_by('-data_time')[0]
                 print "Tod", today_data
                 data_dic = {}
-                data_dic["a_powerV"] = today_data.a_powerV - yesterday_data.a_powerV
-                data_dic["b_powerV"] = today_data.b_powerV - yesterday_data.b_powerV
-                data_dic["c_powerV"] = today_data.c_powerV - yesterday_data.c_powerV
-                data_dic["t_powerV"] = today_data.t_powerV - yesterday_data.t_powerV
+                data_dic["a_powerV"] = round(today_data.a_powerV - yesterday_data.a_powerV,2)
+                data_dic["b_powerV"] = round(today_data.b_powerV - yesterday_data.b_powerV,2)
+                data_dic["c_powerV"] = round(today_data.c_powerV - yesterday_data.c_powerV,2)
+                data_dic["t_powerV"] = round(today_data.t_powerV - yesterday_data.t_powerV,2)
                 data_dic["day"] = i
                 if data_dic["t_powerV"] < min_powerV:
                     min_powerV = data_dic["t_powerV"]
