@@ -106,6 +106,7 @@
                     var min_powerV = json_data.min_powerV;
                     var power_sum = json_data.power_sum;
                     paintLatest(latest);
+                    paintMonth(month_data);
                 }
             },
             error: function(data){
@@ -159,7 +160,7 @@
             },
             yAxis: {
                 title: {
-                    text: '电压 (V)',
+                    text: '电能 (KwH)',
                     style: {
                         fontSize: '13px',
                         fontFamily: 'Verdana, sans-serif',
@@ -183,14 +184,98 @@
                 }
             },
             series: [{
-                name: 'A相有效电压',
+                name: 'A相有效电能',
                 data: v1,
             }, {
-                name: 'B相有效电压',
+                name: 'B相有效电能',
                 data: v2
             }, {
-                name: 'C相有效电压',
+                name: 'C相有效电能',
                 data: v3
+            }]
+        });
+    }
+    function paintMonth(month_data){
+        var xx = new Array(), v1 = new Array(), v2 = new Array(), v3 = new Array(), vt = new Array();
+        for(var i = 0; i < month_data.length; ++i){
+            xx.push(month_data[i].day);
+            v1.push(month_data[i].a_powerV);
+            v2.push(month_data[i].b_powerV);
+            v3.push(month_data[i].c_powerV);
+            vt.push(month_data[i].t_powerV);
+        }
+        console.log(xx);
+        console.log(v1);
+        console.log(v2);
+        console.log(v3);
+        console.log(vt);
+        $('#relay_month').highcharts({
+            chart: {
+                type: 'spline',
+                backgroundColor: 'rgba(80,81,95,0.1)',
+            },
+            legend: {
+                backgroundColor: '#FCFFC5'
+            },
+            title: {
+                text: '中继最新数据',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            subtitle: {
+                text: '来源:征圣云平台',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            xAxis: {
+                categories: xx,
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: '电能 (KwH)',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                },
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                }
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: false
+                }
+            },
+            series: [{
+                name: 'A相有效电能',
+                data: v1,
+            }, {
+                name: 'B相有效电能',
+                data: v2
+            }, {
+                name: 'C相有效电能',
+                data: v3
+            },{
+                name: '总有效电能',
+                data: vt
             }]
         });
     }

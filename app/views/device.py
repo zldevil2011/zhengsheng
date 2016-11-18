@@ -1048,7 +1048,7 @@ def admin_relay_data(request):
         year = today.year
         month = today.month
         day = today.day
-        init_day = datetime(year, month, day)
+        init_day = datetime(year, month, 1)
         pre_day = init_day - timedelta(days=1)
         month_data = []
         power_sum = 0
@@ -1065,7 +1065,8 @@ def admin_relay_data(request):
             min_powerV = data_dic["t_powerV"]
             power_sum += data_dic["t_powerV"]
             month_data.append(data_dic)
-        except:
+        except Exception, e:
+            print(str(e))
             data_dic = {}
             data_dic["a_powerV"] = 0
             data_dic["b_powerV"] = 0
@@ -1078,7 +1079,7 @@ def admin_relay_data(request):
             month_data.append(data_dic)
         # month_days_num = calendar.monthrange(year, month)[1]
         for i in range(2, day + 1):
-            print i
+            print "i=", i
             data_today = datetime(year, month, i)
             print data_today
             try:
