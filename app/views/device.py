@@ -1039,6 +1039,9 @@ def admin_relay_data(request):
         relay_list = Relay.objects.filter(device_id=device)
         # 最近12条实时信息
         latest = relay_list[0:12]
+        latest = serializer(latest)
+        for r in latest:
+            r["data_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(r["data_time"])))
         # 最近一月日用电量统计/用电总量及高峰低谷统计
         today = datetime.today()
         year = today.year
@@ -1128,7 +1131,7 @@ def admin_relay_data(request):
                     power_sum += data_dic["t_powerV"]
                     month_data.append(data_dic)
         ret_data = {}
-        ret_data["latest"] = serializer(latest)
+        ret_data["latest"] = latest
         ret_data["month_data"] = month_data
         ret_data["max_powerV"] = max_powerV
         ret_data["min_powerV"] = min_powerV

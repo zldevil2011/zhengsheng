@@ -81,10 +81,16 @@
             type: 'POST',
             data: {device_id: device_id},
             success: function(data){
-                console.log(JSON.parse(data));
-
                 if(data == "error"){
                     alertify.error("获取信息失败，请联系管理员");
+                }else{
+                    console.log(JSON.parse(data));
+                    var json_data = JSON.parse(data);
+                    var latest = json_data.latest;
+                    var month_data = json_data.month_data;
+                    var max_powerV = json_data.max_powerV;
+                    var min_powerV = json_data.min_powerV;
+                    var power_sum = json_data.power_sum;
                 }
             },
             error: function(data){
