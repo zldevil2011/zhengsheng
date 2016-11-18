@@ -3,7 +3,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from app.models import AppUser, Device, City, Village, Repairing, Adminer, Parameter, Data
+from app.models import AppUser, Device, City, Village, Repairing, Adminer, Parameter, Data, Relay
 from django.contrib.auth.hashers import check_password,make_password
 from dss.Serializer import serializer
 from datetime import datetime
@@ -956,3 +956,71 @@ def admin_device_info(request, device_id):
             return HttpResponse("error")
     else:
         return HttpResponse("error")
+
+
+# 管理中继采集到的数据
+def admin_relay_data(request):
+    try:
+        user = Adminer.objects.get(name=request.session['username'])
+    except AppUser.DoesNotExist:
+        return HttpResponseRedirect("/admin_login/")
+    try:
+        page = int(request.GET.get('page', 1))
+    except:
+        page = 1
+    if page < 1:
+        return HttpResponseRedirect("/admin_relay/data/?page=1")
+
+    try:
+        city_code = int(request.GET.get("city_code"))
+    except:
+        city_code = 0
+    try:
+        village_code = int(request.GET.get("village_code"))
+    except:
+        village_code = 0
+    city_list = City.objects.all()
+    try:
+        city = City.objects.get(city_code=city_code)
+        village_list = Village.objects.filter(city=city)
+    except:
+        village_list = None
+    device_list = Device.objects.filter(device_id__gte=200000000, device_id__lt=300000000)
+    if city_code == 0 and village_code == 0:
+        pass
+    elif village_code == 0:
+        device_list = device_list.filter(city_code=city_code)
+    else:
+        try:
+            device_list = device_list.filter(city_code=city_code, village_code=village_code)
+        except:
+            pass
+    start_num = (page - 1) * 15
+    end_num = page * 15
+    total_page = int(math.ceil(len(device_list)) / 15.0)
+    device_list = device_list[start_num:end_num]
+    device_list = serializer(device_list)
+    for device in device_list:
+        try:
+            city = City.objects.get(city_code=int(device["city_code"]))
+            city_name = city.city_name
+            village_name = Village.objects.get(city=city, village_code=int(device["village_code"])).village_name
+            address = city_name + village_name
+        except:
+            address = u"未安装"
+        device["address"] = address
+        device["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(device["manufacture_date"])))
+    if total_page < 1:
+        total_page = 1
+    if page > total_page:
+        return HttpResponseRedirect("/admin_relay/data/?page=" + str(total_page))
+
+    return render(request, "app/admin_relay_data.html", {
+        'page': page,
+        'device_list': device_list,
+        'city_list': city_list,
+        'village_list': village_list,
+        'city_code': city_code,
+        "city_code": "c" + str(city_code),
+        "village_code": "v" + str(village_code),
+    })

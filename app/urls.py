@@ -69,6 +69,8 @@ urlpatterns = [
     # 事件管理
     url(r'^admin_event/$', event.admin_event, name="admin_event"),
     url(r'^admin_event/user/sendMail/$', event.user_send_mail, name="user_send_mail"),
+    # 中继数据管理
+    url(r'^admin_relay/data/$', device.admin_relay_data, name="admin_relay")
 ]
 urlpatterns += {
     url(r'^device/list/$', device.list, name="device_list"),

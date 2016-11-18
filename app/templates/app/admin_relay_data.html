@@ -1,0 +1,99 @@
+{% extends "app/base.html" %}
+{% block title %}中继数据管理{% endblock %}
+{% block main_body %}
+    <div class="main-body">
+        <div class="bg-color" style="margin: 10px 0;position: relative;padding: 10px 12px;">
+            <span class="glyphicon glyphicon-home" style="display: inline-block;"></span>
+            <ul class="breadcrumb breadcrumb-my" style="display: inline-block;">
+				<li>
+					 <a href="#">主页</a>
+				</li>
+				<li>
+					 <a href="#">设备</a>
+				</li>
+				<li class="active">
+					中继数据管理
+				</li>
+			</ul>
+        </div>
+        <div class="row bg-color" style="padding: 10px 30px;">
+            {% include 'app/location_filter.html' %}
+            <div class="col-md-12 column" style="">
+                <table class="table device-list">
+                    <thead>
+                        <tr style="background-color: rgba(39,25,25,0.35);">
+                            <th>
+                                设备编号
+                            </th>
+                            <th>
+                                设备地址
+                            </th>
+                            <th>
+                                设备状态
+                            </th>
+                            <th>
+                                生产时间
+                            </th>
+                            <th>
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody name="device_list_tr">
+                    {% for device in device_list %}
+                        <tr>
+                            <td>{{ device.device_id }}</td>
+                            <td>{{ device.address }}</td>
+                            <td>{{ device.device_status }}</td>
+                            <td>{{ device.manufacture_date }}</td>
+                            <td><button id = "{{ device.device_id }}" class="btn btn-success" onclick="showUserInfo(this.id);">查看</button></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="col-md-12 column" style="text-align: right;">
+                    <ul class="pagination account-pagination" style="">
+                        <li>
+                             <a href="/admin_data?page={{ page|add:-1 }}">上一页</a>
+                        </li>
+                        <li>
+                             <a href="#"><span name="page">{{ page }}</span> / <span name="total_page">{{ total_page }}</span></a>
+                        </li>
+                        <li>
+                             <a href="/admin_data?page={{ page|add:1 }}">下一页</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block special_js %}
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WZVN4DbW3hfB9MSgMmwVQBHU8ZV8jRxW"></script>
+    <script async src="http://c.cnzz.com/core.php"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+    <script>
+{#        城市筛选进行URL变更#}
+        $("[name=filter_city]").on("click", function(){
+            var city_code = $(this).prop("id");
+            console.log(city_code);
+            var village_code = "v0";
+            console.log("c_id = " + city_code + " ; v_id = " + village_code );
+            FilterDeviceByLocationFun(city_code, village_code);
+        });
+        $("[name=filter_village]").on("click", function(){
+            var city_code = $("[name=filter_city] .active").parents().prop("id");
+            var village_code = $(this).prop("id");
+            console.log("c_id = " + city_code + " ; v_id = " + village_code );
+            FilterDeviceByLocationFun(city_code, village_code);
+        });
+        function FilterDeviceByLocationFun(city_code, village_code){
+            city_code = city_code.substr(1);
+            village_code = village_code.substr(1);
+            console.log(city_code);
+            console.log(village_code);
+            window.location.href = "/admin_relay/data?page=1&city_code=" + city_code + "&village_code=" + village_code;
+        }
+    </script>
+{% endblock %}
