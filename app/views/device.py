@@ -1022,6 +1022,7 @@ def admin_relay_data(request):
 
         return render(request, "app/admin_relay_data.html", {
             'page': page,
+            'total_page': total_page,
             'device_list': device_list,
             'city_list': city_list,
             'village_list': village_list,
@@ -1036,7 +1037,7 @@ def admin_relay_data(request):
             return HttpResponse("error")
         device = Device.objects.get(device_id=device_id)
         print device
-        relay_list = Relay.objects.filter(device_id=device)
+        relay_list = Relay.objects.filter(device_id=device).order_by('data_time')
         # 最近12条实时信息
         latest = relay_list[0:12]
         latest = serializer(latest)
