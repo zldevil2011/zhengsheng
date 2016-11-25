@@ -302,7 +302,8 @@ def admin_user_data(request):
     day_x = []
     day_y = []
     try:
-        datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month, powerT__day=day)[0:12]
+        datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month, powerT__day=day).order_by('-powerT')[0:12]
+        datas_list_today.reverse()
         for data in datas_list_today:
             day_x.append(str(data.powerT))
             day_y.append(data.powerV)
@@ -315,7 +316,8 @@ def admin_user_data(request):
     voltage_x = []
     voltage_y = []
     try:
-        datas_list_today = Data.objects.filter(device_id=device)[0:12]
+        datas_list_today = Data.objects.filter(device_id=device).order_by('-date_time')[0:12]
+        datas_list_today.reverse()
         for data in datas_list_today:
             voltage_x.append(str(data.date_time))
             voltage_y.append(data.voltage)
@@ -328,7 +330,8 @@ def admin_user_data(request):
     electric_current_x = []
     electric_current_y = []
     try:
-        datas_list_today = Data.objects.filter(device_id=device)[0:12]
+        datas_list_today = Data.objects.filter(device_id=device).order_by('-date_time')[0:12]
+        datas_list_today.reverse()
         for data in datas_list_today:
             electric_current_x.append(str(data.date_time))
             electric_current_y.append(data.electric_current)
@@ -341,7 +344,8 @@ def admin_user_data(request):
     power_factor_x = []
     power_factor_y = []
     try:
-        datas_list_today = Data.objects.filter(device_id=device)[0:12]
+        datas_list_today = Data.objects.filter(device_id=device).order_by('-date_time')[0:12]
+        datas_list_today.reverse()
         for data in datas_list_today:
             power_factor_x.append(str(data.date_time))
             power_factor_y.append(data.power_factor)
@@ -354,7 +358,8 @@ def admin_user_data(request):
     active_power_x = []
     active_power_y = []
     try:
-        datas_list_today = Data.objects.filter(device_id=device)[0:12]
+        datas_list_today = Data.objects.filter(device_id=device).order_by('-date_time')[0:12]
+        datas_list_today.reverse()
         for data in datas_list_today:
             active_power_x.append(str(data.date_time))
             active_power_y.append(data.active_power)
@@ -367,7 +372,8 @@ def admin_user_data(request):
     reactive_power_x = []
     reactive_power_y = []
     try:
-        datas_list_today = Data.objects.filter(device_id=device)[0:12]
+        datas_list_today = Data.objects.filter(device_id=device).order_by('-date_time')[0:12]
+        datas_list_today.reverse()
         for data in datas_list_today:
             reactive_power_x.append(str(data.date_time))
             reactive_power_y.append(data.reactive_power)
