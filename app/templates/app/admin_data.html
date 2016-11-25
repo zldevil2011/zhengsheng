@@ -710,13 +710,22 @@
                  };
              });
             $('#electricity_graph').highcharts({
+var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
+            Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
+                 return {
+                     radialGradient: { cx:0, cy: -0.8,r:2.3 },
+                     stops: [[0, color], [2, Highcharts.Color(color).brighten(14).get('rgb')] // darken
+                     ]
+                 };
+             });
+            $('#power_factor_graph').highcharts({
 
                 chart: {
-                    type: 'spline',
+                    type: 'line',
                     backgroundColor: 'rgba(80,81,95,0.1)',
                 },
                 title: {
-                    text: '电流有效值',
+                    text: '电能有效值',
                     style: {
                         color: '#FFFFFF',
                     }
@@ -742,7 +751,7 @@
                 yAxis: {
                     min: 0,
                     title: {
-                        text: '电流有效值'
+                        text: '功率因数'
                     }
                 },
                 tooltip: {
@@ -761,13 +770,13 @@
                 },
                 series: [{
                     zones: [{
-                        value: 0.2,
+                        value: 0.1,
                         color: colors[1]
                     }, {
                         value: 1,
                         color: colors[2]
                     }],
-                    name: '电流有效值',
+                    name: '有效电能',
                     data: yy
                 }]
             });
