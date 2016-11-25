@@ -41,17 +41,17 @@ class DeviceUploadData(APIView):
                             now = datetime(now.year, now.month, now.day, now.hour, now.minute, now.second)
                             if key == "temp":
                                 new_data.temp = float(val)
-                                # new_data.tempT = now
+                                new_data.tempT = now
                             elif key == "tempT":
                                 now = datetime.now()
                                 new_data.tempT = now
                                 # new_data.tempT = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                             elif key == "powerV":
                                 new_data.powerV = float(val)
-                                # new_data.powerT = now
+                                new_data.powerT = now
                             elif key == "powerI":
                                 new_data.powerI = float(val)
-                                # new_data.powerT = now
+                                new_data.powerT = now
                             elif key == "powerT":
                                 now = datetime.now()
                                 new_data.powerT = now
@@ -65,7 +65,7 @@ class DeviceUploadData(APIView):
                                 # new_data.tempBT = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                             elif key == "faultB":
                                 new_data.faultB = int(val)
-                                # new_data.faultBT = now
+                                new_data.faultBT = now
                             elif key == "faultBT":
                                 now = datetime.now()
                                 new_data.faultBT = now
