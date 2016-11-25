@@ -47,10 +47,10 @@ class DeviceUploadData(APIView):
                                 new_data.tempT = now
                                 # new_data.tempT = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                             elif key == "powerV":
-                                new_data.powerV = float(val)
+                                new_data.powerV = float(val)/1000
                                 new_data.powerT = now
                             elif key == "powerI":
-                                new_data.powerI = float(val)
+                                new_data.powerI = float(val)/1000
                                 new_data.powerT = now
                             elif key == "powerT":
                                 now = datetime.now()
@@ -125,21 +125,21 @@ class DeviceUploadData(APIView):
                             elif key == "c_powerR":
                                 relay.c_reactive_power = float(val)
                             elif key == "a_powerV":
-                                relay.a_powerV = float(val)
+                                relay.a_powerV = float(val)/1000.0
                             elif key == "b_powerV":
-                                relay.b_powerV = float(val)
+                                relay.b_powerV = float(val)/1000.0
                             elif key == "c_powerV":
-                                relay.c_powerV = float(val)
+                                relay.c_powerV = float(val)/1000.0
                             elif key == "a_powerI":
-                                relay.a_powerI = float(val)
+                                relay.a_powerI = float(val)/1000.0
                             elif key == "b_powerI":
-                                relay.b_powerI = float(val)
+                                relay.b_powerI = float(val)/1000.0
                             elif key == "c_powerI":
-                                relay.c_powerI = float(val)
+                                relay.c_powerI = float(val)/1000.0
                             elif key == "t_powerV":
-                                relay.t_powerV = float(val)
+                                relay.t_powerV = float(val)/1000.0
                             elif key == "t_powerI":
-                                relay.t_powerI = float(val)
+                                relay.t_powerI = float(val)/1000.0
                             elif key == "time":
                                 now = datetime.now()
                                 relay.data_time = now
