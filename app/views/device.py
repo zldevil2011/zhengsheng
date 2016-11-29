@@ -518,7 +518,7 @@ def admin_device_temperature(request):
 
         today = datetime.today()
         today = datetime(today.year, today.month, today.day)
-        print today
+        # print today
         device_list = Device.objects.exclude(device_status=u"未安装")
         try:
             if city_code == 0 and village_code == 0:
@@ -562,12 +562,15 @@ def admin_device_temperature(request):
             try:
                 device_tmp = Device.objects.get(device_id=int(device["device_id"]))
                 temperature = Data.objects.filter(device_id=device_tmp).order_by('-tempT')[0].temp
+                temperature_time = str(Data.objects.filter(device_id=device_tmp).order_by('-tempT')[0].tempT)
             except:
                 temperature = u"未监测到"
+                temperature_time = u"未监测到"
             device["address"] = address
             device["user"] = user_new
             device["manufacture_date"] = manufacture_date
             device["temperature"] = temperature
+            device["temperature_time"] = temperature_time
 
         print(device_list)
         return render(request, 'app/admin_temperature.html', {

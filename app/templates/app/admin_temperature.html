@@ -66,6 +66,9 @@
                                 当前温度
                             </th>
                             <th>
+                                 采集时间
+                            </th>
+                            <th>
                                 设备地址
                             </th>
                             <th>
@@ -87,6 +90,7 @@
                         <tr>
                             <td>{{ device.device_id }}</td>
                             <td>{{ device.temperature }}</td>
+                            <td>{{ device.temperature_time }}</td>
                             <td>{{ device.address }}</td>
                             <td>{{ device.device_status }}</td>
                             <td>{{ device.user }}</td>
