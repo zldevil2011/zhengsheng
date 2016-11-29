@@ -610,7 +610,8 @@
                         var electric_current_data = data.electric_current_data;
                         userElectricity(electric_current_data.electric_current_x, electric_current_data.electric_current_y);
                         var voltage_data = data.voltage_data;
-                        userVoltage(voltage_data.voltage_x, voltage_data.voltage_y);
+                        userVoltage(voltage_data);
+{#                        userVoltage_test(voltage_data);#}
 
                         $("[name=data-graph]").css("display", "none");
                         $("#voltage_graph").css("display", "block");
@@ -627,7 +628,20 @@
             });
         }
 {#        用户电压有效值#}
-        function userVoltage(xx, yy) {
+        function userVoltage(voltage_data) {
+            var time_list = voltage_data.voltage_x;
+            var data_list = voltage_data.voltage_y;
+            var datas = new Array();
+            var len = data_list.length;
+            for(var i = 0;i < len; ++i){
+                var tmp = new Array();
+                var _ = new Date(time_list[i].replace(/-/g, "/"));
+                var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+{#                var time = new Date.UTC(2016, 10, 1, i, 0,0);#}
+                tmp.push(time);
+                tmp.push(data_list[i]);
+                datas.push(tmp);
+            }
             var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
                  return {
@@ -656,8 +670,15 @@
                 },
                 credits: false,
                 xAxis: {
-                    categories: xx,
-                    crosshair: true,
+                    type: 'datetime',
+                    dateTimeLabelFormats: { // don't display the dummy year
+
+                        month: '%y-%m-%d %H:%M:%S',
+                        year: '%y-%m-%d %H:%M:%S',
+                    },
+                    title: {
+                        text: '时间'
+                    },
                     labels: {
                         style: {
                             fontSize: '8px',
@@ -673,12 +694,16 @@
                     }
                 },
                 tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} V</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
+                    dateTimeLabelFormats: {
+                        millisecond: '%Y-%m-%d %H:%M:%S',
+                        second: '%Y-%m-%d %H:%M:%S',
+                        minute: '%Y-%m-%d %H:%M:%S',
+                        hour: '%Y-%m-%d %H:%M:%S',
+                        day: '%Y-%m-%d %H:%M:%S',
+                        week: '%Y-%m-%d %H:%M:%S',
+                        month: '%Y-%m-%d %H:%M:%S',
+                        year: '%Y-%m-%d %H:%M:%S',
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -695,12 +720,24 @@
                         color: colors[2]
                     }],
                     name: '电压有效值',
-                    data: yy,
+                    data: datas
                 }]
             });
         }
 {#        用户电流有效值#}
         function userElectricity(xx, yy) {
+            var time_list = xx;
+            var data_list = yy;
+            var datas = new Array();
+            var len = data_list.length;
+            for(var i = 0;i < len; ++i){
+                var tmp = new Array();
+                var _ = new Date(time_list[i].replace(/-/g, "/"));
+                var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+                tmp.push(time);
+                tmp.push(data_list[i]);
+                datas.push(tmp);
+            }
             var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
                  return {
@@ -729,8 +766,15 @@
                 },
                 credits: false,
                 xAxis: {
-                    categories: xx,
-                    crosshair: true,
+                    type: 'datetime',
+                    dateTimeLabelFormats: { // don't display the dummy year
+
+                        month: '%y-%m-%d %H:%M:%S',
+                        year: '%y-%m-%d %H:%M:%S',
+                    },
+                    title: {
+                        text: '时间'
+                    },
                     labels: {
                         style: {
                             fontSize: '8px',
@@ -746,12 +790,16 @@
                     }
                 },
                 tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} A</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
+                    dateTimeLabelFormats: {
+                        millisecond: '%Y-%m-%d %H:%M:%S',
+                        second: '%Y-%m-%d %H:%M:%S',
+                        minute: '%Y-%m-%d %H:%M:%S',
+                        hour: '%Y-%m-%d %H:%M:%S',
+                        day: '%Y-%m-%d %H:%M:%S',
+                        week: '%Y-%m-%d %H:%M:%S',
+                        month: '%Y-%m-%d %H:%M:%S',
+                        year: '%Y-%m-%d %H:%M:%S',
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -768,12 +816,24 @@
                         color: colors[2]
                     }],
                     name: '有效电能',
-                    data: yy
+                    data: datas
                 }]
             });
         }
 {#        用户功率因数#}
         function userPowerfactor(xx, yy) {
+            var time_list = xx;
+            var data_list = yy;
+            var datas = new Array();
+            var len = data_list.length;
+            for(var i = 0;i < len; ++i){
+                var tmp = new Array();
+                var _ = new Date(time_list[i].replace(/-/g, "/"));
+                var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+                tmp.push(time);
+                tmp.push(data_list[i]);
+                datas.push(tmp);
+            }
             var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
                  return {
@@ -802,8 +862,15 @@
                 },
                 credits: false,
                 xAxis: {
-                    categories: xx,
-                    crosshair: true,
+                    type: 'datetime',
+                    dateTimeLabelFormats: { // don't display the dummy year
+
+                        month: '%y-%m-%d %H:%M:%S',
+                        year: '%y-%m-%d %H:%M:%S',
+                    },
+                    title: {
+                        text: '时间'
+                    },
                     labels: {
                         style: {
                             fontSize: '8px',
@@ -819,12 +886,16 @@
                     }
                 },
                 tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
+                    dateTimeLabelFormats: {
+                        millisecond: '%Y-%m-%d %H:%M:%S',
+                        second: '%Y-%m-%d %H:%M:%S',
+                        minute: '%Y-%m-%d %H:%M:%S',
+                        hour: '%Y-%m-%d %H:%M:%S',
+                        day: '%Y-%m-%d %H:%M:%S',
+                        week: '%Y-%m-%d %H:%M:%S',
+                        month: '%Y-%m-%d %H:%M:%S',
+                        year: '%Y-%m-%d %H:%M:%S',
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -841,12 +912,24 @@
                         color: colors[2]
                     }],
                     name: '功率因数',
-                    data: yy
+                    data: datas
                 }]
             });
         }
 {#        用户有功功率#}
         function userActivepower(xx,yy) {
+            var time_list = xx;
+            var data_list = yy;
+            var datas = new Array();
+            var len = data_list.length;
+            for(var i = 0;i < len; ++i){
+                var tmp = new Array();
+                var _ = new Date(time_list[i].replace(/-/g, "/"));
+                var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+                tmp.push(time);
+                tmp.push(data_list[i]);
+                datas.push(tmp);
+            }
             var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
                  return {
@@ -875,8 +958,15 @@
                 },
                 credits: false,
                 xAxis: {
-                    categories: xx,
-                    crosshair: true,
+                    type: 'datetime',
+                    dateTimeLabelFormats: { // don't display the dummy year
+
+                        month: '%y-%m-%d %H:%M:%S',
+                        year: '%y-%m-%d %H:%M:%S',
+                    },
+                    title: {
+                        text: '时间'
+                    },
                     labels: {
                         style: {
                             fontSize: '8px',
@@ -892,12 +982,16 @@
                     }
                 },
                 tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} W</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
+                    dateTimeLabelFormats: {
+                        millisecond: '%Y-%m-%d %H:%M:%S',
+                        second: '%Y-%m-%d %H:%M:%S',
+                        minute: '%Y-%m-%d %H:%M:%S',
+                        hour: '%Y-%m-%d %H:%M:%S',
+                        day: '%Y-%m-%d %H:%M:%S',
+                        week: '%Y-%m-%d %H:%M:%S',
+                        month: '%Y-%m-%d %H:%M:%S',
+                        year: '%Y-%m-%d %H:%M:%S',
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -914,12 +1008,24 @@
                         color: colors[2]
                     }],
                     name: '有功功率',
-                    data: yy
+                    data: datas
                 }]
             });
         }
 {#        用户无功功率#}
         function userReactivePower(xx, yy) {
+            var time_list = xx;
+            var data_list = yy;
+            var datas = new Array();
+            var len = data_list.length;
+            for(var i = 0;i < len; ++i){
+                var tmp = new Array();
+                var _ = new Date(time_list[i].replace(/-/g, "/"));
+                var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+                tmp.push(time);
+                tmp.push(data_list[i]);
+                datas.push(tmp);
+            }
             var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
                  return {
@@ -948,8 +1054,15 @@
                 },
                 credits: false,
                 xAxis: {
-                    categories: xx,
-                    crosshair: true,
+                    type: 'datetime',
+                    dateTimeLabelFormats: { // don't display the dummy year
+
+                        month: '%y-%m-%d %H:%M:%S',
+                        year: '%y-%m-%d %H:%M:%S',
+                    },
+                    title: {
+                        text: '时间'
+                    },
                     labels: {
                         style: {
                             fontSize: '8px',
@@ -965,12 +1078,16 @@
                     }
                 },
                 tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
+                    dateTimeLabelFormats: {
+                        millisecond: '%Y-%m-%d %H:%M:%S',
+                        second: '%Y-%m-%d %H:%M:%S',
+                        minute: '%Y-%m-%d %H:%M:%S',
+                        hour: '%Y-%m-%d %H:%M:%S',
+                        day: '%Y-%m-%d %H:%M:%S',
+                        week: '%Y-%m-%d %H:%M:%S',
+                        month: '%Y-%m-%d %H:%M:%S',
+                        year: '%Y-%m-%d %H:%M:%S',
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -987,7 +1104,7 @@
                         color: colors[2]
                     }],
                     name: '无功功率',
-                    data: yy
+                    data: datas
                 }]
             });
         }
@@ -995,6 +1112,18 @@
     <script>
     {#        当前用户当天用电量统计#}
         function userDay(month_day, month_power){
+            var time_list = month_day;
+            var data_list = month_power;
+            var datas = new Array();
+            var len = data_list.length;
+            for(var i = 0;i < len; ++i){
+                var tmp = new Array();
+                var _ = new Date(time_list[i].replace(/-/g, "/"));
+                var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+                tmp.push(time);
+                tmp.push(data_list[i]);
+                datas.push(tmp);
+            }
             var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
                  return {
@@ -1021,7 +1150,20 @@
                     }
                 },
                 xAxis: {
-                    categories: month_day,
+                    type: 'datetime',
+                    dateTimeLabelFormats: { // don't display the dummy year
+                        millisecond: '%m-%d %H:%M',
+                        second: '%m-%d %H:%M',
+                        minute: '%m-%d %H:%M',
+                        hour: '%m-%d %H:%M',
+                        day: '%m-%d %H:%M',
+                        week: '%m-%d %H:%M',
+                        month: '%m-%d %H:%M',
+                        year: '%m-%d %H:%M',
+                    },
+                    title: {
+                        text: '时间'
+                    },
                     labels: {
                         style: {
                             fontSize: '13px',
@@ -1046,9 +1188,15 @@
                     }
                 },
                 tooltip: {
-                    enabled: false,
-                    formatter: function() {
-                        return '<b>'+ this.series.name +'</b><br/>'+this.x +': '+ this.y +'°C';
+                    dateTimeLabelFormats: {
+                        millisecond: '%Y-%m-%d %H:%M:%S',
+                        second: '%Y-%m-%d %H:%M:%S',
+                        minute: '%Y-%m-%d %H:%M:%S',
+                        hour: '%Y-%m-%d %H:%M:%S',
+                        day: '%Y-%m-%d %H:%M:%S',
+                        week: '%Y-%m-%d %H:%M:%S',
+                        month: '%Y-%m-%d %H:%M:%S',
+                        year: '%Y-%m-%d %H:%M:%S',
                     }
                 },
                 plotOptions: {
@@ -1061,7 +1209,7 @@
                 },
                 series: [{
                     name: '电量',
-                    data: month_power
+                    data: datas
                 }]
             });
         }

@@ -109,7 +109,31 @@
                         </li>
                     </ul>
                 </div>
+                <div class="col-md-12">
+                    <hr>
+                </div>
                 <div class="clearfix">
+                    <div class="col-md-12" id="time-choice-dialog" style="display: none;">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 control-label" style="padding-top: 6px;">选择时间</label>
+                                <div class="col-sm-4">
+                                    <input name = "start_time" type="date" class="form-control" id="temp_start_time" />
+                                </div>
+                                <label for="" class="col-sm-1 control-label" style="padding-top: 6px;">至</label>
+                                <div class="col-sm-4">
+                                    <input name = "end_time" type="date" class="form-control" id="temp_end_time" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-block btn-success" name="filter_device">查找</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-12" style="margin-top: 10px;">
                         <div id="device-list-page" style="height: 400px; width: 100%"></div>
                     </div>
@@ -129,6 +153,7 @@
                     if(data == "error"){
                         alertify.error("未采集到数据");
                     }else{
+                        $("#time-choice-dialog").css("display", "block");
                         console.log(data);
                         var today_hour = data.today_hour;
                         var today_power = data.today_temp;
