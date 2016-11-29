@@ -129,7 +129,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <button class="btn btn-block btn-success" name="filter_device">查找</button>
+                                    <button class="btn btn-block btn-success" name="temp_time_filter">查找</button>
                                 </div>
                             </div>
                         </div>
@@ -138,13 +138,137 @@
                         <div id="device-list-page" style="height: 400px; width: 100%"></div>
                     </div>
                 </div>
+                <div id="temp_id" class="col-md-12" style="display: none;"></div>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block special_js %}
     <script>
+        $("[name=temp_time_filter]").on("click", function(){
+            var start_time = $("#temp_start_time").val();
+            var end_time = $("#temp_end_time").val();
+            console.log(start_time);
+            console.log(end_time);
+            if(start_time > end_time){
+                alert("请选择正确的时间段");
+                return;
+            }
+            if(start_time == "" || end_time == ""){
+                alert("请选择 时间段");
+                return;
+            }
+
+            var id = $("#temp_id").html();
+            $.ajax({
+                url: '/admin_device/temperature/',
+                type: 'POST',
+                data: {device_id: id, start_time:start_time, end_time:end_time},
+                success: function(data){
+                    if(data == "error"){
+                        alertify.error("未采集到数据");
+                    }else{
+                        $("#time-choice-dialog").css("display", "block");
+                        console.log(data);
+                        var today_hour = data.today_hour;
+                        var today_power = data.today_temp;
+                    $(function () {
+                        var time_list = today_hour;
+                        var data_list = today_power;
+                        var datas = new Array();
+                        var len = data_list.length;
+                        for(var i = 0;i < len; ++i){
+                            var tmp = new Array();
+                            var _ = new Date(time_list[i].replace(/-/g, "/"));
+                            var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+                            tmp.push(time);
+                            tmp.push(data_list[i]);
+                            datas.push(tmp);
+                        }
+                        var colors = ['#00ff00'];
+                        Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
+                             return {
+                                 radialGradient: { cx:0, cy: -0.8,r:2.3 },
+                                 stops: [[0, color], [2, Highcharts.Color(color).brighten(14).get('rgb')] // darken
+                                 ]
+                             };
+                         });
+                        $('#device-list-page').highcharts({
+                                chart: {
+                                    type: 'line',
+                                },
+                                title: {
+                                    text: '历史数据',
+                                    x: -20 //center
+                                },
+                                subtitle: {
+                                    text: '数据来源：征圣云平台',
+                                    x: -20
+                                },
+                                xAxis: {
+                                    type: 'datetime',
+                                    dateTimeLabelFormats: { // don't display the dummy year
+                                        millisecond: '%H:%M:%S',
+                                        second: '%H:%M:%S',
+                                        minute: '%d %H:%M',
+                                        hour: '%m-%d %H:%M',
+                                        day: '%m-%d',
+                                        week: '%m-%d',
+                                        month: '%Y-%m',
+                                        year: '%Y',
+                                    },
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: '温度 (摄氏度)'
+                                    },
+                                    plotLines:[{
+                                        color:'yellow',           //线的颜色，定义为黄色
+                                        dashStyle:'solid',     //默认值，这里定义为实线
+                                        value:30,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                                        width:4                //标示线的宽度，2px
+                                    },{
+                                        color:'red',           //线的颜色，定义为红色
+                                        dashStyle:'solid',     //默认值，这里定义为实线
+                                        value:40,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                                        width:4                //标示线的宽度，2px
+                                    }]
+                                },
+                                tooltip: {
+                                    valueSuffix: '度',
+                                    dateTimeLabelFormats: {
+                                        millisecond: '%Y-%m-%d %H:%M:%S',
+                                        second: '%Y-%m-%d %H:%M:%S',
+                                        minute: '%Y-%m-%d %H:%M:%S',
+                                        hour: '%Y-%m-%d %H:%M:%S',
+                                        day: '%Y-%m-%d %H:%M:%S',
+                                        week: '%Y-%m-%d %H:%M:%S',
+                                        month: '%Y-%m-%d %H:%M:%S',
+                                        year: '%Y-%m-%d %H:%M:%S',
+                                    }
+                                },
+                                legend: {
+                                    layout: 'vertical',
+                                    align: 'right',
+                                    verticalAlign: 'middle',
+                                    borderWidth: 0
+                                },
+                                series: [{
+                                    name: '温度',
+                                    data: datas,
+                                    color:"#4e505d"
+                                }]
+                            });
+                        });
+                    }
+                },
+                error: function(data){
+                    alertify.error("当前设备没有温度数据");
+                }
+            })
+        });
         function showTodayTem(id){
+            $("#temp_id").html(id);
             $.ajax({
                 url: '/admin_device/temperature/',
                 type: 'POST',

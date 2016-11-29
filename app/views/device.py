@@ -584,9 +584,19 @@ def admin_device_temperature(request):
         try:
             device_id = int(request.POST.get("device_id"))
             device = Device.objects.get(device_id=device_id)
-            today = datetime.today()
-            today = datetime(today.year, today.month, today.day)
-            data_list = Data.objects.filter(tempT__gte=today, device_id=device).order_by('tempT')
+            try:
+                start_time = request.POST.get("start_time")
+                end_time = request.POST.get("end_time")
+                start_time = datetime.strptime(start_time, "%Y-%m-%d")
+                end_time = datetime.strptime(end_time, "%Y-%m-%d")
+            except Exception as e:
+                print(str(e))
+                today = datetime.today()
+                start_time = datetime(today.year, today.month, today.day)
+                end_time = datetime(today.year, today.month, today.day + 1)
+            print(start_time)
+            print(end_time)
+            data_list = Data.objects.filter(tempT__gte=start_time, tempT__lt=end_time, device_id=device).order_by('tempT')
             today_temp = []
             today_hour = []
             for d in data_list:
