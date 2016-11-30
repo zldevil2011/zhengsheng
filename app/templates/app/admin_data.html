@@ -581,9 +581,11 @@
         });
     </script>
     <script>
+        var device_id;
 {#        点击该按钮查看当前用户的用电信息#}
         function showUserInfo(id){
             alertify.success("设备ID = " + id);
+            device_id = id;
 {#            异步请求该用户的用电信息#}
             $.ajax({
                 url: '/admin_data/userinfo/',
@@ -663,7 +665,7 @@
                     }
                 },
                 subtitle: {
-                    text: '来源：电表箱',
+                    text: '来源：' + device_id + '电表箱',
                     style: {
                         color: '#FFFFFF',
                     }
@@ -759,7 +761,7 @@
                     }
                 },
                 subtitle: {
-                    text: '来源：电表箱',
+                    text: '来源：' + device_id + '电表箱',
                     style: {
                         color: '#FFFFFF',
                     }
@@ -855,7 +857,7 @@
                     }
                 },
                 subtitle: {
-                    text: '来源：电表箱',
+                    text: '来源：' + device_id + '电表箱',
                     style: {
                         color: '#FFFFFF',
                     }
@@ -951,7 +953,7 @@
                     }
                 },
                 subtitle: {
-                    text: '来源：电表箱',
+                    text: '来源：' + device_id + '电表箱',
                     style: {
                         color: '#FFFFFF',
                     }
@@ -1047,7 +1049,7 @@
                     }
                 },
                 subtitle: {
-                    text: '来源：电表箱',
+                    text: '来源：' + device_id + '电表箱',
                     style: {
                         color: '#FFFFFF',
                     }
@@ -1144,7 +1146,7 @@
                     }
                 },
                 subtitle: {
-                    text: '数据来源：电表箱',
+                    text: '数据来源：' + device_id + '电表箱',
                     style: {
                         color: '#FFFFFF',
                     }
@@ -1227,7 +1229,7 @@
                     }
                 },
                 subtitle: {
-                    text: '数据来源：电表箱',
+                    text: '数据来源：' + device_id + '电表箱',
                     style: {
                         color: '#FFFFFF',
                     }
