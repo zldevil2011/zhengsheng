@@ -302,7 +302,7 @@ def admin_user_data(request):
     day_x = []
     day_y = []
     try:
-        datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month, powerT__day=day).order_by('-powerT')[0:12]
+        datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month, powerT__day=day).order_by('-powerT')
         datas_list_today.reverse()
         for data in datas_list_today:
             day_x.append(str(data.powerT))
