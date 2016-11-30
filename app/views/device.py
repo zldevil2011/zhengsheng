@@ -596,7 +596,7 @@ def admin_device_temperature(request):
                 print(str(e))
                 today = datetime.today()
                 start_time = datetime(today.year, today.month, today.day)
-                end_time = datetime(today.year, today.month, today.day + 1)
+                end_time = datetime(today.year, today.month, today.day) + timedelta(days=1)
             print(start_time)
             print(end_time)
             data_list = Data.objects.filter(tempT__gte=start_time, tempT__lt=end_time, device_id=device).order_by('tempT')
