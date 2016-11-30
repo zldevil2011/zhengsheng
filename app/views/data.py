@@ -316,7 +316,7 @@ def admin_user_data(request):
     voltage_x = []
     voltage_y = []
     try:
-        datas_list_today = Data.objects.filter(device_id=device).order_by('-date_time')
+        datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month, powerT__day=day).order_by('-date_time')
         datas_list_today.reverse()
         for data in datas_list_today:
             voltage_x.append(str(data.date_time))
@@ -330,7 +330,7 @@ def admin_user_data(request):
     electric_current_x = []
     electric_current_y = []
     try:
-        datas_list_today = Data.objects.filter(device_id=device).order_by('-date_time')
+        datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month, powerT__day=day).order_by('-date_time')
         datas_list_today.reverse()
         for data in datas_list_today:
             electric_current_x.append(str(data.date_time))
@@ -344,7 +344,7 @@ def admin_user_data(request):
     power_factor_x = []
     power_factor_y = []
     try:
-        datas_list_today = Data.objects.filter(device_id=device).order_by('-date_time')
+        datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month, powerT__day=day).order_by('-date_time')
         datas_list_today.reverse()
         for data in datas_list_today:
             power_factor_x.append(str(data.date_time))
@@ -358,7 +358,7 @@ def admin_user_data(request):
     active_power_x = []
     active_power_y = []
     try:
-        datas_list_today = Data.objects.filter(device_id=device).order_by('-date_time')
+        datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month, powerT__day=day).order_by('-date_time')
         datas_list_today.reverse()
         for data in datas_list_today:
             active_power_x.append(str(data.date_time))
@@ -372,7 +372,7 @@ def admin_user_data(request):
     reactive_power_x = []
     reactive_power_y = []
     try:
-        datas_list_today = Data.objects.filter(device_id=device).order_by('-date_time')
+        datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month, powerT__day=day).order_by('-date_time')
         datas_list_today.reverse()
         for data in datas_list_today:
             reactive_power_x.append(str(data.date_time))
