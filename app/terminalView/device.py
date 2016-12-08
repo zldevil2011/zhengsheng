@@ -22,7 +22,7 @@ def terminal_device_info(request):
     year = today.year
     month = today.month
     day = today.day
-    datas = Data.objects.filter(tempT__year=year, tempT__month=month, tempT__day=day).order_by('tempT')
+    datas = Data.objects.filter(device_id=device, tempT__year=year, tempT__month=month, tempT__day=day).order_by('tempT')
 
     temperature = []
     for d in datas:
