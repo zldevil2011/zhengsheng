@@ -69,5 +69,5 @@ def index(request):
         'month_power': month_power,
         'month_time': month_time,
         'total_page': total_page,
-        'page': '1',
+        'page': page,
     })
