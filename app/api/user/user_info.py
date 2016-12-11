@@ -46,8 +46,12 @@ class UserInfo(APIView):
         data = datas.filter(powerT__year=year, powerT__month=month, powerT__day=day).order_by('-powerT')
         for d in data:
             if d.powerV is not None:
-                today_power.append(d.powerV)
-                today_hour.append(d.powerT.hour)
+                if d.powerT.hour in today_hour:
+                    today_power.pop()
+                    today_power.append(d.powerV)
+                else:
+                    today_power.append(d.powerV)
+                    today_hour.append(d.powerT.hour)
         today_power.reverse()
         today_hour.reverse()
         print "Day Data"
