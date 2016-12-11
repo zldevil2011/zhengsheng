@@ -9,10 +9,13 @@ import calendar
 
 class UserInfo(APIView):
     def get(self, request, format=None):
-        user_id = int(request.GET.data['user_id'])
-        user = AppUser.objects.get(pk=user_id)
-        serializer = AppUserSerializer(user)
-        return Response({'user':serializer.data}, status=status.HTTP_200_OK)
+        user_id = int(request.GET.get('user_id', 0))
+        try:
+            user = AppUser.objects.get(pk=user_id)
+            serializer = AppUserSerializer(user)
+            return Response({'user':serializer.data}, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_403_FORBIDDEN)
 
     def post(self, request, format=None):
         print request.data
