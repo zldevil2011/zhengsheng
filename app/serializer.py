@@ -4,15 +4,21 @@ from rest_framework import serializers
 
 class AppUserSerializer(serializers.ModelSerializer):
     device = serializers.SerializerMethodField()
+    user_id = serializers.SerializerMethodField()
+    user_username = serializers.SerializerMethodField()
     class Meta:
         model = AppUser
         fields = (
-            'id', 'username', 'telephone', 'email', 'device','address'
+            'id', 'username', 'telephone', 'email', 'device','address','user_id','user_username'
         )
 
     def get_device(self, obj):
         device = obj.device
         return DeviceSerializer(device).data
+    def get_user_id(self, obj):
+        return obj.user.id
+    def get_user_username(self, obj):
+        return obj.user.username
 
 
 class DeviceSerializer(serializers.ModelSerializer):

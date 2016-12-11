@@ -13,8 +13,6 @@ class UserInfo(APIView):
         try:
             user = AppUser.objects.get(pk=user_id)
             serializer = AppUserSerializer(user)
-            serializer.data["user_id"] = str(user_id)
-            serializer.data["user_username"] = user.user.username
             return Response({'user':serializer.data}, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_403_FORBIDDEN)
