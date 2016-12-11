@@ -23,8 +23,12 @@ class UserInfo(APIView):
             user_id = int(request.data['user_id'])
             username = request.data['username']
             telephone = request.data['telephone']
+            email = request.data['email']
             address = request.data['address']
             user = AppUser.objects.get(pk=user_id)
+            user.user.username = username
+            user.user.email = email
+            user.user.save()
             user.username = username
             user.telephone = telephone
             user.address = address
