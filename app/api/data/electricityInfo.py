@@ -7,15 +7,12 @@ from app.serializer import AppUserSerializer
 from datetime import date, datetime, timedelta
 import calendar
 
-
 class electricityData(APIView):
-    def get(self, request, format=None):
+
+    def post(self, request, format=None):
         print request.data
-        user_id = int(request.GET.get('user_id', 0))
-        try:
-            user = AppUser.objects.get(pk=user_id)
-        except:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+        user_id = int(request.data['user_id'])
+        user = AppUser.objects.get(pk=user_id)
         device = user.device
         try:
             data = Data.objects.filter(device_id=device)[0]
