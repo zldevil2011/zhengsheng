@@ -9,7 +9,7 @@ import calendar
 
 class UserInfo(APIView):
     def get(self, request, format=None):
-        user_id = int(request.data['user_id'])
+        user_id = int(request.GET.data['user_id'])
         user = AppUser.objects.get(pk=user_id)
         serializer = AppUserSerializer(user)
         return Response({'user':serializer.data}, status=status.HTTP_200_OK)
