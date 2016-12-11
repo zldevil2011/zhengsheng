@@ -7,7 +7,7 @@ class AppUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppUser
         fields = (
-            'id', 'username', 'telephone', 'email', 'device'
+            'id', 'username', 'telephone', 'email', 'device','address'
         )
 
     def get_device(self, obj):
