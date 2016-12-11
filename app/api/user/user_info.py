@@ -26,7 +26,6 @@ class UserInfo(APIView):
             email = request.data['email']
             address = request.data['address']
             user = AppUser.objects.get(pk=user_id)
-            user.user.username = username
             user.user.email = email
             user.user.save()
             user.username = username
