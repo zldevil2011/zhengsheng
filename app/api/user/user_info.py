@@ -32,6 +32,7 @@ class UserInfo(APIView):
             user.username = username
             user.telephone = telephone
             user.address = address
+            user.email = email
             user.save()
             return Response(status=status.HTTP_200_OK)
         except:
