@@ -15,9 +15,12 @@ class FeedbackAdd(APIView):
     def post(self, request, format=None):
         try:
             user_id = int(request.data['user_id'])
-            appuser = AppUser.objects.get(pk=user_id)
+            try:
+                appuser = AppUser.objects.get(pk=user_id)
+                email = appuser.user.email
+            except:
+                email = "tourist（游客)"
             content = request.data['content']
-            email = appuser.user.email
             feedback = Feedback()
             feedback.email = email
             feedback.content = content
