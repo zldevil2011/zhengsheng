@@ -6,7 +6,6 @@ from user.login import Login
 from user.work_order_list import workOrderList
 from user.temp_alert_list import tempAlertList
 from user.feedback_add import FeedbackAdd
-from user.work_order_list import UserWorkOrder
 from device.device_check import DeviceCheck
 from device.device_extramessage import DeviceExtramessage
 from device.device_uploaddata import DeviceUploadData
@@ -21,7 +20,6 @@ urlpatterns = [
     url('^user/workorderList/', workOrderList.as_view()),
     url('^user/tempAlertList/', tempAlertList.as_view()),
     url('^user/electricity/data/', electricityData.as_view()),
-    url('^user_workorder/', UserWorkOrder.as_view()),
 
     url('^feedback_add/', FeedbackAdd.as_view()),
 
