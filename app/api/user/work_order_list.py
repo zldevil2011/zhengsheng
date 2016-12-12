@@ -8,7 +8,7 @@ from datetime import date, datetime, timedelta
 import calendar
 
 
-class workOrderList(APIView):
+class UserWorkOrder(APIView):
     def get(self, request, format=None):
         print request.GET
         try:
