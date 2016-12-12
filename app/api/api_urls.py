@@ -20,7 +20,7 @@ urlpatterns = [
     url('^user/login/', Login.as_view()),
     url('^user/workorderList/', workOrderList.as_view()),
     url('^user/tempAlertList/', tempAlertList.as_view()),
-    url('^user/event_list/', EventList.as_view()),
+    url('^user/eventList/', EventList.as_view()),
     url('^user/electricity/data/', electricityData.as_view()),
 
     url('^feedback_add/', FeedbackAdd.as_view()),
