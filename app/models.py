@@ -185,4 +185,11 @@ class Event(models.Model):
         return str(self.pk)
 
 
+class Feedback(models.Model):
+    email = models.CharField(max_length=50, null=True)
+    content = models.TextField(default='')
+    time = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return str(self.pk)
 # Create your models here.
