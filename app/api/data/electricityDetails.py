@@ -39,13 +39,14 @@ class electricityDetails(APIView):
         electric_current_x = []
         electric_current_y = []
         try:
-            datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month,
-                                                   powerT__day=day).order_by('-date_time')
+            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,
+                                                   date_time__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
                 electric_current_x.append(int(time.mktime(data.date_time)))
                 electric_current_y.append(data.electric_current)
-        except:
+        except Exception as e:
+            print(str(e))
             datas_list_today = None
         electric_current_data["electric_current_x"] = electric_current_x
         electric_current_data["electric_current_y"] = electric_current_y
@@ -54,8 +55,8 @@ class electricityDetails(APIView):
         power_factor_x = []
         power_factor_y = []
         try:
-            datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month,
-                                                   powerT__day=day).order_by('-date_time')
+            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,
+                                                   date_time__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
                 power_factor_x.append(int(time.mktime(data.date_time)))
@@ -69,8 +70,8 @@ class electricityDetails(APIView):
         active_power_x = []
         active_power_y = []
         try:
-            datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month,
-                                                   powerT__day=day).order_by('-date_time')
+            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,
+                                                   date_time__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
                 active_power_x.append(int(time.mktime(data.date_time)))
@@ -84,8 +85,8 @@ class electricityDetails(APIView):
         reactive_power_x = []
         reactive_power_y = []
         try:
-            datas_list_today = Data.objects.filter(device_id=device, powerT__year=year, powerT__month=month,
-                                                   powerT__day=day).order_by('-date_time')
+            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,
+                                                   date_time__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
                 reactive_power_x.append(int(time.mktime(data.date_time)))
