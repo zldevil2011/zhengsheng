@@ -20,6 +20,7 @@ urlpatterns = [
     url('^user/workorderList/', workOrderList.as_view()),
     url('^user/tempAlertList/', tempAlertList.as_view()),
     url('^user/electricity/data/', electricityData.as_view()),
+    url('^user_workorder/', UserWorkOrder.as_view()),
 
     url('^feedback_add/', FeedbackAdd.as_view()),
 
