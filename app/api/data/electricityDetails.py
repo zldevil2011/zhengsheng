@@ -29,7 +29,7 @@ class electricityDetails(APIView):
             datas_list_today.reverse()
             for data in datas_list_today:
                 tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
-                voltage_x.append(int(time.mktime(ap)))
+                voltage_x.append(int(time.mktime(tp)))
                 voltage_y.append(data.voltage)
         except:
             datas_list_today = None
@@ -45,7 +45,7 @@ class electricityDetails(APIView):
             datas_list_today.reverse()
             for data in datas_list_today:
                 tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
-                electric_current_x.append(int(ap)))
+                electric_current_x.append(int(time.mktime(tp)))
                 electric_current_y.append(data.electric_current)
         except Exception as e:
             print(str(e))
@@ -62,7 +62,7 @@ class electricityDetails(APIView):
             datas_list_today.reverse()
             for data in datas_list_today:
                 tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
-                power_factor_x.append(int(time.mktime(ap)))
+                power_factor_x.append(int(time.mktime(tp)))
                 power_factor_y.append(data.power_factor)
         except:
             datas_list_today = None
@@ -94,7 +94,7 @@ class electricityDetails(APIView):
             datas_list_today.reverse()
             for data in datas_list_today:
                 tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
-                reactive_power_x.append(int(time.mktime(ap)))
+                reactive_power_x.append(int(time.mktime(tp)))
                 reactive_power_y.append(data.reactive_power)
         except:
             datas_list_today = None
