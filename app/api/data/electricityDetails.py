@@ -28,7 +28,8 @@ class electricityDetails(APIView):
                                                    powerT__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
-                voltage_x.append(int(time.mktime(data.date_time)))
+                tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
+                voltage_x.append(int(time.mktime(ap)))
                 voltage_y.append(data.voltage)
         except:
             datas_list_today = None
@@ -43,7 +44,8 @@ class electricityDetails(APIView):
                                                    date_time__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
-                electric_current_x.append(int(time.mktime(data.date_time)))
+                tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
+                electric_current_x.append(int(ap)))
                 electric_current_y.append(data.electric_current)
         except Exception as e:
             print(str(e))
@@ -59,7 +61,8 @@ class electricityDetails(APIView):
                                                    date_time__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
-                power_factor_x.append(int(time.mktime(data.date_time)))
+                tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
+                power_factor_x.append(int(time.mktime(ap)))
                 power_factor_y.append(data.power_factor)
         except:
             datas_list_today = None
@@ -74,7 +77,8 @@ class electricityDetails(APIView):
                                                    date_time__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
-                active_power_x.append(int(time.mktime(data.date_time)))
+                tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
+                active_power_x.append(int(time.mktime(tp)))
                 active_power_y.append(data.active_power)
         except:
             datas_list_today = None
@@ -89,7 +93,8 @@ class electricityDetails(APIView):
                                                    date_time__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
-                reactive_power_x.append(int(time.mktime(data.date_time)))
+                tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
+                reactive_power_x.append(int(time.mktime(ap)))
                 reactive_power_y.append(data.reactive_power)
         except:
             datas_list_today = None
