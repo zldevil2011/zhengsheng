@@ -73,7 +73,7 @@ class DeviceUploadData(APIView):
                             elif key == "vol": # 终端电压
                                 new_data.voltage = float(val)/10.0
                             elif key == "elec": # 终端电流
-                                new_data.electric_current = float(val)/10.0
+                                new_data.electric_current = float(val)/100.0
                             elif key == "powerF": # 功率因数
                                 new_data.power_factor = float(val)/1000.0
                             elif key == "powerA": # 有功功率
@@ -101,11 +101,11 @@ class DeviceUploadData(APIView):
                             elif key == "c_vol":
                                 relay.c_voltage = float(val)/10.0  # C相电压
                             elif key == "a_elec":
-                                relay.a_electric_current = float(val)/10.0  # A相电流
+                                relay.a_electric_current = float(val)/100.0  # A相电流
                             elif key == "b_elec":
-                                relay.b_electric_current = float(val)/10.0  # B相电流
+                                relay.b_electric_current = float(val)/100.0  # B相电流
                             elif key == "c_elec":
-                                relay.c_electric_current = float(val)/10.0  # C相电流
+                                relay.c_electric_current = float(val)/100.0  # C相电流
                             elif key == "a_powerF":
                                 relay.a_power_factor = float(val)/1000.0   # A相功率因数
                             elif key == "b_powerF":

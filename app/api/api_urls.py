@@ -13,7 +13,7 @@ from device.device_uploaddata import DeviceUploadData
 from device.device_parameter import DeviceParameter
 from event.event_upload import EventUpload
 from data.electricityInfo import electricityData
-
+from data.electricityDetails import electricityDetails
 
 urlpatterns = [
     url('^user_info/', UserInfo.as_view()),
@@ -22,6 +22,7 @@ urlpatterns = [
     url('^user/tempAlertList/', tempAlertList.as_view()),
     url('^user/eventList/', EventList.as_view()),
     url('^user/electricity/data/', electricityData.as_view()),
+    url('^user/electricity/details/', electricityDetails.as_view()),
 
     url('^feedback_add/', FeedbackAdd.as_view()),
 
