@@ -28,7 +28,8 @@ class electricityDetails(APIView):
                                                    powerT__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
-                tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
+                ap = str(data.date_time.year) + "-" + str(data.date_time.month) + "-" + str(data.date_time.day) + " " + str(data.date_time.hour) + ":" + str(data.date_time.minute) + ":" + str(data.date_time.second)
+                tp = time.strptime(ap, "%Y-%m-%d %H:%M:%S")
                 voltage_x.append(int(time.mktime(tp)))
                 voltage_y.append(data.voltage)
         except:
@@ -44,7 +45,10 @@ class electricityDetails(APIView):
                                                    date_time__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
-                tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
+                ap = str(data.date_time.year) + "-" + str(data.date_time.month) + "-" + str(
+                    data.date_time.day) + " " + str(data.date_time.hour) + ":" + str(data.date_time.minute) + ":" + str(
+                    data.date_time.second)
+                tp = time.strptime(ap, "%Y-%m-%d %H:%M:%S")
                 electric_current_x.append(int(time.mktime(tp)))
                 electric_current_y.append(data.electric_current)
         except Exception as e:
@@ -61,7 +65,10 @@ class electricityDetails(APIView):
                                                    date_time__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
-                tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
+                ap = str(data.date_time.year) + "-" + str(data.date_time.month) + "-" + str(
+                    data.date_time.day) + " " + str(data.date_time.hour) + ":" + str(data.date_time.minute) + ":" + str(
+                    data.date_time.second)
+                tp = time.strptime(ap, "%Y-%m-%d %H:%M:%S")
                 power_factor_x.append(int(time.mktime(tp)))
                 power_factor_y.append(data.power_factor)
         except:
@@ -77,7 +84,10 @@ class electricityDetails(APIView):
                                                    date_time__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
-                tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
+                ap = str(data.date_time.year) + "-" + str(data.date_time.month) + "-" + str(
+                    data.date_time.day) + " " + str(data.date_time.hour) + ":" + str(data.date_time.minute) + ":" + str(
+                    data.date_time.second)
+                tp = time.strptime(ap, "%Y-%m-%d %H:%M:%S")
                 active_power_x.append(int(time.mktime(tp)))
                 active_power_y.append(data.active_power)
         except:
@@ -93,7 +103,10 @@ class electricityDetails(APIView):
                                                    date_time__day=day).order_by('-date_time')
             datas_list_today.reverse()
             for data in datas_list_today:
-                tp = time.strptime(data.date_time, "%Y-%m-%d %H:%M:%S")
+                ap = str(data.date_time.year) + "-" + str(data.date_time.month) + "-" + str(
+                    data.date_time.day) + " " + str(data.date_time.hour) + ":" + str(data.date_time.minute) + ":" + str(
+                    data.date_time.second)
+                tp = time.strptime(ap, "%Y-%m-%d %H:%M:%S")
                 reactive_power_x.append(int(time.mktime(tp)))
                 reactive_power_y.append(data.reactive_power)
         except:
