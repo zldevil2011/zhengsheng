@@ -63,8 +63,11 @@ class DataSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
+    time = serializers.SerializerMethodField()
     class Meta:
         model = Event
         fields = (
             'name_no', 'name', 'time', 'content'
         )
+    def get_time(self, obj):
+        return obj.time.strftime('%Y-%m-%d %H:%M:%S')
