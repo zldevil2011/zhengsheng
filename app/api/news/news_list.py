@@ -25,5 +25,5 @@ class NewsList(APIView):
             news_data.append(tmp)
             idx += 3
         print news_data
-        return Response({"news_list": news_data}, , status=status.HTTP_200_OK)
+        return Response({"news_list": news_data}, status=status.HTTP_200_OK)
 
