@@ -1053,8 +1053,8 @@ def admin_relay_data(request):
         relay_list = Relay.objects.filter(device_id=device).order_by('-data_time')
         # 最近12条实时信息
         latest = relay_list[0:12]
-        latest.reverse()
         latest = serializer(latest)
+        latest.reverse()
         for r in latest:
             r["data_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(r["data_time"])))
         # 最近一月日用电量统计/用电总量及高峰低谷统计
