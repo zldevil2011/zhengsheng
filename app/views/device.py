@@ -1053,6 +1053,7 @@ def admin_relay_data(request):
         relay_list = Relay.objects.filter(device_id=device).order_by('-data_time')
         # 最近12条实时信息
         latest = relay_list[0:12]
+        latest.reverse()
         latest = serializer(latest)
         for r in latest:
             r["data_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(r["data_time"])))
