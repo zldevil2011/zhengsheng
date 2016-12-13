@@ -20,7 +20,7 @@ class NewsList(APIView):
         while idx <= (len(list_of_all_the_lines) - 3):
             tmp = {}
             tmp["link"] = list_of_all_the_lines[idx][:-1]
-            tmp["name"] = list_of_all_the_lines[idx + 1][:-1].decode('gb2312')
+            tmp["name"] = list_of_all_the_lines[idx + 1][:-1]#.decode('gb2312')
             tmp["img"] = list_of_all_the_lines[idx + 2][:-1]
             news_data.append(tmp)
             idx += 3
