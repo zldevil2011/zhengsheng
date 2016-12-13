@@ -14,6 +14,7 @@ from device.device_parameter import DeviceParameter
 from event.event_upload import EventUpload
 from data.electricityInfo import electricityData
 from data.electricityDetails import electricityDetails
+from news.news_list import NewsList
 
 urlpatterns = [
     url('^user_info/', UserInfo.as_view()),
@@ -25,6 +26,7 @@ urlpatterns = [
     url('^user/electricity/details/', electricityDetails.as_view()),
 
     url('^feedback_add/', FeedbackAdd.as_view()),
+    url('^newsList/', NewsList.as_view()),
 
 
     url('^device/check/', DeviceCheck.as_view()),
