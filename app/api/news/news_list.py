@@ -17,13 +17,14 @@ class NewsList(APIView):
         file_object.close()
         # print list_of_all_the_lines
         idx = 0
-        while idx <= (len(list_of_all_the_lines) - 3):
+        while idx <= (len(list_of_all_the_lines) - 4):
             tmp = {}
             tmp["link"] = list_of_all_the_lines[idx][:-1]
             tmp["name"] = list_of_all_the_lines[idx + 1][:-1].decode('gb2312')
             tmp["img"] = list_of_all_the_lines[idx + 2][:-1]
+            tmp["time"] = list_of_all_the_lines[idx + 3][:-1]
             news_data.append(tmp)
-            idx += 3
+            idx += 4
         print news_data
         return Response({"news_list": news_data}, status=status.HTTP_200_OK)
 
