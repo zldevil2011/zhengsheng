@@ -29,6 +29,8 @@ class Device(models.Model):
     gateway_code = models.SmallIntegerField(null=True)  # 网关编号，区域内编号
     meter_box = models.SmallIntegerField(null=True)  # 表箱编号
     device_status = models.CharField(max_length=32, default='未安装')  # 设备状态 是否投入使用
+    household_flag = models.IntegerField(default=0)
+    household_content = models.CharField(max_length=32, default='')
 
     def __unicode__(self):
         return str(self.device_id)

@@ -44,6 +44,10 @@ class DeviceExtramessage(APIView):
                             device.meter_box = int(val)
                         elif key == "rno":
                             device.room_code = int(val)
+                        elif key == "chf":
+                            device.household_flag = int(val)
+                        elif key == "chc":
+                            device.household_content = str(val)
                         else:
                             pass
                     device.save()
