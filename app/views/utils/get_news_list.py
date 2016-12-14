@@ -45,10 +45,13 @@ class Spider(object):
 			tmp["link"] = link_
 			tmp["title"] = str(item[1])
 			tmp["img"] = img_
+			tmp["time"] = "2016-12"
+			tmp["author"] = str("中电新闻网")
 			self.data.append(tmp)
 			fileHandle.write(link_ + '\n')
 			fileHandle.write(str(item[1]) + '\n')
 			fileHandle.write(img_ + '\n')
+			fileHandle.write(tmp["time"] + '\n')
 			print tmp
 		print len(self.data)
 		# fileHandle.close()
