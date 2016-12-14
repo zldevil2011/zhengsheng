@@ -40,6 +40,7 @@ class Spider(object):
 			tmp = {}
 			if idx < 5:
 				link_ = 'http://www.cpnn.com.cn' + str(item[0])[1:len(str(item[0]))]
+			idx += 1
 			img_ = 'http://www.cpnn.com.cn' + str(item[2])[2:len(str(item[2]))-1]
 			tmp["link"] = link_
 			tmp["title"] = str(item[1])
