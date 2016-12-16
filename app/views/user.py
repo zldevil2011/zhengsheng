@@ -75,6 +75,7 @@ def admin_account(request):
         total_page = 1
     if page > total_page:
         return HttpResponseRedirect("/admin_account?page=" +str(total_page))
+    userlist = userlist[start_num:end_num]
     return render(request, 'app/admin_account.html', {
         "userlist" : userlist,
         "page": page,
