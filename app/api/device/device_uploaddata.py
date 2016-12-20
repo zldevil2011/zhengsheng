@@ -41,34 +41,34 @@ class DeviceUploadData(APIView):
                             now = datetime(now.year, now.month, now.day, now.hour, now.minute, now.second)
                             if key == "temp":  # 温度
                                 new_data.temp = float(val)/10.0
-                                new_data.tempT = now
+                                # new_data.tempT = now
                             elif key == "tempT": # 温度采集时间
-                                now = datetime.now()
-                                new_data.tempT = now
-                                # new_data.tempT = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
+                                # now = datetime.now()
+                                # new_data.tempT = now
+                                new_data.tempT = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                             elif key == "powerV": # 有功电能
                                 new_data.powerV = float(val)/1000.0
-                                new_data.powerT = now
+                                # new_data.powerT = now
                             elif key == "powerI": # 无功电能
                                 new_data.powerI = float(val)/1000.0
-                                new_data.powerT = now
+                                # new_data.powerT = now
                             elif key == "powerT": # 电能采集时间
-                                now = datetime.now()
-                                new_data.powerT = now
-                                # new_data.powerT = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
+                                # now = datetime.now()
+                                # new_data.powerT = now
+                                new_data.powerT = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                             elif key == "tempB":
                                 new_data.tempB = int(val)
                                 # new_data.tempBT = now
                             elif key == "tempBT":
-                                now = datetime.now()
-                                new_data.tempBT = now
-                                # new_data.tempBT = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
+                                # now = datetime.now()
+                                # new_data.tempBT = now
+                                new_data.tempBT = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                             elif key == "faultB":
                                 new_data.faultB = int(val)
-                                new_data.faultBT = now
+                                # new_data.faultBT = now
                             elif key == "faultBT":
-                                now = datetime.now()
-                                new_data.faultBT = now
+                                # now = datetime.now()
+                                # new_data.faultBT = now
                                 new_data.faultBT = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                             elif key == "vol": # 终端电压
                                 new_data.voltage = float(val)/10.0
@@ -81,9 +81,9 @@ class DeviceUploadData(APIView):
                             elif key == "powerR": # 无功功率
                                 new_data.reactive_power = float(val)
                             elif key == "time":
-                                now = datetime.now()
-                                new_data.date_time = now
-                                # new_data.date_time = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
+                                # now = datetime.now()
+                                # new_data.date_time = now
+                                new_data.date_time = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                             else:
                                 pass
                         new_data.save()
@@ -141,9 +141,9 @@ class DeviceUploadData(APIView):
                             elif key == "t_powerI":
                                 relay.t_powerI = float(val)/1000.0    # 总无功电能
                             elif key == "time":
-                                now = datetime.now()
-                                relay.data_time = now
-                                # relay.data_time = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
+                                # now = datetime.now()
+                                # relay.data_time = now
+                                relay.data_time = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                             else:
                                 pass
                             relay.save()
