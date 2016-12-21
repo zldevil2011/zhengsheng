@@ -128,6 +128,27 @@
         console.log(v1);
         console.log(v2);
         console.log(v3);
+        var time_list = xx;
+        var datas_a = new Array();
+        var datas_b = new Array();
+        var datas_c = new Array();
+        var len = v1.length;
+        for(var i = 0;i < len; ++i){
+            var tmp_a = new Array();
+            var tmp_b = new Array();
+            var tmp_c = new Array();
+            var _ = new Date(time_list[i].replace(/-/g, "/"));
+            var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+            tmp_a.push(time);
+            tmp_b.push(time);
+            tmp_c.push(time);
+            tmp_a.push(v1[i]);
+            tmp_b.push(v2[i]);
+            tmp_c.push(v3[i]);
+            datas_a.push(tmp_a);
+            datas_b.push(tmp_b);
+            datas_c.push(tmp_c);
+        }
         Highcharts.setOptions({
             colors: ['#ffff00', '#00ff00', '#ff0000', '#0000ff']
         });
@@ -135,9 +156,6 @@
             chart: {
                 type: 'line',
                 backgroundColor: 'rgba(80,81,95,0.1)',
-            },
-            legend: {
-                backgroundColor: '#FCFFC5'
             },
             title: {
                 text: '中继最新数据',
@@ -152,14 +170,17 @@
                 }
             },
             xAxis: {
-                categories: xx,
-                labels: {
-                    style: {
-                        fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif',
-                        color:'#FFFFFF',
-                    }
-                }
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    millisecond: '%H:%M:%S',
+                    second: '%H:%M:%S',
+                    minute: '%d %H:%M',
+                    hour: '%m-%d %H:%M',
+                    day: '%m-%d',
+                    week: '%m-%d',
+                    month: '%Y-%m',
+                    year: '%Y',
+                },
             },
             yAxis: {
                 title: {
@@ -178,23 +199,38 @@
                     }
                 }
             },
-            plotOptions: {
-                line: {
-                    dataLabels: {
-                        enabled: true
-                    },
-                    enableMouseTracking: false
+            tooltip: {
+                valueSuffix: '度',
+                dateTimeLabelFormats: {
+                    millisecond: '%Y-%m-%d %H:%M:%S',
+                    second: '%Y-%m-%d %H:%M:%S',
+                    minute: '%Y-%m-%d %H:%M:%S',
+                    hour: '%Y-%m-%d %H:%M:%S',
+                    day: '%Y-%m-%d %H:%M:%S',
+                    week: '%Y-%m-%d %H:%M:%S',
+                    month: '%Y-%m-%d %H:%M:%S',
+                    year: '%Y-%m-%d %H:%M:%S',
                 }
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                borderWidth: 0,
+                backgroundColor: '#ffffff'
             },
             series: [{
                 name: 'A相有效电能',
-                data: v1,
+                data: datas_a,
+                color:"#ffff00"
             }, {
                 name: 'B相有效电能',
-                data: v2
+                data: datas_b,
+                color:"#00ff00"
             }, {
                 name: 'C相有效电能',
-                data: v3
+                data: datas_c,
+                color:"#0000ff"
             }]
         });
     }
