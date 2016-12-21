@@ -291,6 +291,7 @@ def admin_user_data(request):
         device = Device.objects.get(device_id=device_id)
     except:
         return HttpResponse("error")
+    print(device)
     today = date.today()
     year = today.year
     month = today.month
