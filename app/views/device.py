@@ -1050,9 +1050,11 @@ def admin_relay_data(request):
             return HttpResponse("error")
         device = Device.objects.get(device_id=device_id)
         print device
-        relay_list = Relay.objects.filter(device_id=device).order_by('-data_time')
+        today = datetime.today()
+        today = datetime(today.year, today.month, today.day, 0, 0, 0)
+        relay_list = Relay.objects.filter(device_id=device, data_time__gt=today).order_by('-data_time')
         # 最近12条实时信息
-        latest = relay_list[0:12]
+        latest = relay_list
         latest = serializer(latest)
         latest.reverse()
         for r in latest:
