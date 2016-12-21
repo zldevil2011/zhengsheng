@@ -128,6 +128,9 @@
         console.log(v1);
         console.log(v2);
         console.log(v3);
+        Highcharts.setOptions({
+            colors: ['#ffff00', '#00ff00', '#ff0000', '#0000ff']
+        });
         $('#relay_latest').highcharts({
             chart: {
                 type: 'line',
@@ -209,6 +212,9 @@
         console.log(v2);
         console.log(v3);
         console.log(vt);
+        Highcharts.setOptions({
+            colors: ['#ffff00', '#00ff00', '#ff0000', '#0000ff']
+        });
         $('#relay_month').highcharts({
             chart: {
                 type: 'spline',
