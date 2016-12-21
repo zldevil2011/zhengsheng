@@ -84,6 +84,8 @@ class DeviceUploadData(APIView):
                                 # now = datetime.now()
                                 # new_data.date_time = now
                                 new_data.date_time = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
+                                new_data.tempT = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
+                                new_data.powerT = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                             else:
                                 pass
                         new_data.save()
