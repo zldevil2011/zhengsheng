@@ -40,9 +40,9 @@ class EventUpload(APIView):
                             event.name_no = int(val)
                             event.name = self.get_event_name(int(val))
                         elif key == "eventT":
-                            now = datetime.now()
-                            event.time = now
-                            # event.time = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
+                            # now = datetime.now()
+                            # event.time = now
+                            event.time = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                         elif key == "eventC":
                             event.content = val
                         else:
