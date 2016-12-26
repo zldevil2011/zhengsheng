@@ -122,6 +122,27 @@
             <div class="col-md-12" style="text-align: left;">
                 <h4><span class="icon-user"></span>用户名称：用电量统计</h4>
             </div>
+            <div class="col-md-12" id="time-choice-dialog" style="display: none;margin-bottom: 20px;">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="" class="col-sm-3 control-label" style="padding-top: 6px;">选择时间</label>
+                        <div class="col-sm-4">
+                            <input name = "user_elec_info_start_time" type="date" class="form-control" id="user_elec_info_start_time" />
+                        </div>
+                        <label for="" class="col-sm-1 control-label" style="padding-top: 6px;">至</label>
+                        <div class="col-sm-4">
+                            <input name = "user_elec_info_end_time" type="date" class="form-control" id="user_elec_info_end_time" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <button class="btn btn-block btn-success" name="user_elec_info_time_filter">查找</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
                 <div id = "userToday" style="width: 100%; height:400px;">该用户今日采集曲线</div>
             </div>
@@ -612,6 +633,7 @@
                 $("[name=user_day_min]").html(data.user_day_min);
                 $("[name=user_day_max]").html(data.user_day_max);
                 $("[name=user_power_total]").html(data.user_power_total);
+                $("#time-choice-dialog").css("display", "block");
                 var opts = {
                       lines: 12 // The number of lines to draw
                     , length: 28 // The length of each line
@@ -641,6 +663,23 @@
             }catch(e){
                 spinner.spin();
             }
+            $("[name=user_elec_info_time_filter]").on("click", function() {
+                var start_time = $("#user_elec_info_start_time").val();
+                var end_time = $("#user_elec_info_end_time").val();
+                console.log(start_time);
+                console.log(end_time);
+                if (start_time > end_time) {
+                    alert("请选择正确的时间段");
+                    return;
+                }
+                if (start_time == "" || end_time == "") {
+                    alert("请选择 时间段");
+                    return;
+                }
+                var now_url = window.location.href;
+                now_url += "&user_start_time=" + start_time + "&user_end_time=" + end_time;
+                window.location.href = now_url;
+            });
         });
         var device_id;
 {#        点击该按钮查看当前用户的用电信息#}
@@ -772,9 +811,10 @@
                     }
                 },
                 plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
+                    series: {
+                        marker: {
+                            enabled: true
+                        }
                     }
                 },
                 series: [{
@@ -868,9 +908,10 @@
                     }
                 },
                 plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
+                    series: {
+                        marker: {
+                            enabled: true
+                        }
                     }
                 },
                 series: [{
@@ -964,9 +1005,10 @@
                     }
                 },
                 plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
+                    series: {
+                        marker: {
+                            enabled: true
+                        }
                     }
                 },
                 series: [{
@@ -1060,9 +1102,10 @@
                     }
                 },
                 plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
+                    series: {
+                        marker: {
+                            enabled: true
+                        }
                     }
                 },
                 series: [{
@@ -1156,9 +1199,10 @@
                     }
                 },
                 plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
+                    series: {
+                        marker: {
+                            enabled: true
+                        }
                     }
                 },
                 series: [{
@@ -1202,7 +1246,7 @@
             Highcharts.setOptions({
                 global: {
                     useUTC: false
-                }
+                },
             });
             $('#userToday').highcharts({
                 chart: {
@@ -1267,7 +1311,14 @@
                 series: [{
                     name: '电量',
                     data: datas
-                }]
+                }],
+                plotOptions: {
+                    series: {
+                        marker: {
+                            enabled: true
+                        }
+                    }
+                }
             });
         }
 {#        当前用户当月用电量统计#}

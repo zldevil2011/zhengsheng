@@ -256,7 +256,19 @@ def admin_data(request):
     try:
         device_id = int(request.GET.get("device_id", None))
         device = Device.objects.get(device_id=device_id)
+        try:
+            start_time = request.GET.get("user_start_time", None)
+            end_time = request.GET.get("user_end_time", None)
+            start_time = datetime.strptime(start_time, "%Y-%m-%d")
+            end_time = datetime.strptime(end_time, "%Y-%m-%d")
+        except Exception as e:
+            print(str(e))
+            today = datetime.today()
+            start_time = datetime(today.year, today.month, today.day)
+            end_time = datetime(today.year, today.month, today.day) + timedelta(days=1)
         print(device)
+        print start_time
+        print end_time
         today = date.today()
         year = today.year
         month = today.month
@@ -265,9 +277,9 @@ def admin_data(request):
         day_data = {}
         day_x = []
         day_y = []
+        datas_list_today = Data.objects.filter(device_id=device, date_time__gte=start_time,date_time__lte=end_time).order_by('-date_time')
+        datas_list_today.reverse()
         try:
-            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,date_time__day=day).order_by('-date_time')
-            datas_list_today.reverse()
             for data in datas_list_today:
                 day_x.append(str(data.date_time))
                 day_y.append(data.powerV)
@@ -280,8 +292,6 @@ def admin_data(request):
         voltage_x = []
         voltage_y = []
         try:
-            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,date_time__day=day).order_by('-date_time')
-            datas_list_today.reverse()
             for data in datas_list_today:
                 voltage_x.append(str(data.date_time))
                 voltage_y.append(data.voltage)
@@ -294,8 +304,6 @@ def admin_data(request):
         electric_current_x = []
         electric_current_y = []
         try:
-            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,date_time__day=day).order_by('-date_time')
-            datas_list_today.reverse()
             for data in datas_list_today:
                 electric_current_x.append(str(data.date_time))
                 electric_current_y.append(data.electric_current)
@@ -308,8 +316,6 @@ def admin_data(request):
         power_factor_x = []
         power_factor_y = []
         try:
-            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,date_time__day=day).order_by('-date_time')
-            datas_list_today.reverse()
             for data in datas_list_today:
                 power_factor_x.append(str(data.date_time))
                 power_factor_y.append(data.power_factor)
@@ -322,8 +328,6 @@ def admin_data(request):
         active_power_x = []
         active_power_y = []
         try:
-            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,date_time__day=day).order_by('-date_time')
-            datas_list_today.reverse()
             for data in datas_list_today:
                 active_power_x.append(str(data.date_time))
                 active_power_y.append(data.active_power)
@@ -336,8 +340,6 @@ def admin_data(request):
         reactive_power_x = []
         reactive_power_y = []
         try:
-            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,date_time__day=day).order_by('-date_time')
-            datas_list_today.reverse()
             for data in datas_list_today:
                 reactive_power_x.append(str(data.date_time))
                 reactive_power_y.append(data.reactive_power)
