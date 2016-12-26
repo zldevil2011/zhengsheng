@@ -638,10 +638,6 @@
                 $("#waiting-div").text("");
                 var target = document.getElementById('waiting-div');
                 spinner.spin(target);
-                for(var i = 0; i < 100000; ++i){
-                    console.log(i);
-                }
-
             }catch(e){
                 spinner.spin();
             }
