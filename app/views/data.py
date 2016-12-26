@@ -450,6 +450,8 @@ def admin_data(request):
         year_data["year_power"] = year_power
         ret_data = {}
         ret_data["device_id"] = str(device_id)
+        ret_data["start_time"] = str(start_time)[0:10]
+        ret_data["end_time"] = str(end_time)[0:10]
         ret_data["day"] = day_data
         ret_data["voltage_data"] = voltage_data
         ret_data["electric_current_data"] = electric_current_data

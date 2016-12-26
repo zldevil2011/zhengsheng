@@ -634,6 +634,10 @@
                 $("[name=user_day_max]").html(data.user_day_max);
                 $("[name=user_power_total]").html(data.user_power_total);
                 $("#time-choice-dialog").css("display", "block");
+                var $start_time = $("#user_elec_info_start_time");
+                $start_time.val(data.start_time);
+                var $end_time = $("#user_elec_info_end_time");
+                $end_time.val(data.end_time);
                 var opts = {
                       lines: 12 // The number of lines to draw
                     , length: 28 // The length of each line
