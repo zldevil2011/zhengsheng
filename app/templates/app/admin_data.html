@@ -581,11 +581,47 @@
         });
     </script>
     <script>
+        $(function(){
+            try {
+                var data = {{ ret_data | safe }};
+                console.log(data);
+                device_id = data.device_id;
+                var month = data.month;
+                var year = data.year;
+                userMonth(month.month_day, month.month_power);
+                userYear(year.year_month, year.year_power);
+
+                var today = data.day;
+                userDay(today.day_x, today.day_y);
+                var reactive_power_data = data.reactive_power_data;
+                userReactivePower(reactive_power_data.reactive_power_x, reactive_power_data.reactive_power_y);
+                var active_power_data = data.active_power_data;
+                userActivepower(active_power_data.active_power_x, active_power_data.active_power_y);
+                var power_factor_data = data.power_factor_data;
+                userPowerfactor(power_factor_data.power_factor_x, power_factor_data.power_factor_y);
+                var electric_current_data = data.electric_current_data;
+                userElectricity(electric_current_data.electric_current_x, electric_current_data.electric_current_y);
+                var voltage_data = data.voltage_data;
+                userVoltage(voltage_data);
+                $("[name=data-graph]").css("display", "none");
+                $("#voltage_graph").css("display", "block");
+                $("[name=user_power_max]").html(data.user_power_max);
+                $("[name=user_power_min]").html(data.user_power_min);
+                $("[name=user_day_min]").html(data.user_day_min);
+                $("[name=user_day_max]").html(data.user_day_max);
+                $("[name=user_power_total]").html(data.user_power_total);
+            }catch(e){
+                ;
+            }
+        });
         var device_id;
 {#        点击该按钮查看当前用户的用电信息#}
         function showUserInfo(id){
-            alertify.success("设备ID = " + id);
             device_id = id;
+            var now_url = window.location.href;
+            now_url += "&device_id=" + device_id;
+            window.location.href = now_url;
+            alertify.success("设备ID = " + id);
 {#            异步请求该用户的用电信息#}
             $.ajax({
                 url: '/admin_data/userinfo/',
@@ -595,7 +631,7 @@
                     if(data == "error"){
                         alertify.error("数据缺失");
                     }else{
-{#                        console.log(data);#}
+                        console.log(data);
                         var month = data.month;
                         var year = data.year;
                         userMonth(month.month_day, month.month_power);
@@ -1126,7 +1162,8 @@
                 tmp.push(data_list[i]);
                 datas.push(tmp);
             }
-            var colors = ['#FF0000', '#90BF18', '#EDCA4E'];
+            console.log(datas);
+            var colors = ['#00ff00'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
                  return {
                      radialGradient: { cx:0, cy: -0.8,r:2.3 },
@@ -1134,6 +1171,11 @@
                      ]
                  };
              });
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false
+                }
+            });
             $('#userToday').highcharts({
                 chart: {
                     type: 'line',
@@ -1154,14 +1196,14 @@
                 xAxis: {
                     type: 'datetime',
                     dateTimeLabelFormats: { // don't display the dummy year
-                        millisecond: '%m-%d %H:%M',
-                        second: '%m-%d %H:%M',
-                        minute: '%m-%d %H:%M',
+                        millisecond: '%H:%M:%S',
+                        second: '%H:%M:%S',
+                        minute: '%H:%M',
                         hour: '%m-%d %H:%M',
-                        day: '%m-%d %H:%M',
-                        week: '%m-%d %H:%M',
-                        month: '%m-%d %H:%M',
-                        year: '%m-%d %H:%M',
+                        day: '%m-%d',
+                        week: '%m-%d',
+                        month: '%Y-%m',
+                        year: '%Y',
                     },
                     title: {
                         text: '时间'
@@ -1192,12 +1234,6 @@
                         week: '%Y-%m-%d %H:%M:%S',
                         month: '%Y-%m-%d %H:%M:%S',
                         year: '%Y-%m-%d %H:%M:%S',
-                    }
-                },
-                plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
                     }
                 },
                 series: [{

@@ -49,7 +49,7 @@ def admin_data(request):
             device_list = device_list.filter(city_code=city_code, village_code=village_code)
         except:
             pass
-    page = int(request.GET.get("page", 1))
+    page = int(request.GET.get("page", 0))
     if page < 1:
         return HttpResponseRedirect("/admin_data?page=1")
     start_num = (page - 1) * 10
@@ -250,7 +250,223 @@ def admin_data(request):
     pre_year_data = {}
     pre_year_data["pre_year_month"] = pre_year_month
     pre_year_data["pre_year_power"] = pre_year_power
+
+    # 尝试将单台设备的当天、当月、当年的数据加入URL地址显示
+    # 对于每个用户，有两种数据，当月每天用电量和当年每月用电量
+    try:
+        device_id = int(request.GET.get("device_id", None))
+        device = Device.objects.get(device_id=device_id)
+        print(device)
+        today = date.today()
+        year = today.year
+        month = today.month
+        day = today.day
+        # 获取当前设备的今日采集数据
+        day_data = {}
+        day_x = []
+        day_y = []
+        try:
+            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,date_time__day=day).order_by('-date_time')
+            datas_list_today.reverse()
+            for data in datas_list_today:
+                day_x.append(str(data.date_time))
+                day_y.append(data.powerV)
+        except:
+            datas_list_today = None
+        day_data["day_x"] = day_x
+        day_data["day_y"] = day_y
+        # 获取电压有效值
+        voltage_data = {}
+        voltage_x = []
+        voltage_y = []
+        try:
+            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,date_time__day=day).order_by('-date_time')
+            datas_list_today.reverse()
+            for data in datas_list_today:
+                voltage_x.append(str(data.date_time))
+                voltage_y.append(data.voltage)
+        except:
+            datas_list_today = None
+        voltage_data["voltage_x"] = voltage_x
+        voltage_data["voltage_y"] = voltage_y
+        # 获取电流有效值
+        electric_current_data = {}
+        electric_current_x = []
+        electric_current_y = []
+        try:
+            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,date_time__day=day).order_by('-date_time')
+            datas_list_today.reverse()
+            for data in datas_list_today:
+                electric_current_x.append(str(data.date_time))
+                electric_current_y.append(data.electric_current)
+        except:
+            datas_list_today = None
+        electric_current_data["electric_current_x"] = electric_current_x
+        electric_current_data["electric_current_y"] = electric_current_y
+        # 获取功率因数
+        power_factor_data = {}
+        power_factor_x = []
+        power_factor_y = []
+        try:
+            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,date_time__day=day).order_by('-date_time')
+            datas_list_today.reverse()
+            for data in datas_list_today:
+                power_factor_x.append(str(data.date_time))
+                power_factor_y.append(data.power_factor)
+        except:
+            datas_list_today = None
+        power_factor_data["power_factor_x"] = power_factor_x
+        power_factor_data["power_factor_y"] = power_factor_y
+        # 获取有功功率
+        active_power_data = {}
+        active_power_x = []
+        active_power_y = []
+        try:
+            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,date_time__day=day).order_by('-date_time')
+            datas_list_today.reverse()
+            for data in datas_list_today:
+                active_power_x.append(str(data.date_time))
+                active_power_y.append(data.active_power)
+        except:
+            datas_list_today = None
+        active_power_data["active_power_x"] = active_power_x
+        active_power_data["active_power_y"] = active_power_y
+        # 获取无功功率
+        reactive_power_data = {}
+        reactive_power_x = []
+        reactive_power_y = []
+        try:
+            datas_list_today = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month,date_time__day=day).order_by('-date_time')
+            datas_list_today.reverse()
+            for data in datas_list_today:
+                reactive_power_x.append(str(data.date_time))
+                reactive_power_y.append(data.reactive_power)
+        except:
+            datas_list_today = None
+        reactive_power_data["reactive_power_x"] = reactive_power_x
+        reactive_power_data["reactive_power_y"] = reactive_power_y
+
+        # 计算当月每天的用电量，用当天的采集量减去昨天的采集量即为当天的用电量
+        # 首先，计算当月1号 则先获取上月最后一次的采集量
+        # 统计当前设备当月的用电高峰日期，低谷日期，总用电量
+        try:
+            user_power_min = sys.maxint
+        except:
+            user_power_min = sys.maxsize
+        user_power_max = -1
+        user_day_min = 1
+        user_day_max = 1
+        user_power_total = 0
+
+        yesterday = datetime(year, month, 1) - timedelta(days=1)
+        yesterday_power = 0
+        try:
+            yesterday_power = Data.objects.filter(device_id=device, date_time__year=yesterday.year, date_time__month=yesterday.month).order_by('-date_time')[0].powerV
+        except:
+            yesterday_power = 0
+        print "YYYY"
+        try:
+            datas_list = Data.objects.filter(device_id=device, date_time__year=year, date_time__month=month).order_by('-date_time')
+            month_day = []
+            month_power = []
+        except Exception, e:
+            datas_list = None
+            month_day = []
+            month_power = []
+            print str(e)
+        print "ZZZ"
+        for i in range(1, day + 1):
+            print(i)
+            try:
+                today_power = datas_list.filter(date_time__day=i).order_by('-date_time')[0].powerV
+            except Exception, e:
+                print(str(e))
+                today_power = 0
+            print("check")
+            print("today_power:" + str(today_power))
+            month_day.append(i)
+            try:
+                if today_power != 0:
+                    user_power_total += (today_power - yesterday_power)
+                    month_power.append(today_power - yesterday_power)
+                    if today_power - yesterday_power > user_power_max:
+                        user_power_max = today_power - yesterday_power
+                        user_day_max = i
+                    if today_power - yesterday_power < user_power_min:
+                        user_power_min = today_power - yesterday_power
+                        user_day_min = i
+                    yesterday_power = today_power
+                else:
+                    user_power_total += 0
+                    month_power.append(0)
+                    if today_power > user_power_max:
+                        user_power_max = today_power
+                        user_day_max = i
+                    if today_power < user_power_min:
+                        user_power_min = today_power
+                        user_day_min = i
+            except Exception, e:
+                print(str(e))
+        print("get user today info")
+        month_data = {}
+        month_data["month_day"] = month_day
+        month_data["month_power"] = month_power
+        print "xxxxx"
+        # 计算当前用户当年每月用电量数据
+        # 从今年1月份开始，用当月最后一天的数据减去上一个月最后一天的数据即为当月所用电量
+        pre_month_last_day = datetime(year, 1, 1) - timedelta(days=1)
+        pre_month_last_power = 0
+        try:
+            pre_month_last_power = Data.objects.filter(device=device, date_time__year=pre_month_last_day.year,date_time__month=pre_month_last_day.month).order_by('-date_time')[0]
+        except:
+            pre_month_last_power = 0
+        print "去年12月份最后一次采集量", pre_month_last_power
+        try:
+            datas_list = Data.objects.filter(device_id=device, date_time__year=year).order_by('-date_time')
+            year_month = []
+            year_power = []
+        except Exception, e:
+            datas_list = None
+            year_month = []
+            year_power = []
+            print str(e)
+        for i in range(1, month + 1):
+            try:
+                month_power = datas_list.filter(date_time__month=i).order_by('-date_time')[0].powerV
+            except:
+                month_power = 0
+            year_month.append(i)
+            if month_power != 0 and month_power is not None:
+                year_power.append(month_power - pre_month_last_power)
+                pre_month_last_power = month_power
+            else:
+                year_power.append(0)
+        print "xppxpxpxp"
+        device_id = device.device_id
+        year_data = {}
+        year_data["year_month"] = year_month
+        year_data["year_power"] = year_power
+        ret_data = {}
+        ret_data["device_id"] = str(device_id)
+        ret_data["day"] = day_data
+        ret_data["voltage_data"] = voltage_data
+        ret_data["electric_current_data"] = electric_current_data
+        ret_data["power_factor_data"] = power_factor_data
+        ret_data["active_power_data"] = active_power_data
+        ret_data["reactive_power_data"] = reactive_power_data
+        ret_data["month"] = month_data
+        ret_data["year"] = year_data
+        ret_data["user_power_total"] = user_power_total
+        ret_data["user_power_max"] = user_power_max
+        ret_data["user_day_max"] = str(user_day_max) + "号"
+        ret_data["user_power_min"] = user_power_min
+        ret_data["user_day_min"] = str(user_day_min) + "号"
+    except:
+        ret_data = {}
+        pass
+
     return render(request, 'app/admin_data.html', {
+        "ret_data": ret_data,
         "device_list": device_list,
         "page": page,
         "total_page": total_page,
