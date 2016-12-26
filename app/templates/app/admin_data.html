@@ -193,9 +193,9 @@
         </div>
 
     </div>
+    <div id="waiting-div" style="width: 100%; height: 100%;background: rgba(255, 0, 0, 1);"></div>
 {% endblock %}
 {% block special_js %}
-
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WZVN4DbW3hfB9MSgMmwVQBHU8ZV8jRxW"></script>
     <script async src="http://c.cnzz.com/core.php"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
@@ -357,6 +357,7 @@
 {#            return !!(elem.getContext && elem.getContext('2d'));#}
 {#        }#}
 {#    </script>#}
+    <script type = "text/javascript" src = "http://spin.js.org/spin.min.js"></script>
     <script>
         var mm = {{ month_data | safe }};
         var month_day = mm["month_day"];
@@ -429,11 +430,9 @@
         var yy = {{ year_data | safe }};
         var year_month = yy["year_month"];
         var year_power = yy["year_power"];
-{#        console.log(year_month);#}
         for(var i = 0; i < year_month.length; ++i){
             year_month[i] = year_month[i] + "月";
         }
-{#        console.log(year_month);#}
 {#        当前选择区域的用户当年用电量统计#}
         $('#AllUserYear').highcharts({
             chart: {
@@ -581,6 +580,9 @@
         });
     </script>
     <script>
+        $(window).load(function() {
+            spinner.spin();
+        });
         $(function(){
             try {
                 var data = {{ ret_data | safe }};
@@ -610,8 +612,38 @@
                 $("[name=user_day_min]").html(data.user_day_min);
                 $("[name=user_day_max]").html(data.user_day_max);
                 $("[name=user_power_total]").html(data.user_power_total);
+                var opts = {
+                      lines: 12 // The number of lines to draw
+                    , length: 28 // The length of each line
+                    , width: 14 // The line thickness
+                    , radius: 42 // The radius of the inner circle
+                    , scale: 1 // Scales overall size of the spinner
+                    , corners: 1 // Corner roundness (0..1)
+                    , color: '#000' // #rgb or #rrggbb or array of colors
+                    , opacity: 0.25 // Opacity of the lines
+                    , rotate: 0 // The rotation offset
+                    , direction: 1 // 1: clockwise, -1: counterclockwise
+                    , speed: 1 // Rounds per second
+                    , trail: 60 // Afterglow percentage
+                    , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+                    , zIndex: 2e9 // The z-index (defaults to 2000000000)
+                    , className: 'spinner' // The CSS class to assign to the spinner
+                    , top: '50%' // Top position relative to parent
+                    , left: '50%' // Left position relative to parent
+                    , shadow: false // Whether to render a shadow
+                    , hwaccel: false // Whether to use hardware acceleration
+                    , position: 'absolute' // Element positioning
+                };
+                spinner = new Spinner(opts);
+                $("#waiting-div").text("");
+                var target = document.getElementById('waiting-div');
+                spinner.spin(target);
+                for(var i = 0; i < 100000; ++i){
+                    console.log(i);
+                }
+
             }catch(e){
-                ;
+                spinner.spin();
             }
         });
         var device_id;
