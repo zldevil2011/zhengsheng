@@ -643,7 +643,7 @@ def admin_device_health(request):
     today = datetime.today()
     today = datetime(today.year, today.month, today.day)
     print today
-    device_list = Data.objects.filter()
+    device_list = Data.objects.filter().order_by('-date_time')
     try:
         if city_code == 0 and village_code == 0:
             pass
