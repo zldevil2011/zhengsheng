@@ -272,9 +272,16 @@
                                     borderWidth: 0
                                 },
                                 series: [{
+                                    zones: [{
+                                        value: 0,
+                                        color: colors[0]
+                                    }, {
+                                        value: 0,
+                                        color: colors[1]
+                                    }],
                                     name: '温度',
                                     data: datas,
-                                    color:"#4e505d"
+                                    color:"#00ff00"
                                 }]
                             });
                         });
@@ -354,6 +361,22 @@
                                         value:40,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
                                         width:4                //标示线的宽度，2px
                                     }]
+                                },
+                                plotOptions: {
+                                    spline: {
+                                        lineWidth: 1.5,
+                                        fillOpacity: 0.1,
+                                        marker: {
+                                            enabled: false,
+                                            states: {
+                                                hover: {
+                                                    enabled: true,
+                                                    radius: 2
+                                                }
+                                            }
+                                        },
+                                        shadow: false
+                                    }
                                 },
                                 tooltip: {
                                     valueSuffix: '度',
