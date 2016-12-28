@@ -176,29 +176,27 @@
                         console.log(data);
                         var today_hour = data.today_hour;
                         var today_power = data.today_temp;
-                    $(function () {
-                        var time_list = today_hour;
-                        var data_list = today_power;
-                        var datas = new Array();
-                        var len = data_list.length;
-                        for(var i = 0;i < len; ++i){
-                            var tmp = new Array();
-                            var _ = new Date(time_list[i].replace(/-/g, "/"));
-                            var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
-                            tmp.push(time);
-                            tmp.push(data_list[i]);
-                            datas.push(tmp);
-                        }
-                        Highcharts.setOptions({
-                            colors: ['#00ff00']
-                        });
-
-                        $('#device-list-page').highcharts({
+                        $(function () {
+                            var time_list = today_hour;
+                            var data_list = today_power;
+                            var datas = new Array();
+                            var len = data_list.length;
+                            for(var i = 0;i < len; ++i){
+                                var tmp = new Array();
+                                var _ = new Date(time_list[i].replace(/-/g, "/"));
+                                var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+                                tmp.push(time);
+                                tmp.push(data_list[i]);
+                                datas.push(tmp);
+                            }
+                            console.log(datas);
+                            var colors = ['#00ff00', '#ff0000'];
+                            $('#device-list-page').highcharts({
                                 chart: {
                                     type: 'line',
                                 },
                                 title: {
-                                    text: '历史数据',
+                                    text: '今日数据',
                                     x: -20 //center
                                 },
                                 subtitle: {
@@ -210,7 +208,7 @@
                                     dateTimeLabelFormats: { // don't display the dummy year
                                         millisecond: '%H:%M:%S',
                                         second: '%H:%M:%S',
-                                        minute: '%d %H:%M',
+                                        minute: '%H:%M',
                                         hour: '%m-%d %H:%M',
                                         day: '%m-%d',
                                         week: '%m-%d',
@@ -219,22 +217,20 @@
                                     },
                                 },
                                 yAxis: {
-                                    max:65, // 定义Y轴 最大值
-                                    min:-10, // 定义最小值
                                     title: {
                                         text: '温度 (摄氏度)'
                                     },
-{#                                    plotLines:[{#}
-{#                                        color:'yellow',           //线的颜色，定义为黄色#}
-{#                                        dashStyle:'solid',     //默认值，这里定义为实线#}
-{#                                        value:30,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线#}
-{#                                        width:4                //标示线的宽度，2px#}
-{#                                    },{#}
-{#                                        color:'red',           //线的颜色，定义为红色#}
-{#                                        dashStyle:'solid',     //默认值，这里定义为实线#}
-{#                                        value:40,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线#}
-{#                                        width:4                //标示线的宽度，2px#}
-{#                                    }]#}
+                                    plotLines:[{
+                                        color:'yellow',           //线的颜色，定义为黄色
+                                        dashStyle:'solid',     //默认值，这里定义为实线
+                                        value:30,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                                        width:4                //标示线的宽度，2px
+                                    },{
+                                        color:'red',           //线的颜色，定义为红色
+                                        dashStyle:'solid',     //默认值，这里定义为实线
+                                        value:40,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                                        width:4                //标示线的宽度，2px
+                                    }]
                                 },
                                 plotOptions: {
                                     spline: {
@@ -285,7 +281,6 @@
                                 }]
                             });
                         });
-                    }
                 },
                 error: function(data){
                     alertify.error("当前设备没有温度数据");
