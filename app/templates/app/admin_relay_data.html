@@ -936,9 +936,6 @@
                 type: 'column',
                 backgroundColor: 'rgba(80,81,95,0.1)',
             },
-            legend: {
-                backgroundColor: '#FCFFC5'
-            },
             title: {
                 text: '中继当月数据',
                 style: {
@@ -946,37 +943,34 @@
                 }
             },
             subtitle: {
-                text: '来源:征圣云平台',
+                text: '来源：征圣云平台',
                 style: {
                     color: '#FFFFFF',
                 }
             },
             xAxis: {
                 categories: xx,
-                labels: {
-                    style: {
-                        fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif',
-                        color:'#FFFFFF',
-                    }
-                }
+                crosshair: true
             },
             yAxis: {
+                min: 0,
                 title: {
-                    text: '电能 (KwH)',
+                    text: '电量（kwh)',
                     style: {
                         fontSize: '13px',
                         fontFamily: 'Verdana, sans-serif',
                         color:'#FFFFFF',
                     }
                 },
-                labels: {
-                    style: {
-                        fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif',
-                        color:'#FFFFFF',
-                    }
-                }
+
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
             },
             plotOptions: {
                 column: {
@@ -984,18 +978,25 @@
                     borderWidth: 0
                 }
             },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                borderWidth: 0,
+                backgroundColor: '#ffffff'
+            },
             series: [{
                 name: 'A相有效电能',
-                data: v1,
+                data: v1
             }, {
                 name: 'B相有效电能',
                 data: v2
             }, {
                 name: 'C相有效电能',
                 data: v3
-            },{
+            }, {
                 name: '总有效电能',
-                data: vt
+                data: v4
             }]
         });
     }
