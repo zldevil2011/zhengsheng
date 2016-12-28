@@ -70,11 +70,50 @@
                 <div class="col-md-12" style="text-align: left;">
                     <h4><span class="icon-user"></span>中继电量数据</h4>
                 </div>
-                <div class="col-md-12" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;">
-                    <div id = "relay_latest" style="width: 100%; height:400px;">最新数据</div>
+                <div class="col-md-12" id="time-choice-dialog" style="display: block;">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="" class="col-sm-3 control-label" style="padding-top: 6px;">选择时间</label>
+                            <div class="col-sm-4">
+                                <input name = "relay_data_start_time" type="date" class="form-control" id="relay_data_start_time"  style="color: black !important;"/>
+                            </div>
+                            <label for="" class="col-sm-1 control-label" style="padding-top: 6px;">至</label>
+                            <div class="col-sm-4">
+                                <input name = "relay_data_end_time" type="date" class="form-control" id="relay_data_end_time"  style="color: black !important;"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button class="btn btn-block btn-success" name="relay_data_time_filter">历史查询</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;margin-top: 10px;">
+                    <div id = "relay_latest" style="width: 100%; height:400px;">电量数据</div>
+                </div>
+                <div class="col-md-12"  style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;height: auto;">
+                    <div class="col-md-12" style="width: 100%; height: auto !important; min-height: 30px;font-size: 14px;
+                    background-color: #544949; overflow: hidden;line-height: 30px;">
+                        <span class="">其他数据</span>
+                        <ul name = "otherParameter" style="display: inline-block;margin-bottom: 0px;!important; float: right; " class="li-tab">
+                            <li name="voltage" class="li-round-sm active" style="display: inline-block;">电压</li>
+                            <li name="electricity" class="li-round-sm" style="display: inline-block;">电流</li>
+                            <li name="power_factor" class="li-round-sm" style="display: inline-block;">功率因数</li>
+                            <li name="active_power" class="li-round-sm" style="display: inline-block;">有功功率</li>
+                            <li name="reactive_power" class="li-round-sm" style="display: inline-block;">无功功率</li>
+                        </ul>
+                    </div>
+                    <div name="data-graph" class="row col-md-12" id="voltage_graph" style="display: block;width: 100%;"></div>
+                    <div name="data-graph" class="row col-md-12" id="electricity_graph" style="display: block;"></div>
+                    <div name="data-graph" class="row col-md-12" id="power_factor_graph" style="display: block;"></div>
+                    <div name="data-graph" class="row col-md-12" id="active_power_graph" style="display: block;"></div>
+                    <div name="data-graph" class="row col-md-12" id="reactive_power_graph" style="display: block;"></div>
                 </div>
                 <div class="col-md-12">
-                    <div id = "relay_month" style="width: 100%; height:400px;">当月数据</div>
+                    <div id = "relay_month" style="width: 100%; height:400px;">当月电量数据</div>
                 </div>
             </div>
 
@@ -88,35 +127,96 @@
     <script async src="http://c.cnzz.com/core.php"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
     <script>
+{#        检查是否以及获取到中继的数据信息#}
+        try{
+            var json_data = {{ ret_data | safe}};
+            console.log(json_data);
+            var latest = json_data.latest;
+            var month_data = json_data.month_data;
+            console.log(latest);
+            console.log(month_data);
+            var max_powerV = json_data.max_powerV;
+            var min_powerV = json_data.min_powerV;
+            var power_sum = json_data.power_sum;
+            paintLatest(latest);
+            paintLatest_voltage(latest);
+            paintLatest_electric(latest);
+            paintLatest_power_factor(latest);
+            paintLatest_active_power(latest);
+            paintLatest_reactive_power(latest);
+            paintMonth(month_data);
+            var $start_time = $("#relay_data_start_time");
+            $start_time.val(json_data.start_time);
+            var $end_time = $("#relay_data_end_time");
+            $end_time.val(json_data.end_time);
+        }catch (e){
+            console.log(e);
+        }
+        $("[name=otherParameter] li").on("click", function(){
+            $(this).addClass("active").siblings().removeClass("active");
+            var id = $(this).attr("name") + "_graph";
+            var $first = $($("#"+id).siblings().get(0));
+            $("#"+id).css("display", "block").siblings().css("display", "none");
+            $first.css("display", "block");
+        });
+        $("[name=voltage]").click();
+        $("[name=relay_data_time_filter]").on("click", function() {
+            var start_time = $("#relay_data_start_time").val();
+            var end_time = $("#relay_data_end_time").val();
+            console.log(start_time);
+            console.log(end_time);
+            if (start_time > end_time) {
+                alert("请选择正确的时间段");
+                return;
+            }
+            if (start_time == "" || end_time == "") {
+                alert("请选择 时间段");
+                return;
+            }
+            var now_url = window.location.href;
+            now_url += "&relay_data_start_time=" + start_time + "&relay_data_end_time=" + end_time;
+            window.location.href = now_url;
+        });
+{#    </script>#}
+{#    <script>#}
 {#    点击查看按钮查看设备的数据信息#}
     function showDeviceInfo(device_id){
-        $.ajax({
-            url: '/admin_relay/data/',
-            type: 'POST',
-            data: {device_id: device_id},
-            success: function(data){
-                if(data == "error"){
-                    alertify.error("获取信息失败，请联系管理员");
-                }else{
-                    console.log(JSON.parse(data));
-                    var json_data = JSON.parse(data);
-                    var latest = json_data.latest;
-                    var month_data = json_data.month_data;
-                    var max_powerV = json_data.max_powerV;
-                    var min_powerV = json_data.min_powerV;
-                    var power_sum = json_data.power_sum;
-                    paintLatest(latest);
-                    paintMonth(month_data);
-                }
-            },
-            error: function(data){
-                alertify.error("获取信息失败，请联系管理员");
-            }
-        });
+        var link = window.location.href;
+        if(link.indexOf("?") > 0){
+            link += "&device_id=" + device_id;
+        }else{
+            link += "?device_id=" + device_id;
+        }
+        window.location.href = link;
+{#        $.ajax({#}
+{#            url: '/admin_relay/data/',#}
+{#            type: 'POST',#}
+{#            data: {device_id: device_id},#}
+{#            success: function(data){#}
+{#                if(data == "error"){#}
+{#                    alertify.error("获取信息失败，请联系管理员");#}
+{#                }else{#}
+{#                    console.log(JSON.parse(data));#}
+{#                    var json_data = JSON.parse(data);#}
+{#                    var latest = json_data.latest;#}
+{#                    var month_data = json_data.month_data;#}
+{#                    var max_powerV = json_data.max_powerV;#}
+{#                    var min_powerV = json_data.min_powerV;#}
+{#                    var power_sum = json_data.power_sum;#}
+{#                    paintLatest(latest);#}
+{#                    paintMonth(month_data);#}
+{#                }#}
+{#            },#}
+{#            error: function(data){#}
+{#                alertify.error("获取信息失败，请联系管理员");#}
+{#            }#}
+{#        });#}
     }
-    </script>
-    <script>
+{#    </script>#}
+{#    <script>#}
     function paintLatest(latest){
+        console.log("xpxpxp");
+        console.log(latest);
         var xx = new Array(), v1 = new Array(), v2 = new Array(), v3 = new Array();
         for(var i = 0; i < latest.length; ++i){
             xx.push(latest[i].data_time);
@@ -234,6 +334,582 @@
             }]
         });
     }
+{#    电压#}
+    function paintLatest_voltage(latest){
+        var xx = new Array(), v1 = new Array(), v2 = new Array(), v3 = new Array();
+        for(var i = 0; i < latest.length; ++i){
+            xx.push(latest[i].data_time);
+            v1.push(latest[i].a_voltage);
+            v2.push(latest[i].b_voltage);
+            v3.push(latest[i].c_voltage);
+        }
+        var time_list = xx;
+        var datas_a = new Array();
+        var datas_b = new Array();
+        var datas_c = new Array();
+        var len = v1.length;
+        for(var i = 0;i < len; ++i){
+            var tmp_a = new Array();
+            var tmp_b = new Array();
+            var tmp_c = new Array();
+            var _ = new Date(time_list[i].replace(/-/g, "/"));
+            var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+            tmp_a.push(time);
+            tmp_b.push(time);
+            tmp_c.push(time);
+            tmp_a.push(v1[i]);
+            tmp_b.push(v2[i]);
+            tmp_c.push(v3[i]);
+            datas_a.push(tmp_a);
+            datas_b.push(tmp_b);
+            datas_c.push(tmp_c);
+        }
+        Highcharts.setOptions({
+            colors: ['#ffff00', '#00ff00', '#ff0000', '#0000ff']
+        });
+        $('#voltage_graph').highcharts({
+            chart: {
+                type: 'line',
+                backgroundColor: 'rgba(80,81,95,0.1)',
+            },
+            title: {
+                text: '中继最新电压',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            subtitle: {
+                text: '来源:征圣云平台',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    millisecond: '%H:%M:%S',
+                    second: '%H:%M:%S',
+                    minute: '%d %H:%M',
+                    hour: '%m-%d %H:%M',
+                    day: '%m-%d',
+                    week: '%m-%d',
+                    month: '%Y-%m',
+                    year: '%Y',
+                },
+            },
+            yAxis: {
+                title: {
+                    text: '电压 (V)',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                },
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                }
+            },
+            tooltip: {
+                valueSuffix: 'V',
+                dateTimeLabelFormats: {
+                    millisecond: '%Y-%m-%d %H:%M:%S',
+                    second: '%Y-%m-%d %H:%M:%S',
+                    minute: '%Y-%m-%d %H:%M:%S',
+                    hour: '%Y-%m-%d %H:%M:%S',
+                    day: '%Y-%m-%d %H:%M:%S',
+                    week: '%Y-%m-%d %H:%M:%S',
+                    month: '%Y-%m-%d %H:%M:%S',
+                    year: '%Y-%m-%d %H:%M:%S',
+                }
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                borderWidth: 0,
+                backgroundColor: '#ffffff'
+            },
+            series: [{
+                name: 'A相有效电压',
+                data: datas_a,
+                color:"#ffff00"
+            }, {
+                name: 'B相有效电压',
+                data: datas_b,
+                color:"#00ff00"
+            }, {
+                name: 'C相有效电压',
+                data: datas_c,
+                color:"#ff0000"
+            }]
+        });
+    }
+{#    电流#}
+    function paintLatest_electric(latest){
+        var xx = new Array(), v1 = new Array(), v2 = new Array(), v3 = new Array();
+        for(var i = 0; i < latest.length; ++i){
+            xx.push(latest[i].data_time);
+            v1.push(latest[i].a_electric_current);
+            v2.push(latest[i].b_electric_current);
+            v3.push(latest[i].c_electric_current);
+        }
+        var time_list = xx;
+        var datas_a = new Array();
+        var datas_b = new Array();
+        var datas_c = new Array();
+        var len = v1.length;
+        for(var i = 0;i < len; ++i){
+            var tmp_a = new Array();
+            var tmp_b = new Array();
+            var tmp_c = new Array();
+            var _ = new Date(time_list[i].replace(/-/g, "/"));
+            var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+            tmp_a.push(time);
+            tmp_b.push(time);
+            tmp_c.push(time);
+            tmp_a.push(v1[i]);
+            tmp_b.push(v2[i]);
+            tmp_c.push(v3[i]);
+            datas_a.push(tmp_a);
+            datas_b.push(tmp_b);
+            datas_c.push(tmp_c);
+        }
+        Highcharts.setOptions({
+            colors: ['#ffff00', '#00ff00', '#ff0000', '#0000ff']
+        });
+        $('#electricity_graph').highcharts({
+            chart: {
+                type: 'line',
+                backgroundColor: 'rgba(80,81,95,0.1)',
+            },
+            title: {
+                text: '中继最新电流',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            subtitle: {
+                text: '来源:征圣云平台',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    millisecond: '%H:%M:%S',
+                    second: '%H:%M:%S',
+                    minute: '%d %H:%M',
+                    hour: '%m-%d %H:%M',
+                    day: '%m-%d',
+                    week: '%m-%d',
+                    month: '%Y-%m',
+                    year: '%Y',
+                },
+            },
+            yAxis: {
+                title: {
+                    text: '电流（A)',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                },
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                }
+            },
+            tooltip: {
+                valueSuffix: 'A',
+                dateTimeLabelFormats: {
+                    millisecond: '%Y-%m-%d %H:%M:%S',
+                    second: '%Y-%m-%d %H:%M:%S',
+                    minute: '%Y-%m-%d %H:%M:%S',
+                    hour: '%Y-%m-%d %H:%M:%S',
+                    day: '%Y-%m-%d %H:%M:%S',
+                    week: '%Y-%m-%d %H:%M:%S',
+                    month: '%Y-%m-%d %H:%M:%S',
+                    year: '%Y-%m-%d %H:%M:%S',
+                }
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                borderWidth: 0,
+                backgroundColor: '#ffffff'
+            },
+            series: [{
+                name: 'A相有效电流',
+                data: datas_a,
+                color:"#ffff00"
+            }, {
+                name: 'B相有效电流',
+                data: datas_b,
+                color:"#00ff00"
+            }, {
+                name: 'C相有效电流',
+                data: datas_c,
+                color:"#ff0000"
+            }]
+        });
+    }
+{#    功率因数#}
+    function paintLatest_power_factor(latest){
+        var xx = new Array(), v1 = new Array(), v2 = new Array(), v3 = new Array();
+        for(var i = 0; i < latest.length; ++i){
+            xx.push(latest[i].data_time);
+            v1.push(latest[i].a_power_factor);
+            v2.push(latest[i].b_power_factor);
+            v3.push(latest[i].c_power_factor);
+        }
+        var time_list = xx;
+        var datas_a = new Array();
+        var datas_b = new Array();
+        var datas_c = new Array();
+        var len = v1.length;
+        for(var i = 0;i < len; ++i){
+            var tmp_a = new Array();
+            var tmp_b = new Array();
+            var tmp_c = new Array();
+            var _ = new Date(time_list[i].replace(/-/g, "/"));
+            var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+            tmp_a.push(time);
+            tmp_b.push(time);
+            tmp_c.push(time);
+            tmp_a.push(v1[i]);
+            tmp_b.push(v2[i]);
+            tmp_c.push(v3[i]);
+            datas_a.push(tmp_a);
+            datas_b.push(tmp_b);
+            datas_c.push(tmp_c);
+        }
+        Highcharts.setOptions({
+            colors: ['#ffff00', '#00ff00', '#ff0000', '#0000ff']
+        });
+        $('#power_factor_graph').highcharts({
+            chart: {
+                type: 'line',
+                backgroundColor: 'rgba(80,81,95,0.1)',
+            },
+            title: {
+                text: '中继最新功率因数',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            subtitle: {
+                text: '来源:征圣云平台',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    millisecond: '%H:%M:%S',
+                    second: '%H:%M:%S',
+                    minute: '%d %H:%M',
+                    hour: '%m-%d %H:%M',
+                    day: '%m-%d',
+                    week: '%m-%d',
+                    month: '%Y-%m',
+                    year: '%Y',
+                },
+            },
+            yAxis: {
+                title: {
+                    text: '功率因数',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                },
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                }
+            },
+            tooltip: {
+                valueSuffix: '',
+                dateTimeLabelFormats: {
+                    millisecond: '%Y-%m-%d %H:%M:%S',
+                    second: '%Y-%m-%d %H:%M:%S',
+                    minute: '%Y-%m-%d %H:%M:%S',
+                    hour: '%Y-%m-%d %H:%M:%S',
+                    day: '%Y-%m-%d %H:%M:%S',
+                    week: '%Y-%m-%d %H:%M:%S',
+                    month: '%Y-%m-%d %H:%M:%S',
+                    year: '%Y-%m-%d %H:%M:%S',
+                }
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                borderWidth: 0,
+                backgroundColor: '#ffffff'
+            },
+            series: [{
+                name: 'A相功率因数',
+                data: datas_a,
+                color:"#ffff00"
+            }, {
+                name: 'B相功率因数',
+                data: datas_b,
+                color:"#00ff00"
+            }, {
+                name: 'C相功率因数',
+                data: datas_c,
+                color:"#ff0000"
+            }]
+        });
+    }
+{#    有功功率#}
+    function paintLatest_active_power(latest){
+        var xx = new Array(), v1 = new Array(), v2 = new Array(), v3 = new Array();
+        for(var i = 0; i < latest.length; ++i){
+            xx.push(latest[i].data_time);
+            v1.push(latest[i].a_active_power);
+            v2.push(latest[i].a_active_power);
+            v3.push(latest[i].a_active_power);
+        }
+        var time_list = xx;
+        var datas_a = new Array();
+        var datas_b = new Array();
+        var datas_c = new Array();
+        var len = v1.length;
+        for(var i = 0;i < len; ++i){
+            var tmp_a = new Array();
+            var tmp_b = new Array();
+            var tmp_c = new Array();
+            var _ = new Date(time_list[i].replace(/-/g, "/"));
+            var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+            tmp_a.push(time);
+            tmp_b.push(time);
+            tmp_c.push(time);
+            tmp_a.push(v1[i]);
+            tmp_b.push(v2[i]);
+            tmp_c.push(v3[i]);
+            datas_a.push(tmp_a);
+            datas_b.push(tmp_b);
+            datas_c.push(tmp_c);
+        }
+        Highcharts.setOptions({
+            colors: ['#ffff00', '#00ff00', '#ff0000', '#0000ff']
+        });
+        $('#active_power_graph').highcharts({
+            chart: {
+                type: 'line',
+                backgroundColor: 'rgba(80,81,95,0.1)',
+            },
+            title: {
+                text: '中继最新有功功率',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            subtitle: {
+                text: '来源:征圣云平台',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    millisecond: '%H:%M:%S',
+                    second: '%H:%M:%S',
+                    minute: '%d %H:%M',
+                    hour: '%m-%d %H:%M',
+                    day: '%m-%d',
+                    week: '%m-%d',
+                    month: '%Y-%m',
+                    year: '%Y',
+                },
+            },
+            yAxis: {
+                title: {
+                    text: '有功功率（w)',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                },
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                }
+            },
+            tooltip: {
+                valueSuffix: 'w',
+                dateTimeLabelFormats: {
+                    millisecond: '%Y-%m-%d %H:%M:%S',
+                    second: '%Y-%m-%d %H:%M:%S',
+                    minute: '%Y-%m-%d %H:%M:%S',
+                    hour: '%Y-%m-%d %H:%M:%S',
+                    day: '%Y-%m-%d %H:%M:%S',
+                    week: '%Y-%m-%d %H:%M:%S',
+                    month: '%Y-%m-%d %H:%M:%S',
+                    year: '%Y-%m-%d %H:%M:%S',
+                }
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                borderWidth: 0,
+                backgroundColor: '#ffffff'
+            },
+            series: [{
+                name: 'A相有功功率',
+                data: datas_a,
+                color:"#ffff00"
+            }, {
+                name: 'B相有功功率',
+                data: datas_b,
+                color:"#00ff00"
+            }, {
+                name: 'C相有功功率',
+                data: datas_c,
+                color:"#ff0000"
+            }]
+        });
+    }
+{#    无功功率#}
+    function paintLatest_reactive_power(latest){
+        var xx = new Array(), v1 = new Array(), v2 = new Array(), v3 = new Array();
+        for(var i = 0; i < latest.length; ++i){
+            xx.push(latest[i].data_time);
+            v1.push(latest[i].a_reactive_power);
+            v2.push(latest[i].a_reactive_power);
+            v3.push(latest[i].a_reactive_power);
+        }
+        var time_list = xx;
+        var datas_a = new Array();
+        var datas_b = new Array();
+        var datas_c = new Array();
+        var len = v1.length;
+        for(var i = 0;i < len; ++i){
+            var tmp_a = new Array();
+            var tmp_b = new Array();
+            var tmp_c = new Array();
+            var _ = new Date(time_list[i].replace(/-/g, "/"));
+            var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+            tmp_a.push(time);
+            tmp_b.push(time);
+            tmp_c.push(time);
+            tmp_a.push(v1[i]);
+            tmp_b.push(v2[i]);
+            tmp_c.push(v3[i]);
+            datas_a.push(tmp_a);
+            datas_b.push(tmp_b);
+            datas_c.push(tmp_c);
+        }
+        Highcharts.setOptions({
+            colors: ['#ffff00', '#00ff00', '#ff0000', '#0000ff']
+        });
+        $('#reactive_power_graph').highcharts({
+            chart: {
+                type: 'line',
+                backgroundColor: 'rgba(80,81,95,0.1)',
+            },
+            title: {
+                text: '中继最新无功功率',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            subtitle: {
+                text: '来源:征圣云平台',
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    millisecond: '%H:%M:%S',
+                    second: '%H:%M:%S',
+                    minute: '%d %H:%M',
+                    hour: '%m-%d %H:%M',
+                    day: '%m-%d',
+                    week: '%m-%d',
+                    month: '%Y-%m',
+                    year: '%Y',
+                },
+            },
+            yAxis: {
+                title: {
+                    text: '无功功率（w)',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                },
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                }
+            },
+            tooltip: {
+                valueSuffix: 'w',
+                dateTimeLabelFormats: {
+                    millisecond: '%Y-%m-%d %H:%M:%S',
+                    second: '%Y-%m-%d %H:%M:%S',
+                    minute: '%Y-%m-%d %H:%M:%S',
+                    hour: '%Y-%m-%d %H:%M:%S',
+                    day: '%Y-%m-%d %H:%M:%S',
+                    week: '%Y-%m-%d %H:%M:%S',
+                    month: '%Y-%m-%d %H:%M:%S',
+                    year: '%Y-%m-%d %H:%M:%S',
+                }
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                borderWidth: 0,
+                backgroundColor: '#ffffff'
+            },
+            series: [{
+                name: 'A相无功功率',
+                data: datas_a,
+                color:"#ffff00"
+            }, {
+                name: 'B相无功功率',
+                data: datas_b,
+                color:"#00ff00"
+            }, {
+                name: 'C相无功功率',
+                data: datas_c,
+                color:"#ff0000"
+            }]
+        });
+    }
+{#    中继电量月级统计#}
     function paintMonth(month_data){
         var xx = new Array(), v1 = new Array(), v2 = new Array(), v3 = new Array(), vt = new Array();
         for(var i = 0; i < month_data.length; ++i){
