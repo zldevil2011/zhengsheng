@@ -313,9 +313,7 @@
                                 datas.push(tmp);
                             }
                             console.log(datas);
-                            Highcharts.setOptions({
-                                colors: ['#00ff00']
-                            });
+                            var colors = ['#00ff00', '#ff0000'];
                             $('#device-list-page').highcharts({
                                 chart: {
                                     type: 'line',
@@ -377,6 +375,13 @@
                                     borderWidth: 0
                                 },
                                 series: [{
+                                    zones: [{
+                                        value: 0,
+                                        color: colors[0]
+                                    }, {
+                                        value: 0,
+                                        color: colors[1]
+                                    }],
                                     name: '温度',
                                     data: datas,
                                     color:"#4e505d"
