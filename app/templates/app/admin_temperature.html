@@ -313,14 +313,9 @@
                                 datas.push(tmp);
                             }
                             console.log(datas);
-                            var colors = ['#00ff00'];
-                            Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
-                                 return {
-                                     radialGradient: { cx:0, cy: -0.8,r:2.3 },
-                                     stops: [[0, color], [2, Highcharts.Color(color).brighten(14).get('rgb')] // darken
-                                     ]
-                                 };
-                             });
+                            Highcharts.setOptions({
+                                colors: ['#00ff00']
+                            });
                             $('#device-list-page').highcharts({
                                 chart: {
                                     type: 'line',
