@@ -69,11 +69,17 @@
                                 温度
                             </th>
                             <th>
-                                温度报警
+                                电压
                             </th>
                             <th>
-                                报警时间
+                                电流
                             </th>
+{#                            <th>#}
+{#                                温度报警#}
+{#                            </th>#}
+{#                            <th>#}
+{#                                报警时间#}
+{#                            </th>#}
 
 {#                            <th>#}
 {#                                操作#}
@@ -86,8 +92,8 @@
                             <td>{{ device.device_id.device_id }}</td>
                             <td>{{ device.address }}</td>
                             <td>{{ device.temp }}</td>
-                            <td>{{ device.tempB }}</td>
-                            <td>{{ device.tempBT }}</td>
+                            <td>{{ device.voltage }}</td>
+                            <td>{{ device.electric_current }}</td>
 {#                            <td><button class="btn btn-success">查看</button></td>#}
                         </tr>
                     {% endfor %}
