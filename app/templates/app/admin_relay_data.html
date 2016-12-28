@@ -214,11 +214,7 @@
     }
 {#    </script>#}
 {#    <script>#}
-    Highcharts.setOptions({
-        global: {
-            useUTC: false
-        },
-    });
+
     function paintLatest(latest){
         console.log("xpxpxp");
         console.log(latest);
@@ -255,7 +251,10 @@
             datas_c.push(tmp_c);
         }
         Highcharts.setOptions({
-            colors: ['#ffff00', '#00ff00', '#ff0000', '#0000ff']
+            colors: ['#ffff00', '#00ff00', '#ff0000', '#0000ff'],
+            global: {
+                useUTC: false
+            },
         });
         $('#relay_latest').highcharts({
             chart: {
