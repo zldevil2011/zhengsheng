@@ -189,14 +189,10 @@
                             tmp.push(data_list[i]);
                             datas.push(tmp);
                         }
-                        var colors = ['#00ff00'];
-                        Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
-                             return {
-                                 radialGradient: { cx:0, cy: -0.8,r:2.3 },
-                                 stops: [[0, color], [2, Highcharts.Color(color).brighten(14).get('rgb')] // darken
-                                 ]
-                             };
-                         });
+                        Highcharts.setOptions({
+                            colors: ['#00ff00']
+                        });
+
                         $('#device-list-page').highcharts({
                                 chart: {
                                     type: 'line',
@@ -223,20 +219,38 @@
                                     },
                                 },
                                 yAxis: {
+                                    max:65, // 定义Y轴 最大值
+                                    min:-10, // 定义最小值
                                     title: {
                                         text: '温度 (摄氏度)'
                                     },
-                                    plotLines:[{
-                                        color:'yellow',           //线的颜色，定义为黄色
-                                        dashStyle:'solid',     //默认值，这里定义为实线
-                                        value:30,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-                                        width:4                //标示线的宽度，2px
-                                    },{
-                                        color:'red',           //线的颜色，定义为红色
-                                        dashStyle:'solid',     //默认值，这里定义为实线
-                                        value:40,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-                                        width:4                //标示线的宽度，2px
-                                    }]
+{#                                    plotLines:[{#}
+{#                                        color:'yellow',           //线的颜色，定义为黄色#}
+{#                                        dashStyle:'solid',     //默认值，这里定义为实线#}
+{#                                        value:30,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线#}
+{#                                        width:4                //标示线的宽度，2px#}
+{#                                    },{#}
+{#                                        color:'red',           //线的颜色，定义为红色#}
+{#                                        dashStyle:'solid',     //默认值，这里定义为实线#}
+{#                                        value:40,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线#}
+{#                                        width:4                //标示线的宽度，2px#}
+{#                                    }]#}
+                                },
+                                plotOptions: {
+                                    spline: {
+                                        lineWidth: 1.5,
+                                        fillOpacity: 0.1,
+                                        marker: {
+                                            enabled: false,
+                                            states: {
+                                                hover: {
+                                                    enabled: true,
+                                                    radius: 2
+                                                }
+                                            }
+                                        },
+                                        shadow: false
+                                    }
                                 },
                                 tooltip: {
                                     valueSuffix: '度',
