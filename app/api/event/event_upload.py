@@ -17,7 +17,7 @@ class EventUpload(APIView):
                      "电压偏差越限","电压、电流不平衡越限","温度过限","A相失压","B相失压",
                      "C相失压","A相失流","B相失流","C相失流","A相功率因数越限",
                      "B相功率因数越限","C相功率因数越限","A相电压偏差越限","B相电压偏差越限","C相电压偏差越限",
-                     "A相电压、电流不平衡越限","B相电压、电流不平衡越限","C相电压、电流不平衡越限"]
+                     "A相电压、电流不平衡越限","B相电压、电流不平衡越限","C相电压、电流不平衡越限","串户"]
         return name_list[id]
 
     def post(self, request, format=None):
@@ -31,6 +31,7 @@ class EventUpload(APIView):
                 print event_data_list
                 try:
                     device_id = int(event_data_list[0].split('=')[1])
+                    room_code = 0
                     event = Event()
                     for data in event_data_list:
                         key = data.split('=')[0].strip()
@@ -45,6 +46,17 @@ class EventUpload(APIView):
                             event.time = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
                         elif key == "eventC":
                             event.content = val
+                            try:
+                                room_code = val
+                            except:
+                                room_code = 0
+                        elif key == "eventC1":
+                            device = Device.objects.get(device_id=device_id)
+                            city_name = City.objects.get(city_code=device.city_code).city_name
+                            village_name = Village.objects.get(village_code=device.village_code).village_name
+                            building_code = device.building_code
+                            unit_code = device.unit_code
+                            event.content = city_name + village_name + building_code + u"栋" + unit_code + u"单元" + val + u"串户到" + room_code
                         else:
                             pass
                     device = Device.objects.get(device_id=device_id)
