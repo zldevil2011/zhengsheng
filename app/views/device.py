@@ -1144,6 +1144,7 @@ def admin_relay_data(request):
                         month_data.append(data_dic)
             ret_data = {}
             ret_data["latest"] = latest
+            ret_data["device_id"] = device_id
             ret_data["month_data"] = month_data
             ret_data["max_powerV"] = max_powerV
             ret_data["min_powerV"] = min_powerV

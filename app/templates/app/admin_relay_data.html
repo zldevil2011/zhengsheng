@@ -127,11 +127,13 @@
     <script async src="http://c.cnzz.com/core.php"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
     <script>
+        var device_id;
 {#        检查是否以及获取到中继的数据信息#}
         try{
             var json_data = {{ ret_data | safe}};
             console.log(json_data);
             var latest = json_data.latest;
+            device_id = json_data.device_id;
             var month_data = json_data.month_data;
             console.log(latest);
             console.log(month_data);
@@ -268,7 +270,7 @@
                 }
             },
             subtitle: {
-                text: '来源:征圣云平台',
+                text: '来源:' + device_id,
                 style: {
                     color: '#FFFFFF',
                 }
@@ -383,7 +385,7 @@
                 }
             },
             subtitle: {
-                text: '来源:征圣云平台',
+                text: '来源:' + device_id,
                 style: {
                     color: '#FFFFFF',
                 }
@@ -498,7 +500,7 @@
                 }
             },
             subtitle: {
-                text: '来源:征圣云平台',
+                text: '来源:' + device_id,
                 style: {
                     color: '#FFFFFF',
                 }
@@ -613,7 +615,7 @@
                 }
             },
             subtitle: {
-                text: '来源:征圣云平台',
+                text: '来源:' + device_id,
                 style: {
                     color: '#FFFFFF',
                 }
@@ -728,7 +730,7 @@
                 }
             },
             subtitle: {
-                text: '来源:征圣云平台',
+                text: '来源:' + device_id,
                 style: {
                     color: '#FFFFFF',
                 }
@@ -843,7 +845,7 @@
                 }
             },
             subtitle: {
-                text: '来源:征圣云平台',
+                text: '来源:' + device_id,
                 style: {
                     color: '#FFFFFF',
                 }
@@ -943,7 +945,7 @@
                 }
             },
             subtitle: {
-                text: '来源：征圣云平台',
+                text: '来源：' + device_id,
                 style: {
                     color: '#FFFFFF',
                 }
