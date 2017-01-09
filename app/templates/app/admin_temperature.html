@@ -230,14 +230,16 @@
                                         dashStyle:'solid',     //默认值，这里定义为实线
                                         value:40,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
                                         width:4                //标示线的宽度，2px
-                                    }]
+                                    }],
+                                    min: 0,
+                                    max: 65,
                                 },
                                 plotOptions: {
                                     spline: {
                                         lineWidth: 1.5,
                                         fillOpacity: 0.1,
                                         marker: {
-                                            enabled: false,
+                                            enabled: true,
                                             states: {
                                                 hover: {
                                                     enabled: true,
@@ -341,6 +343,8 @@
                                         month: '%Y-%m',
                                         year: '%Y',
                                     },
+                                    min: 0,
+                                    max: 65,
                                 },
                                 yAxis: {
                                     title: {
@@ -363,7 +367,7 @@
                                         lineWidth: 1.5,
                                         fillOpacity: 0.1,
                                         marker: {
-                                            enabled: false,
+                                            enabled: true,
                                             states: {
                                                 hover: {
                                                     enabled: true,
