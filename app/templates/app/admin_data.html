@@ -619,7 +619,14 @@
                 var reactive_power_data = data.reactive_power_data;
                 userReactivePower(reactive_power_data.reactive_power_x, reactive_power_data.reactive_power_y);
                 var active_power_data = data.active_power_data;
-                userActivepower(active_power_data.active_power_x, active_power_data.active_power_y);
+                var active_power_arr = active_power_data.active_power_y;
+                var active_power_max = 0;
+                for(var i  = 0; i < active_power_arr.length; ++i){
+                    if(active_power_arr[i] > active_power_max){
+                        active_power_max = active_power_arr[i];
+                    }
+                }
+                userActivepower(active_power_data.active_power_x, active_power_data.active_power_y, active_power_max);
                 var power_factor_data = data.power_factor_data;
                 userPowerfactor(power_factor_data.power_factor_x, power_factor_data.power_factor_y);
                 var electric_current_data = data.electric_current_data;
@@ -720,11 +727,25 @@
                         var reactive_power_data = data.reactive_power_data;
                         userReactivePower(reactive_power_data.reactive_power_x, reactive_power_data.reactive_power_y);
                         var active_power_data = data.active_power_data;
-                        userActivepower(active_power_data.active_power_x, active_power_data.active_power_y);
+                        var active_power_arr = active_power_data.active_power_y;
+                        var active_power_max = 0;
+                        for(var i  = 0; i < active_power_arr.length; ++i){
+                            if(active_power_arr[i] > active_power_max){
+                                active_power_max = active_power_arr[i];
+                            }
+                        }
+                        userActivepower(active_power_data.active_power_x, active_power_data.active_power_y, active_power_max);
                         var power_factor_data = data.power_factor_data;
                         userPowerfactor(power_factor_data.power_factor_x, power_factor_data.power_factor_y);
                         var electric_current_data = data.electric_current_data;
-                        userElectricity(electric_current_data.electric_current_x, electric_current_data.electric_current_y);
+                        var elec_arr = electric_current_data.electric_current_y;
+                        var elec_max = 0;
+                        for(var i  = 0; i < elec_arr.length; ++i){
+                            if(elec_arr[i] > elec_max){
+                                elec_max = elec_arr[i];
+                            }
+                        }
+                        userElectricity(electric_current_data.electric_current_x, electric_current_data.electric_current_y, elec_max);
                         var voltage_data = data.voltage_data;
                         userVoltage(voltage_data);
 {#                        userVoltage_test(voltage_data);#}
@@ -1038,7 +1059,7 @@
             });
         }
 {#        用户有功功率#}
-        function userActivepower(xx,yy) {
+        function userActivepower(xx,yy, active_power_max) {
             var time_list = xx;
             var data_list = yy;
             var datas = new Array();
@@ -1097,6 +1118,7 @@
                     }
                 },
                 yAxis: {
+                    max: active_power_max*3,
                     min: 0,
                     title: {
                         text: '有功功率/kW'
@@ -1247,7 +1269,7 @@
                 tmp.push(data_list[i]);
                 datas.push(tmp);
             }
-            console.log(datas);
+{#            console.log(datas);#}
             var colors = ['#00ff00'];
             Highcharts.getOptions().colors = Highcharts.map(colors, function (color) {
                  return {
