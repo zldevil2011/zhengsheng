@@ -155,7 +155,7 @@
                         <li name="electricity" class="li-round-sm" style="display: inline-block;">电流有效值</li>
                         <li name="power_factor" class="li-round-sm" style="display: inline-block;">功率因数</li>
                         <li name="active_power" class="li-round-sm" style="display: inline-block;">有功功率</li>
-                        <li name="reactive_power" class="li-round-sm" style="display: inline-block;">无功功率</li>
+{#                        <li name="reactive_power" class="li-round-sm" style="display: inline-block;">无功功率</li>#}
                     </ul>
                 </div>
                 <div name="data-graph" class="col-md-12" id="voltage_graph" style="display: block;"></div>
@@ -797,7 +797,8 @@
                     }
                 },
                 yAxis: {
-                    min: 0,
+                    min: 160,
+                    max: 280,
                     title: {
                         text: '电压有效值'
                     }
