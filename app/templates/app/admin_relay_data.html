@@ -459,12 +459,22 @@
     }
 {#    电流#}
     function paintLatest_electric(latest){
+        var electric_max = 0;
         var xx = new Array(), v1 = new Array(), v2 = new Array(), v3 = new Array();
         for(var i = 0; i < latest.length; ++i){
             xx.push(latest[i].data_time);
             v1.push(latest[i].a_electric_current);
             v2.push(latest[i].b_electric_current);
             v3.push(latest[i].c_electric_current);
+            if( latest[i].a_electric_current > electric_max){
+                electric_max = latest[i].a_electric_current;
+            }
+            if( latest[i].b_electric_current > electric_max){
+                electric_max = latest[i].b_electric_current;
+            }
+            if( latest[i].c_electric_current > electric_max){
+                electric_max = latest[i].c_electric_current;
+            }
         }
         var time_list = xx;
         var datas_a = new Array();
@@ -521,6 +531,7 @@
                 },
             },
             yAxis: {
+                max: electric_max*3,
                 title: {
                     text: '电流（A)',
                     style: {
@@ -689,12 +700,22 @@
     }
 {#    有功功率#}
     function paintLatest_active_power(latest){
+        var active_power_max = 0;
         var xx = new Array(), v1 = new Array(), v2 = new Array(), v3 = new Array();
         for(var i = 0; i < latest.length; ++i){
             xx.push(latest[i].data_time);
             v1.push(latest[i].a_active_power);
-            v2.push(latest[i].a_active_power);
-            v3.push(latest[i].a_active_power);
+            v2.push(latest[i].b_active_power);
+            v3.push(latest[i].c_active_power);
+            if(latest[i].a_active_power > active_power){
+                active_power_max = latest[i].a_active_power;
+            }
+            if(latest[i].b_active_power > active_power){
+                active_power_max = latest[i].b_active_power;
+            }
+            if(latest[i].c_active_power > active_power){
+                active_power_max = latest[i].c_active_power;
+            }
         }
         var time_list = xx;
         var datas_a = new Array();
@@ -751,6 +772,7 @@
                 },
             },
             yAxis: {
+                max: active_power_max * 3,
                 title: {
                     text: '有功功率（w)',
                     style: {
@@ -808,8 +830,8 @@
         for(var i = 0; i < latest.length; ++i){
             xx.push(latest[i].data_time);
             v1.push(latest[i].a_reactive_power);
-            v2.push(latest[i].a_reactive_power);
-            v3.push(latest[i].a_reactive_power);
+            v2.push(latest[i].b_reactive_power);
+            v3.push(latest[i].c_reactive_power);
         }
         var time_list = xx;
         var datas_a = new Array();
