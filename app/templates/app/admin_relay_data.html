@@ -135,8 +135,8 @@
             var latest = json_data.latest;
             device_id = json_data.device_id;
             var month_data = json_data.month_data;
-            console.log(latest);
-            console.log(month_data);
+{#            console.log(latest);#}
+{#            console.log(month_data);#}
             var max_powerV = json_data.max_powerV;
             var min_powerV = json_data.min_powerV;
             var power_sum = json_data.power_sum;
@@ -219,7 +219,7 @@
 
     function paintLatest(latest){
         console.log("xpxpxp");
-        console.log(latest);
+{#        console.log(latest);#}
         var xx = new Array(), v1 = new Array(), v2 = new Array(), v3 = new Array();
         for(var i = 0; i < latest.length; ++i){
             xx.push(latest[i].data_time);
@@ -227,10 +227,10 @@
             v2.push(latest[i].b_powerV);
             v3.push(latest[i].c_powerV);
         }
-        console.log(xx);
-        console.log(v1);
-        console.log(v2);
-        console.log(v3);
+{#        console.log(xx);#}
+{#        console.log(v1);#}
+{#        console.log(v2);#}
+{#        console.log(v3);#}
         var time_list = xx;
         var datas_a = new Array();
         var datas_b = new Array();
@@ -707,13 +707,13 @@
             v1.push(latest[i].a_active_power);
             v2.push(latest[i].b_active_power);
             v3.push(latest[i].c_active_power);
-            if(latest[i].a_active_power > active_power){
+            if(latest[i].a_active_power > active_power_max){
                 active_power_max = latest[i].a_active_power;
             }
-            if(latest[i].b_active_power > active_power){
+            if(latest[i].b_active_power > active_power_max){
                 active_power_max = latest[i].b_active_power;
             }
-            if(latest[i].c_active_power > active_power){
+            if(latest[i].c_active_power > active_power_max){
                 active_power_max = latest[i].c_active_power;
             }
         }
@@ -949,11 +949,11 @@
             v3.push(month_data[i].c_powerV);
             vt.push(month_data[i].t_powerV);
         }
-        console.log(xx);
-        console.log(v1);
-        console.log(v2);
-        console.log(v3);
-        console.log(vt);
+{#        console.log(xx);#}
+{#        console.log(v1);#}
+{#        console.log(v2);#}
+{#        console.log(v3);#}
+{#        console.log(vt);#}
         Highcharts.setOptions({
             colors: ['#ffff00', '#00ff00', '#ff0000', '#0000ff']
         });
