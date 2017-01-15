@@ -588,6 +588,21 @@
         var xx = new Array(), v1 = new Array(), v2 = new Array(), v3 = new Array();
         for(var i = 0; i < latest.length; ++i){
             xx.push(latest[i].data_time);
+            if(latest[i].a_power_factor > 1){
+                latest[i].a_power_factor = 1;
+            }else if(latest[i].a_power_factor < 0){
+                latest[i].a_power_factor = 0;
+            }
+            if(latest[i].b_power_factor > 1){
+                latest[i].b_power_factor = 1;
+            }else if(latest[i].b_power_factor < 0){
+                latest[i].b_power_factor = 0;
+            }
+            if(latest[i].c_power_factor > 1){
+                latest[i].c_power_factor = 1;
+            }else if(latest[i].c_power_factor < 0){
+                latest[i].c_power_factor = 0;
+            }
             v1.push(latest[i].a_power_factor);
             v2.push(latest[i].b_power_factor);
             v3.push(latest[i].c_power_factor);
