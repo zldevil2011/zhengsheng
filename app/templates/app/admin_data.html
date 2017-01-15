@@ -998,6 +998,12 @@
                 var _ = new Date(time_list[i].replace(/-/g, "/"));
                 var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
                 tmp.push(time);
+                if(data_list[i] > 1){
+                    data_list[i] = 1;
+                }
+                if(data_list[i] < 0){
+                    data_list[i] = 0;
+                }
                 tmp.push(data_list[i]);
                 datas.push(tmp);
             }
