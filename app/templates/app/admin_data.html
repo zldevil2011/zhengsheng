@@ -623,7 +623,14 @@
                 var power_factor_data = data.power_factor_data;
                 userPowerfactor(power_factor_data.power_factor_x, power_factor_data.power_factor_y);
                 var electric_current_data = data.electric_current_data;
-                userElectricity(electric_current_data.electric_current_x, electric_current_data.electric_current_y);
+                var elec_arr = electric_current_data.electric_current_y;
+                var elec_max = 0;
+                for(var i  = 0; i < elec_arr.length; ++i){
+                    if(elec_arr[i] > elec_max){
+                        elec_max = elec_arr[i];
+                    }
+                }
+                userElectricity(electric_current_data.electric_current_x, electric_current_data.electric_current_y, elec_max);
                 var voltage_data = data.voltage_data;
                 userVoltage(voltage_data);
                 $("[name=data-graph]").css("display", "none");
@@ -836,7 +843,7 @@
             });
         }
 {#        用户电流有效值#}
-        function userElectricity(xx, yy) {
+        function userElectricity(xx, yy, elec_max) {
             var time_list = xx;
             var data_list = yy;
             var datas = new Array();
@@ -895,6 +902,7 @@
                     }
                 },
                 yAxis: {
+                    max: elec_max * 3,
                     min: 0,
                     title: {
                         text: '电刘有效值'
