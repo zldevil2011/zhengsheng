@@ -460,10 +460,10 @@ def admin_data(request):
         ret_data["reactive_power_data"] = reactive_power_data
         ret_data["month"] = month_data
         ret_data["year"] = year_data
-        ret_data["user_power_total"] = user_power_total
-        ret_data["user_power_max"] = user_power_max
+        ret_data["user_power_total"] = round(user_power_total,3)
+        ret_data["user_power_max"] = round(user_power_max,3)
         ret_data["user_day_max"] = str(user_day_max) + "号"
-        ret_data["user_power_min"] = user_power_min
+        ret_data["user_power_min"] = round(user_power_min,3)
         ret_data["user_day_min"] = str(user_day_min) + "号"
     except:
         ret_data = {}
@@ -476,10 +476,10 @@ def admin_data(request):
         "total_page": total_page,
         "month_data": month_data,
         "day_max": day_max,
-        "power_max": power_max,
+        "power_max": round(power_max,3),
         "day_min": day_min,
-        "power_min": power_min,
-        "power_total": power_total,
+        "power_min": round(power_min,3),
+        "power_total": round(power_total,3),
         "device_num": device_num,
         "device_success": device_success,
         "device_error": device_error,
@@ -717,10 +717,10 @@ def admin_user_data(request):
 
         ret_data["month"] = month_data
         ret_data["year"] = year_data
-        ret_data["user_power_total"] = user_power_total
-        ret_data["user_power_max"] = user_power_max
+        ret_data["user_power_total"] = round(user_power_total,3)
+        ret_data["user_power_max"] = round(user_power_max,3)
         ret_data["user_day_max"] = str(user_day_max) + "号"
-        ret_data["user_power_min"] = user_power_min
+        ret_data["user_power_min"] = round(user_power_min,3)
         ret_data["user_day_min"] = str(user_day_min) + "号"
         print "ok2"
         return HttpResponse(json.dumps(ret_data), "application/json")
