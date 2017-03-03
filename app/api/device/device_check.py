@@ -35,8 +35,10 @@ class DeviceCheck(APIView):
             #     ext_info = '1'
             response_str = ''
             response_str += 'valid_s=1/CurTime='+CurTime+'/ext_info='+ext_info
+            print(response_str)
             return Response({'k': response_str} , status=status.HTTP_200_OK)
         except:
             response_str = ''
             response_str += 'valid_s=0/CurTime=' + CurTime + '/ext_info=1'
+            print(response_str)
             return Response({'k': response_str}, status=status.HTTP_200_OK)
