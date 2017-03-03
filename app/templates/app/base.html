@@ -266,7 +266,7 @@
         var mp = new Array("星期天", "星期一",  "星期二", "星期三" ,"星期四", "星期五", "星期六");
         var myDate = new Date();
         var date = myDate.toLocaleDateString();
-        var year = myDate.getFullYear(), month = myDate.getMonth(), day = myDate.getDate();
+        var year = myDate.getFullYear(), month = parseInt(myDate.getMonth()) + 1, day = myDate.getDate();
         var week = myDate.getDay();
         $("#Date_today").html(year + "年" + month + "月" + day + "日 " + mp[week]);
         var hour = myDate.getHours();
