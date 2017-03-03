@@ -74,6 +74,9 @@
                             <th>
                                 电流
                             </th>
+                            <th>
+                                采集时间
+                            </th>
 {#                            <th>#}
 {#                                温度报警#}
 {#                            </th>#}
@@ -94,6 +97,7 @@
                             <td>{{ device.temp }}</td>
                             <td>{{ device.voltage }}</td>
                             <td>{{ device.electric_current }}</td>
+                            <td>{{ device.date_time }}</td>
 {#                            <td><button class="btn btn-success">查看</button></td>#}
                         </tr>
                     {% endfor %}

@@ -626,6 +626,8 @@ def admin_device_health(request):
     except Exception, e:
         print(str(e))
         page = 1
+    start_num = (page - 1) * 15
+    end_num = page * 15
     print "page=", page
     if page < 1:
         print "okokoko"
@@ -633,7 +635,7 @@ def admin_device_health(request):
     city_code = int(request.GET.get("city_code", 0))
     village_code = int(request.GET.get("village_code", 0))
 
-    city_list = City.objects.all()
+    city_list = City.objects.all()[start_num:end_num]
     try:
         city = City.objects.get(city_code=city_code)
         village_list = Village.objects.filter(city=city)
@@ -661,9 +663,8 @@ def admin_device_health(request):
         total_page = 1
     if page > total_page:
         return HttpResponseRedirect("/admin_device/health/?page="+str(total_page))
-    start_num = (page - 1) * 15
-    end_num = page * 15
-    device_list = device_list[start_num:end_num]
+
+    # device_list = device_list[start_num:end_num]
     device_list = serializer(device_list, foreign=True)
     for device in device_list:
         try:
