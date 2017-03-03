@@ -626,16 +626,17 @@ def admin_device_health(request):
     except Exception, e:
         print(str(e))
         page = 1
-    start_num = (page - 1) * 15
-    end_num = page * 15
     print "page=", page
     if page < 1:
         print "okokoko"
         return HttpResponseRedirect("/admin_device/health/?page=1")
+    start_num = (page - 1) * 15
+    end_num = page * 15
+
     city_code = int(request.GET.get("city_code", 0))
     village_code = int(request.GET.get("village_code", 0))
 
-    city_list = City.objects.all()[start_num:end_num]
+    city_list = City.objects.all()
     try:
         city = City.objects.get(city_code=city_code)
         village_list = Village.objects.filter(city=city)
@@ -646,6 +647,11 @@ def admin_device_health(request):
     today = datetime(today.year, today.month, today.day)
     print today
     device_list = Data.objects.filter().order_by('-date_time')
+    total_page = int(math.ceil(len(device_list)/15.0))
+    if total_page < 1:
+        total_page = 1
+    if page > total_page:
+        return HttpResponseRedirect("/admin_device/health/?page="+str(total_page))
     try:
         if city_code == 0 and village_code == 0:
             pass
@@ -658,15 +664,10 @@ def admin_device_health(request):
     except Exception, e:
         print(str(e))
         pass
-    total_page = int(math.ceil(len(device_list)/15.0))
-    if total_page < 1:
-        total_page = 1
-    if page > total_page:
-        return HttpResponseRedirect("/admin_device/health/?page="+str(total_page))
-
-    # device_list = device_list[start_num:end_num]
+    device_list = device_list[start_num:end_num]
     device_list = serializer(device_list, foreign=True)
     for device in device_list:
+        device["date_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(device["date_time"])))
         try:
             device["tempBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(device["tempBT"])))
         except Exception, e:
