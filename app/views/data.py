@@ -39,7 +39,7 @@ def admin_data(request):
     print(city_list)
     print(village_list)
 
-    device_list = Device.objects.exclude(device_status=u"未安装")
+    device_list = Device.objects.exclude(device_status=u"未安装", device_id__lt=200000000)
     if city_code == 0 and village_code == 0:
         pass
     elif village_code == 0:
