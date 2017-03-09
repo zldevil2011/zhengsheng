@@ -298,9 +298,13 @@ def admin_device_remove(request):
         for device in device_list:
             device["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(device["manufacture_date"]))
             D = Device.objects.get(device_id=int(device["device_id"]))
-            user_t = AppUser.objects.get(device=D)
-            device["address"] = user_t.address
-            device["user"] = user_t.username
+            try:
+                user_t = AppUser.objects.get(device=D)
+                device["address"] = user_t.address
+                device["user"] = user_t.username
+            except:
+                device["address"] = ""
+                device["user"] = ""
             print type(device["device_id"])
             if str(device["device_id"])[0:1] == '1':
                 device["type"] = u"终端"
@@ -308,7 +312,7 @@ def admin_device_remove(request):
                 device["type"] = u"中继"
             else:
                 device["type"] = u"网关"
-        print "device remove - user = ", user
+        # print "device remove - user = ", user
         return render(request, 'app/admin_deviceRemove.html', {
             "device_list": device_list,
             "page": page,
