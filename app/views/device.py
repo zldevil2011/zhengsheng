@@ -65,15 +65,21 @@ def admin_device(request):
     for device in device_list:
         device["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(device["manufacture_date"]))
         D = Device.objects.get(device_id=int(device["device_id"]))
-        user_t = AppUser.objects.get(device=D)
         try:
             city_t = City.objects.get(city_code=int(D.city_code))
             village_t = Village.objects.get(city=city_t, village_code=int(D.village_code))
             address = city_t.city_name + village_t.village_name
         except:
+            # user_t = AppUser.objects.get(device=D)
+            address = ""
+
+        try:
+            user_t = AppUser.objects.get(device=D)
             address = user_t.address
+            device["user"] = user_t.username
+        except:
+            device["user"] = ""
         device["address"] = address
-        device["user"] = user_t.username
         print type(device["device_id"])
         if str(device["device_id"])[0:1] == '1':
             device["type"] = u"终端"
