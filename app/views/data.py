@@ -95,8 +95,11 @@ def admin_data(request):
             device["type"] = u"网关"
         device["manufacture_date"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(device["manufacture_date"])))
         t_device = Device.objects.get(device_id = int(device["device_id"]))
-        appuser = AppUser.objects.get(device=t_device)
-        device["user"] = appuser.username
+        try:
+            appuser = AppUser.objects.get(device=t_device)
+            device["user"] = appuser.username
+        except:
+            device["user"] = ""
     # 日均最高最低用电量
     try:
         power_min = sys.maxint
