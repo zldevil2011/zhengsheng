@@ -14,7 +14,7 @@ def admin_index(request):
         user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
-    temperature_warning_list = Event.objects.filter(name_no=13).order_by('-time')
+    temperature_warning_list = Event.objects.filter(name_no=13).order_by('-time')[0:10]
     temperature_warning_list = serializer(temperature_warning_list, foreign=True)
     for t in temperature_warning_list:
         t["time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(t["time"])))
