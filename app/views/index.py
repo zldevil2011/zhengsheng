@@ -2,7 +2,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from app.models import AppUser, Adminer
+from app.models import AppUser, Adminer, Event
 from django.contrib.auth.hashers import check_password
 
 
@@ -12,8 +12,10 @@ def admin_index(request):
         user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
+    temperature_warning_list = Event.objects.filter(name_no=13).order_by('-time')
     return render(request, 'app/admin_index.html', {
         "user" : user,
+        "temperature_warning_list":temperature_warning_list,
     })
 
 
