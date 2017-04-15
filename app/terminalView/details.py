@@ -63,9 +63,10 @@ def index(request):
             tmp_data = {}
             start_time = datetime(datetime.today().year, datetime.today().month, datetime.today().day, i-1)
             end_time = start_time + timedelta(hours=1)
-            start_data = datas.filter(powerT__gte=start_time)[0]
+            start_data = datas.filter(powerT__gte=start_time)
+            start_data = start_data[0]
             end_data = datas.filter(powerT__lte=end_time)
-            end_data = end_data(len(end_data)-1)
+            end_data = end_data(end_data.count()-1)
             tmp_data["use"] = end_data.powerV - start_data.powerV
             tmp_data["total"] = end_data.powerV
             tmp_data["temp"] = end_data.temp
