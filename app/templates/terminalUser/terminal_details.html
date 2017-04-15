@@ -52,7 +52,7 @@
                         <tbody name="data-list">
                             {% for data in datas %}
                                 <tr>
-                                    <td>{{ data.id }}</td>
+                                    <td>{{ forloop.counter }}</td>
                                     <td>{{ data.powerT }}</td>
                                     <td>{{ data.powerV }}kw</td>
                                     <td>{{ data.powerV }}kw</td>
