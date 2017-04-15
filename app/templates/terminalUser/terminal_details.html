@@ -41,23 +41,23 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>编号</th>
+{#                                <th>编号</th>#}
                                 <th>时间</th>
-                                <th>当日电量</th>
+                                <th>用电量</th>
                                 <th>总电量</th>
                                 <th>温度</th>
                                 <th>状态</th>
                             </tr>
                         </thead>
                         <tbody name="data-list">
-                            {% for data in datas %}
+                            {% for data in data_list %}
                                 <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ data.powerT }}</td>
-                                    <td>{{ data.powerV }}kw</td>
-                                    <td>{{ data.powerV }}kw</td>
+{#                                    <td>{{ forloop.counter }}</td>#}
+                                    <td>{{ data.time }}</td>
+                                    <td>{{ data.use }}kw</td>
+                                    <td>{{ data.total }}kw</td>
                                     <td>{{ data.temp }}</td>
-                                    <td>{{ data.device_id.device_status }}</td>
+                                    <td>{{ data.status }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

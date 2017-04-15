@@ -26,8 +26,8 @@ def index(request):
         page = int(page)
     if page < 1:
         return HttpResponseRedirect("/terminal/details?page=1")
-    start_num = int(page - 1) * 20
-    end_num = int(page) * 20
+    # start_num = int(page - 1) * 20
+    # end_num = int(page) * 20
     device = user.device
     datas = Data.objects.filter(device_id=device).order_by('-powerT')
     total_page = int(math.ceil(datas.count() / 20.0))
@@ -54,14 +54,32 @@ def index(request):
         fund = None
         month_power = None
         month_time = None
-    datas = datas[start_num:end_num]
-
+    # datas = datas[start_num:end_num]
+    # 计算当天24小时的电量使用情况
+    data_list = []
+    hours = int(datetime.today().hour)
+    for i in range(1, hours):
+        try:
+            tmp_data = {}
+            start_time = datetime(datetime.today().year, datetime.today().month, datetime.today().day, i-1)
+            end_time = start_time + timedelta(hours=1)
+            start_data = datas.filter(powerT__gte=start_time)[0]
+            end_data = datas.filter(powerT__lte=end_time)[-1]
+            tmp_data["use"] = end_data.powerV - start_data.powerV
+            tmp_data["total"] = end_data.powerV
+            tmp_data["temp"] = end_data.temp
+            tmp_data["time"] = i + "时"
+            tmp_data["status"] = end_data.device_id.device_status
+            data_list.append(tmp_data)
+        except Exception as e:
+            print(str(e))
     datas = serializer(datas, foreign=True)
     for data in datas:
         if data["powerT"] == None:
             pass
         else:
             data["powerT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(data["powerT"]))
+    print(data_list)
     return render(request, 'terminalUser/terminal_details.html', {
         'user': user,
         'datas': datas,
@@ -70,4 +88,5 @@ def index(request):
         'month_time': month_time,
         'total_page': total_page,
         'page': page,
+        'data_list':data_list,
     })
