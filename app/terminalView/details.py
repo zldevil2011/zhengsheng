@@ -29,7 +29,8 @@ def index(request):
     # start_num = int(page - 1) * 20
     # end_num = int(page) * 20
     device = user.device
-    datas = Data.objects.filter(device_id=device).order_by('-powerT')
+    start_time_filter = datetime(datetime.today().year, datetime.today().month, datetime.today().day, 0)
+    datas = Data.objects.filter(powerT__gte=start_time_filter, device_id=device).order_by('-powerT')
     total_page = int(math.ceil(datas.count() / 20.0))
     if total_page < 1:
         total_page = 1
