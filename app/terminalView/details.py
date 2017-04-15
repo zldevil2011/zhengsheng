@@ -91,7 +91,7 @@ def index(request):
         'fund': fund,
         'month_power': month_power,
         'month_time': month_time,
-        'total_page': total_page,
-        'page': page,
+        'total_page': 1,
+        'page': 1,
         'data_list':data_list,
     })
