@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <title>MyApp</title>
+        <!-- Path to Framework7 Library CSS-->
+        <link rel="stylesheet" href="/site_media/welcomescreen/framework7.ios.min.css">
+        <!-- Path to your custom app styles-->
+        <link rel="stylesheet" href="/site_media/welcomescreen/main.css">
+        <link rel="stylesheet" href="/site_media/welcomescreen/welcomescreen.css">
+
+        <script type="text/javascript" src="/site_media/welcomescreen/framework7.min.js"></script>
+        <script type="text/javascript" src="/site_media/welcomescreen/welcomescreen.js"></script>
+        <script type="text/javascript" src="/site_media/welcomescreen/IndexPageController.js"></script>
+        <script type="text/javascript" src="/site_media/welcomescreen/init.js"></script>
+        <style>
+            #my-form ul{
+                background: none;
+            }
+            #my-form li{
+                margin-top: 20px;
+                background: #fff;
+                border-radius: 5px;
+            }
+            .list-block ul:after,.list-block ul:before{
+                background-color: white;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- Header -->
+        <!-- Status bar overlay for fullscreen mode-->
+        <div class="statusbar-overlay"></div>
+        <!-- Panels overlay-->
+        <div class="panel-overlay"></div>
+        <!-- /Header -->
+        <!-- Views-->
+        <div class="views">
+            <!-- Your main view, should have "view-main" class-->
+            <div class="view view-main">
+                <!-- Top Navbar-->
+                <div class="navbar">
+                    <!-- Navbar page 1 -->
+                    <div class="navbar-inner">
+                        <div class="center sliding">登陆我的账户</div>
+                    </div>
+                </div>
+                <!-- Pages, because we need fixed-through navbar and toolbar, it has additional
+                appropriate classes-->
+                <div class="pages navbar-through toolbar-through">
+                    <!-- - [Page 1] ---------------------------------------- -->
+                    <div data-page="index" class="page" ng-controller="IndexPageController">
+                        <!-- Page content-->
+                        <div class="page-content">
+                            <div class="content-block" style="margin: 100px 0;">
+                                <form id="my-form" class="list-block" style="">
+                                    <ul>
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title label">用户名</div>
+                                                    <div class="item-input">
+                                                        <input type="text" name="name" placeholder="Your name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title label">密码</div>
+                                                    <div class="item-input">
+                                                        <input type="password" name="name" placeholder="Your name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </form>
+                                <div class="content-block">
+                                    <button onclick="checkoutInformation();" class="button" style="padding: 10px; height: 50px;width: 100%;">登陆</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+          </div>
+        </div>
+    <script>
+        function checkoutInformation(){
+            window.location.href='/app/index/';
+        }
+    </script>
+    </body>
+
+</html>

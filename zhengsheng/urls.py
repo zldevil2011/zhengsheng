@@ -16,9 +16,12 @@ from django.conf.urls import include, url
 from django.contrib import admin
 import settings
 from app.api import api_urls
+from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^app/welcome/', TemplateView.as_view(template_name="app_template/welcome.html")),
+    url(r'^app/index/', TemplateView.as_view(template_name="app_template/index.html")),
     url(r'', include('app.urls')),
     url(r'^terminal/', include('app.terminal_urls')),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
