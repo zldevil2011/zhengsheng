@@ -23,6 +23,7 @@
             }
           #view-1 .pages, #view-2 .pages, #view-3 .pages, #view-4 .pages{
               background: white;
+              overflow: scroll;
           }
           #view-1 .page, #view-2 .page, #view-3 .page, #view-4 .page{
               background: white;
@@ -66,7 +67,7 @@
         </div>
       </div>
       <!-- Second view (for second wrap)-->
-      <div id="view-2" class="view tab infinite-scroll" style="background: white;">
+      <div id="view-2" class="view tab" style="background: white;overflow: scroll;">
         <!-- We can make with view with navigation, let's add Top Navbar-->
         <div class="navbar" style="position: relative;">
             <div class="navbar-inner">
@@ -74,7 +75,7 @@
             </div>
         </div>
         <div class="pages navbar-through">
-          <div data-page="index-2" class="page infinite-scroll">
+          <div data-page="index-2" class="page">
               <div class="list-block media-list" style="margin-top: 5px;">
                   <ul>
                       {% for wo in workorder_list %}
@@ -214,7 +215,7 @@
         </div>
       </div>
       <!-- Bottom Tabbar-->
-      <div class="toolbar tabbar tabbar-labels" style="position: fixed;z-index: 99999;">
+      <div class="toolbar tabbar tabbar-labels" style="position: fixed;z-index: 999999;">
         <div class="toolbar-inner">
             <a href="#view-1" class="tab-link active">
                 <i class="icon tabbar-demo-icon-1"></i><span class="tabbar-label">用电信息</span>
