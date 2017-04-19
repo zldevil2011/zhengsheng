@@ -150,7 +150,7 @@
                       <div class="item-inner">
                         <div class="item-title label">邮箱</div>
                         <div class="item-input">
-                          <input type="email" placeholder="E-mail" value="{{ user.user.email }}" readonly="readonly">
+                          <input type="email" placeholder="E-mail" value="{{ user.email }}" readonly="readonly">
                         </div>
                       </div>
                     </div>
@@ -701,7 +701,7 @@
           var phone = $("#updateWorkOrder-form").find("[name=phone]");
           var email = $("#updateWorkOrder-form").find("[name=email]");
           var address = $("#updateWorkOrder-form").find("[name=address]");
-          var address = $("#updateWorkOrder-form").find("[name=content]");
+          var content = $("#updateWorkOrder-form").find("[name=content]");
           var content_feedback = $("#updateWorkOrder-form").find("[name=content_feedback]");
           $.ajax({
               url:'/app/workorder/' + id + '/',
@@ -718,7 +718,7 @@
                       content_feedback.val(res.content);
                       if(res.status_tag==1){
                           $("[name=editWOBTN]").css("display", "none");
-                          address.parent().parent().parent().css("display", "none");
+                          content.parent().parent().parent().css("display", "none");
                       }else{
                           $("[name=editWOBTN]").css("display", "block");
                           $("[name=updateWO]").attr("id", id);
