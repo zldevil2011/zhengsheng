@@ -59,7 +59,7 @@
           </div>
         <div class="content-block" style="margin: 5px 0;padding: 0;">
             <div class="row">
-              <div class="col-100 tablet-50" style="">
+              <div class="col-100 tablet-100" style="">
                   <div id="container" style="min-width:100%;height:400px"></div>
               </div>
             </div>
@@ -91,6 +91,10 @@
                       </li>
                       {% endfor %}
                   </ul>
+                  <div class="content-block">
+                      <a href="#" data-popup=".popup-about" class="open-popup button" style="padding: 10px; height: 50px;width: 100%;">新建工单</a>
+{#                      <button onclick="createOrder();" class="button" style="padding: 10px; height: 50px;width: 100%;">新建工单</button>#}
+                  </div>
               </div>
           </div>
         </div>
@@ -101,7 +105,7 @@
                 <div class="center" style="margin: 0 auto;">我的设备</div>
               </div>
           </div>
-        <div class="row no-gutter">
+        <div class="row no-gutter" style="margin-top: 5px;">
             <!-- Each "cell" has col-[widht in percents] class -->
             <div class="col-50 tablet-25">设备编号</div>
             <div class="col-50 tablet-25">{{ data.device_id }}</div>
@@ -231,10 +235,101 @@
         </div>
       </div>
     </div>
+    <div class="popup popup-about tablet-fullscreen">
+        <div class="content-block">
+            <form id="createWorkOrder-form" class="list-block store-data">
+              <ul>
+                  <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">类型</div>
+                            <div class="item-input">
+                                <select name="type">
+                                    <option>咨询类</option>
+                                    <option>技术服务类</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">姓名</div>
+                            <div class="item-input">
+                                <!-- Make sure that input have "name attrobute" -->
+                                <input type="text" name="username" placeholder="Your name">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                  <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">电话</div>
+                            <div class="item-input">
+                                <!-- Make sure that input have "name attrobute" -->
+                                <input type="text" name="phone" placeholder="Your phone">
+                            </div>
+                        </div>
+                    </div>
+                  </li>
+                <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title label">邮箱</div>
+                      <div class="item-input">
+                        <!-- Make sure that input have "name attrobute" -->
+                        <input type="email" name="email" placeholder="E-mail">
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                  <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">地址</div>
+                            <div class="item-input">
+                                <!-- Make sure that input have "name attrobute" -->
+                                <input type="text" name="address" placeholder="Your address">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                  <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">内容</div>
+                            <div class="item-input">
+                               <textarea name="content"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+              </ul>
+            </form>
+            <div class="content-block">
+                <button onclick="createWorkOrder();" class="button" style="padding: 10px; height: 50px;width: 100%;">提交表单</button>
+            </div>
+            <div class="content-block">
+                <a href="#" class="close-popup button" style="padding: 10px; height: 50px;width: 100%;border: 1px solid red;">取消</a>
+            </div>
+        </div>
+    </div>
+    <!-- Services Popup -->
+    <div class="popup popup-services">
+        <div class="content-block">
+            <p>Services</p>
+            <p><a href="#" class="close-popup">Close popup</a></p>
+            <p>Lorem ipsum dolor ...</p>
+        </div>
+    </div>
+
     <!-- Path to Framework7 Library JS-->
     <script type = "text/javascript" src = "/site_media/js/framework7.min.js"></script>
     <!-- Path to your app js-->
     <script type = "text/javascript" src = "/site_media/js/my-app.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
     <script type="text/javascript" src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
     <script type="text/javascript" src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
@@ -249,6 +344,9 @@
         }
         console.log(today_data);
         var chart = new Highcharts.Chart('container', {
+            chart: {
+                type: 'spline'
+            },
             title: {
                 text: '今日电量(kwh)',
                 x: -20
@@ -277,7 +375,7 @@
                 }]
             },
             tooltip: {
-                valueSuffix: '°C'
+                valueSuffix: 'kwh'
             },
             legend: {
                 layout: 'horizontal',
@@ -372,6 +470,47 @@
   <script>
       function logout(){
           window.location.href='/app/user/logout/';
+      }
+      function createWorkOrder(){
+          var type = $("#createWorkOrder-form").find("[name=type]").val();
+          var username = $("#createWorkOrder-form").find("[name=username]").val();
+          var phone = $("#createWorkOrder-form").find("[name=phone]").val();
+          var email = $("#createWorkOrder-form").find("[name=email]").val();
+          var address = $("#createWorkOrder-form").find("[name=address]").val();
+          var content = $("#createWorkOrder-form").find("[name=content]").val();
+          console.log(type);
+          console.log(username);
+          console.log(phone);
+          console.log(email);
+          console.log(address);
+          console.log(content);
+          if($.trim(username) == ""){
+              myApp.alert('请填写姓名', '提交失败');
+              return;
+          }
+          if($.trim(phone) == ""){
+              myApp.alert('请填写电话', '提交失败');
+              return;
+          }
+          if($.trim(content) == ""){
+              myApp.alert('请填写内容', '提交失败');
+              return;
+          }
+          $.ajax({
+            url:'/app/workorder/add/',
+            type:'POST',
+            data:{type:type, username:username, phone:phone,email:email,address:address, content:content },
+            success:function(res){
+                if(res == "success"){
+                    window.location.href='/app/index/';
+                }else{
+                    myApp.alert('请检查内容', '提交失败');
+                }
+            },
+            error:function(res){
+                myApp.alert('请稍后再试', '网络错误');
+            }
+        });
       }
   </script>
   </body>

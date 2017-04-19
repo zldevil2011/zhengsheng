@@ -16,7 +16,12 @@ sys.setdefaultencoding('utf-8')
 def login(request):
     print "xxxx"
     if request.method == "GET":
-        return render(request, "app_template/welcome.html", {})
+        try:
+            user = AppUser.objects.get(username=request.session['username'])
+            return HttpResponseRedirect("/app/index/")
+        except Exception as e:
+            print(str(e))
+            return render(request, "app_template/welcome.html", {})
     else:
         try:
             username = request.POST.get("username", None)
@@ -48,7 +53,7 @@ def login(request):
 @csrf_exempt
 def logout(request):
     del request.session["username"]
-    return HttpResponseRedirect("app/user/login/")
+    return HttpResponseRedirect("/app/user/login/")
 
 
 @csrf_exempt
@@ -56,7 +61,7 @@ def update(request):
     try:
         user = AppUser.objects.get(username=request.session['username'])
     except:
-        return HttpResponseRedirect("/terminal/user/login/")
+        return HttpResponseRedirect("/app/user/login/")
     try:
         password = request.POST.get("password", None)
         email = request.POST.get("email", None)
@@ -80,7 +85,7 @@ def index(request):
     try:
         user = AppUser.objects.get(username=request.session['username'])
     except:
-        return HttpResponseRedirect("/terminal/user/login/")
+        return HttpResponseRedirect("/app/user/login/")
     device = user.device
     try:
         data = Data.objects.filter(device_id=device)[0]
@@ -132,3 +137,35 @@ def index(request):
         'today_data': json.dumps(today_data, "application/json"),
         'today_temperature_data': json.dumps(today_temperature_data, "application/json"),
     })
+
+
+@csrf_exempt
+def workorder_add(request):
+    try:
+        user = AppUser.objects.get(username=request.session['username'])
+    except:
+        return HttpResponseRedirect("/app/user/login/")
+    try:
+        username = request.POST.get("username", None)
+        phone = request.POST.get("phone", None)
+        email = request.POST.get("email", None)
+        address = request.POST.get("address", None)
+        content = request.POST.get("content", None)
+        type = request.POST.get("type", None)
+        if username is None or phone is None or email is None or address is None or content is None:
+            return HttpResponse("error")
+        import uuid
+        num = uuid.uuid1()
+        ISOTIMEFORMAT = '%Y-%m-%d%X'
+        work_order = WorkOrder(
+            num=num,
+            content=user.username + u"：" + content,
+            type=type,
+            time=time.strftime(ISOTIMEFORMAT, time.localtime()),
+            status=u"待处理",
+            appuser=user,
+        )
+        work_order.save()
+        return HttpResponse("success")
+    except Exception as e:
+        print(str(e))
