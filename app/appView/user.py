@@ -62,23 +62,42 @@ def update(request):
         user = AppUser.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/app/user/login/")
-    try:
-        password = request.POST.get("password", None)
-        email = request.POST.get("email", None)
-        address = request.POST.get("address", None)
-        telephone = request.POST.get("telephone", None)
-        if password != "":
-            password = make_password(password, None, 'pbkdf2_sha256')
-            user.user.password = password
-            user.user.save()
-        user.email = email
-        user.address = address
-        user.telephone = telephone
-        user.save()
-        return HttpResponse("success")
-    except Exception, e:
-        print str(e)
-        return HttpResponse("error")
+    if request.method == "GET":
+        # 获取个人信息
+        ret_data = {}
+        ret_data["username"] = user.username
+        ret_data["email"] = user.email
+        ret_data["phone"] = user.telephone
+        ret_data["address"] = user.address
+        return HttpResponse(json.dumps(ret_data))
+    else:
+        try:
+            operation = int(request.POST.get("operation"))
+            if operation == 0:
+                # 更新个人信息
+                email = request.POST.get("email", None)
+                address = request.POST.get("address", None)
+                telephone = request.POST.get("phone", None)
+                user.email = email
+                user.address = address
+                user.telephone = telephone
+                user.save()
+                user.user.email = email
+                user.user.save()
+                return HttpResponse("success")
+            elif operation == 1:
+                # 更新密码
+                password = request.POST.get("password", None)
+                if password != "":
+                    password = make_password(password, None, 'pbkdf2_sha256')
+                    user.user.password = password
+                    user.user.save()
+                return HttpResponse("success")
+            else:
+                return HttpResponse("error")
+        except Exception as e:
+            print(str(e))
+            return HttpResponse("error")
 
 
 def index(request):
@@ -129,6 +148,10 @@ def index(request):
         wo["time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(wo["time"]))
 
     print workorder_list
+
+    device = user.device
+    user = serializer(user)
+    user["device_install_time"] = str(device.manufacture_date)[0:10]
     return render(request, 'app_template/index.html', {
         'user': user,
         'device': device,

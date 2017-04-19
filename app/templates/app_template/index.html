@@ -139,7 +139,7 @@
                       <div class="item-inner">
                         <div class="item-title label">姓名</div>
                         <div class="item-input">
-                          <input type="text" placeholder="Your name" value="{{ user.username }}">
+                          <input type="text" placeholder="Your name" value="{{ user.username }}"  readonly="readonly">
                         </div>
                       </div>
                     </div>
@@ -150,7 +150,7 @@
                       <div class="item-inner">
                         <div class="item-title label">邮箱</div>
                         <div class="item-input">
-                          <input type="email" placeholder="E-mail" value="{{ user.user.email }}">
+                          <input type="email" placeholder="E-mail" value="{{ user.user.email }}" readonly="readonly">
                         </div>
                       </div>
                     </div>
@@ -158,22 +158,11 @@
 
                   <li>
                     <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-password"></i></div>
-                      <div class="item-inner">
-                        <div class="item-title label">密码</div>
-                        <div class="item-input">
-                          <input type="password" placeholder="Password">
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="item-content">
                       <div class="item-media"><i class="icon icon-form-tel"></i></div>
                       <div class="item-inner">
                         <div class="item-title label">电话</div>
                         <div class="item-input">
-                          <input type="tel" placeholder="Phone" value="{{ user.telephone }}">
+                          <input type="tel" placeholder="Phone" value="{{ user.telephone }}" readonly="readonly">
                         </div>
                       </div>
                     </div>
@@ -185,7 +174,7 @@
                       <div class="item-inner">
                         <div class="item-title label">安装日期</div>
                         <div class="item-input">
-                          <input type="date" placeholder="Birth day" value="{{ user.device.manufacture_date }}">
+                          <input type="date" placeholder="Birth day" value="{{ user.device_install_time }}" readonly="readonly">
                         </div>
                       </div>
                     </div>
@@ -196,15 +185,22 @@
                       <div class="item-inner">
                         <div class="item-title label">地址</div>
                         <div class="item-input">
-                          <input type="text" placeholder="地址" value="{{ user.address }}">
+                          <input type="text" placeholder="地址" value="{{ user.address }}" readonly="readonly">
                         </div>
                       </div>
                     </div>
                   </li>
                      <li class="accordion-item" style="padding-left: 15px;">
-                         <a href="#" class="item-content item-link">
+                         <a href="javascript:void(0);" onclick="showPersonalPassword()" class="item-content item-link">
                             <div class="item-inner">
                                 <div class="item-title">修改密码</div>
+                            </div>
+                         </a>
+                     </li>
+                    <li class="accordion-item" style="padding-left: 15px;">
+                         <a href="javascript:void(0);" onclick="showPersonalInfo()" class="item-content item-link">
+                            <div class="item-inner">
+                                <div class="item-title">修改信息</div>
                             </div>
                          </a>
                      </li>
@@ -415,6 +411,102 @@
             </div>
         </div>
     </div>
+{#    修改个人信息的弹出页#}
+    <div class="popup popup-update-personal-info tablet-fullscreen">
+        <div class="content-block">
+            <form id="update-personal-info-form" class="list-block store-data">
+              <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">姓名</div>
+                            <div class="item-input">
+                                <!-- Make sure that input have "name attrobute" -->
+                                <input type="text" name="username" placeholder="Your name" readonly="readonly">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                  <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">电话</div>
+                            <div class="item-input">
+                                <!-- Make sure that input have "name attrobute" -->
+                                <input type="text" name="phone" placeholder="Your phone">
+                            </div>
+                        </div>
+                    </div>
+                  </li>
+                <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title label">邮箱</div>
+                      <div class="item-input">
+                        <!-- Make sure that input have "name attrobute" -->
+                        <input type="email" name="email" placeholder="E-mail">
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                  <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">地址</div>
+                            <div class="item-input">
+                                <!-- Make sure that input have "name attrobute" -->
+                                <input type="text" name="address" placeholder="Your address">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+              </ul>
+            </form>
+            <div class="content-block">
+                <button onclick="updatePersonalInfo();" class="button" style="padding: 10px; height: 50px;width: 100%;">提交更新</button>
+            </div>
+            <div class="content-block">
+                <a href="#" class="close-popup button" style="padding: 10px; height: 50px;width: 100%;border: 1px solid red;">取消</a>
+            </div>
+        </div>
+    </div>
+{#    修改密码#}
+    <div class="popup popup-update-personal-password tablet-fullscreen">
+        <div class="content-block">
+            <form id="update-personal-password-form" class="list-block store-data">
+              <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">新的密码</div>
+                            <div class="item-input">
+                                <!-- Make sure that input have "name attrobute" -->
+                                <input type="password" name="first-password">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">确认密码</div>
+                            <div class="item-input">
+                                <input type="password" name="second-password">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+              </ul>
+            </form>
+            <div class="content-block">
+                <button onclick="updatePersonalPassword();" class="button" style="padding: 10px; height: 50px;width: 100%;">确认修改</button>
+            </div>
+            <div class="content-block">
+                <a href="#" class="close-popup button" style="padding: 10px; height: 50px;width: 100%;border: 1px solid red;">取消</a>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Path to Framework7 Library JS-->
     <script type = "text/javascript" src = "/site_media/js/framework7.min.js"></script>
@@ -685,6 +777,86 @@
                 myApp.alert('请稍后再试', '网络错误');
             }
         });
+      }
+{#    显示更改密码的弹出页面#}
+      function showPersonalPassword(){
+          console.log("Yes");
+          var myApp = new Framework7();
+          myApp.popup('.popup-update-personal-password');
+      }
+{#      修改密码#}
+      function updatePersonalPassword(){
+          var f_pwd = $("#update-personal-password-form").find("[name=first-password]").val();
+          var s_pwd = $("#update-personal-password-form").find("[name=second-password]").val();
+          f_pwd = $.trim(f_pwd);
+          s_pwd = $.trim(s_pwd);
+          if(f_pwd == "" || f_pwd != s_pwd){
+              myApp.alert('请输入正确一致的密码', '提交失败');
+              return;
+          }
+          $.ajax({
+            url:'/app/user/updateInfo/',
+            type:'POST',
+            data:{operation:1, password:f_pwd},
+            success:function(res){
+                if(res == "success"){
+                    window.location.href='/app/index/';
+                }else{
+                    myApp.alert('请稍后再试', '更新失败');
+                }
+            },
+            error:function(res){
+                myApp.alert('请稍后再试', '网络错误');
+            }
+        });
+      }
+{#      显示个人信息在弹出页#}
+      function showPersonalInfo(){
+          var username = $("#update-personal-info-form").find("[name=username]");
+          var phone = $("#update-personal-info-form").find("[name=phone]");
+          var email = $("#update-personal-info-form").find("[name=email]");
+          var address = $("#update-personal-info-form").find("[name=address]");
+          $.ajax({
+                url:'/app/user/updateInfo/',
+                type:'GET',
+                success:function(res){
+                    if(res != "error"){
+                        res = JSON.parse(res);
+                        username.val(res.username);
+                        phone.val(res.phone);
+                        email.val(res.email);
+                        address.val(res.address);
+                        var myApp = new Framework7();
+                        myApp.popup('.popup-update-personal-info');
+                    }else{
+                        myApp.alert('请稍后再试', '获取信息失败失败');
+                    }
+                },
+                error:function(res){
+                    myApp.alert('请稍后再试', '网络错误');
+                }
+          });
+      }
+{#      修改个人信息#}
+      function updatePersonalInfo(){
+          var phone = $("#update-personal-info-form").find("[name=phone]").val();
+          var email = $("#update-personal-info-form").find("[name=email]").val();
+          var address = $("#update-personal-info-form").find("[name=address]").val();
+          $.ajax({
+                url:'/app/user/updateInfo/',
+                type:'POST',
+                data:{operation:0, phone:phone,email:email,address:address},
+                success:function(res){
+                    if(res == "success"){
+                        window.location.href='/app/index/';
+                    }else{
+                        myApp.alert('请稍后再试', '更新失败');
+                    }
+                },
+                error:function(res){
+                    myApp.alert('请稍后再试', '网络错误');
+                }
+            });
       }
   </script>
   </body>
