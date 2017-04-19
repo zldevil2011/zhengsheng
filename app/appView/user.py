@@ -2,11 +2,13 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from app.models import AppUser, Data
+from app.models import AppUser, Data, WorkOrder
 from datetime import date, datetime
 from django.contrib.auth.hashers import check_password,make_password
 import json
 import sys
+import time
+from dss.Serializer import serializer
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -96,16 +98,37 @@ def index(request):
     data = datas.filter(powerT__gte=today_start).order_by('-powerT')
     for d in data:
         if d.powerV is not None:
-            today_data[d.powerT.hour] =  d.powerV
+            today_data[d.powerT.hour] = d.powerV
     print "Day Data"
     print today_data
+    # 获取今日的温度数据
+    today_temperature_data = {}
+    data = datas.filter(tempT__gte=today_start).order_by('-tempT')
+    for d in data:
+        if d.powerV is not None:
+            today_temperature_data[d.tempT.hour] = d.temp
+    print "Day Temperature Data"
+    print today_temperature_data
     try:
         data = datas.order_by('-powerT')[0]
     except:
         data = None
+
+
+    # 获取用户的工单
+    workorder_list = WorkOrder.objects.filter(appuser=user)
+
+    workorder_list = serializer(workorder_list)
+    for wo in workorder_list:
+        wo["content"] = wo["content"].replace("<br>"," ")
+        wo["time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(wo["time"]))
+
+    print workorder_list
     return render(request, 'app_template/index.html', {
         'user': user,
         'device': device,
         'data': data,
+        'workorder_list':workorder_list,
         'today_data': json.dumps(today_data, "application/json"),
+        'today_temperature_data': json.dumps(today_temperature_data, "application/json"),
     })

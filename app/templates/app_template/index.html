@@ -77,50 +77,19 @@
           <div data-page="index-2" class="page">
               <div class="list-block media-list" style="margin-top: 5px;">
                   <ul>
+                      {% for wo in workorder_list %}
                       <li>
                           <a href="#" class="item-link item-content">
                               <div class="item-inner">
                                   <div class="item-title-row">
-                                      <div class="item-title">标题</div>
-                                      <div class="item-after">17:14</div>
+                                      <div class="item-title">{{ wo.type }}</div>
+                                      <div class="item-after">{{ wo.time }}</div>
                                   </div>
-                                  <div class="item-subtitle">内容</div>
+                                  <div class="item-subtitle">{{ wo.content }}</div>
                             </div>
                           </a>
                       </li>
-                      <li>
-                          <a href="#" class="item-link item-content">
-                              <div class="item-inner">
-                                  <div class="item-title-row">
-                                      <div class="item-title">标题</div>
-                                      <div class="item-after">17:14</div>
-                                  </div>
-                                  <div class="item-subtitle">内容</div>
-                            </div>
-                          </a>
-                      </li>
-                      <li>
-                          <a href="#" class="item-link item-content">
-                              <div class="item-inner">
-                                  <div class="item-title-row">
-                                      <div class="item-title">标题</div>
-                                      <div class="item-after">17:14</div>
-                                  </div>
-                                  <div class="item-subtitle">内容</div>
-                            </div>
-                          </a>
-                      </li>
-                      <li>
-                          <a href="#" class="item-link item-content">
-                              <div class="item-inner">
-                                  <div class="item-title-row">
-                                      <div class="item-title">标题</div>
-                                      <div class="item-after">17:14</div>
-                                  </div>
-                                  <div class="item-subtitle">内容</div>
-                            </div>
-                          </a>
-                      </li>
+                      {% endfor %}
                   </ul>
               </div>
           </div>
@@ -330,6 +299,15 @@
 
     </script>
     <script>
+        var today_temperature_data = {{ today_temperature_data | safe}};
+        var x_axis = [];
+        console.log(typeof x_axis);
+        var y_axis = [];
+        for(x in today_temperature_data){
+            x_axis.push(x+"时");
+            y_axis.push(today_temperature_data[x]);
+        }
+        console.log(today_data);
         var chart = new Highcharts.Chart('device-temperature', {
                 chart: {
                     type: 'spline'
@@ -341,6 +319,7 @@
                     text: '数据来源：征圣云平台'
                 },
                 xAxis: {
+                    categories: x_axis,
                     labels: {
                         overflow: 'justify'
                     }
@@ -373,9 +352,15 @@
 {#                        pointStart: Date.UTC(year, month + 1, day, 0, 0, 0)#}
 {#                    }#}
 {#                },#}
+                credits: {
+                    enabled: false //不显示LOGO
+                },
+                exporting: {
+                    enabled:false
+                },
                 series: [{
                     name: '温度',
-                    data: [10,12,24,25,15,12,13,12,11,15,15]
+                    data: y_axis
                 }],
                 navigation: {
                     menuItemStyle: {
