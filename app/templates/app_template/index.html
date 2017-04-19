@@ -135,13 +135,13 @@
         <div class="row no-gutter">
             <!-- Each "cell" has col-[widht in percents] class -->
             <div class="col-50 tablet-25">设备编号</div>
-            <div class="col-50 tablet-25">100000001</div>
+            <div class="col-50 tablet-25">{{ data.device_id }}</div>
             <div class="col-50 tablet-25">设备状态</div>
             <div class="col-50 tablet-25">正常</div>
             <div class="col-50 tablet-25">温度</div>
-            <div class="col-50 tablet-25">25摄氏度</div>
+            <div class="col-50 tablet-25">{{ data.temp }}摄氏度</div>
             <div class="col-50 tablet-25">电量</div>
-            <div class="col-50 tablet-25">100kwh</div>
+            <div class="col-50 tablet-25">{{ data.powerV }}kwh</div>
         </div>
         <div class="row">
           <div class="col-100">
@@ -166,7 +166,7 @@
                       <div class="item-inner">
                         <div class="item-title label">姓名</div>
                         <div class="item-input">
-                          <input type="text" placeholder="Your name">
+                          <input type="text" placeholder="Your name" value="{{ user.username }}">
                         </div>
                       </div>
                     </div>
@@ -177,7 +177,7 @@
                       <div class="item-inner">
                         <div class="item-title label">邮箱</div>
                         <div class="item-input">
-                          <input type="email" placeholder="E-mail">
+                          <input type="email" placeholder="E-mail" value="{{ user.user.email }}">
                         </div>
                       </div>
                     </div>
@@ -200,7 +200,7 @@
                       <div class="item-inner">
                         <div class="item-title label">电话</div>
                         <div class="item-input">
-                          <input type="tel" placeholder="Phone">
+                          <input type="tel" placeholder="Phone" value="{{ user.telephone }}">
                         </div>
                       </div>
                     </div>
@@ -212,7 +212,7 @@
                       <div class="item-inner">
                         <div class="item-title label">安装日期</div>
                         <div class="item-input">
-                          <input type="date" placeholder="Birth day" value="2014-04-30">
+                          <input type="date" placeholder="Birth day" value="{{ user.device.manufacture_date }}">
                         </div>
                       </div>
                     </div>
@@ -223,7 +223,7 @@
                       <div class="item-inner">
                         <div class="item-title label">地址</div>
                         <div class="item-input">
-                          <input type="text" placeholder="地址">
+                          <input type="text" placeholder="地址" value="{{ user.address }}">
                         </div>
                       </div>
                     </div>
@@ -270,6 +270,15 @@
     <script type="text/javascript" src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
     <script type="text/javascript" src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
     <script>
+        var today_data = {{ today_data | safe}};
+        var x_axis = [];
+        console.log(typeof x_axis);
+        var y_axis = [];
+        for(x in today_data){
+            x_axis.push(x+"时");
+            y_axis.push(today_data[x]);
+        }
+        console.log(today_data);
         var chart = new Highcharts.Chart('container', {
             title: {
                 text: '今日电量(kwh)',
@@ -280,7 +289,7 @@
                 x: -20
             },
             xAxis: {
-                categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+                categories: x_axis
             },
             yAxis: {
                 title: {
@@ -314,8 +323,8 @@
                 enabled:false
             },
             series: [{
-                name: '东京',
-                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                name: '电量',
+                data: y_axis
             },]
         });
 
@@ -377,7 +386,7 @@
     </script>
   <script>
       function logout(){
-          window.location.href='/app/welcome/';
+          window.location.href='/app/user/logout/';
       }
   </script>
   </body>

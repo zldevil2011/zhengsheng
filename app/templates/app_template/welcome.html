@@ -65,7 +65,7 @@
                                                 <div class="item-inner">
                                                     <div class="item-title label">用户名</div>
                                                     <div class="item-input">
-                                                        <input type="text" name="name" placeholder="Your name">
+                                                        <input type="text" name="username" placeholder="Your name">
                                                     </div>
                                                 </div>
                                             </div>
@@ -75,7 +75,7 @@
                                                 <div class="item-inner">
                                                     <div class="item-title label">密码</div>
                                                     <div class="item-input">
-                                                        <input type="password" name="name" placeholder="Your name">
+                                                        <input type="password" name="password" placeholder="Your name">
                                                     </div>
                                                 </div>
                                             </div>
@@ -91,9 +91,28 @@
                 </div>
           </div>
         </div>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script>
         function checkoutInformation(){
-            window.location.href='/app/index/';
+            var myApp = new Framework7();
+            var $$ = Dom7;
+            var username = $("[name=username]").val();
+            var password = $("[name=password]").val();
+            $.ajax({
+                url:'/app/user/login/',
+                type:'POST',
+                data:{username:username, password:password},
+                success:function(res){
+                    if(res == "success"){
+                        window.location.href='/app/index/';
+                    }else{
+                        myApp.alert('请检查用户名或密码', '登陆失败');
+                    }
+                },
+                error:function(res){
+                    myApp.alert('请稍后再试', '网络错误');
+                }
+            });
         }
     </script>
     </body>
