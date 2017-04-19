@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'user/updateinfo/$', user.update, name="app_user_update"),
     url(r'index/$', user.index, name="app_index"),
     url(r'workorder/add/$', user.workorder_add, name="app_workorder_add"),
+    url(r'workorder/(?P<wo_id>\d+)/$', user.workorder_info, name="app_workorder_info"),
 ]

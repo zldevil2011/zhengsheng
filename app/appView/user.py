@@ -140,6 +140,56 @@ def index(request):
 
 
 @csrf_exempt
+def workorder_info(request, wo_id):
+    try:
+        user = AppUser.objects.get(username=request.session['username'])
+    except:
+        return HttpResponseRedirect("/app/user/login/")
+    if request.method == "GET":
+        try:
+            WO = WorkOrder.objects.get(pk=wo_id)
+            ret_data = {}
+            ret_data["type"] = WO.type
+            ret_data["username"] = WO.appuser.username
+            ret_data["phone"] = WO.appuser.telephone
+            ret_data["email"] = WO.appuser.email
+            ret_data["address"] = WO.appuser.address
+            ret_data["content"] = WO.content.replace("<br>", "\n")
+            ret_data["status"] = WO.status
+            if ret_data["status"] == u"已处理":
+                ret_data["status_tag"] = 1
+            else:
+                ret_data["status_tag"] = 0
+            return HttpResponse(json.dumps(ret_data))
+        except Exception as e:
+            print(str(e))
+            return HttpResponse("error")
+    else:
+        try:
+            operation = int(request.POST.get("operation"))
+            if operation == 1:
+                # 回复工单
+                work_order = WorkOrder.objects.get(pk=wo_id)
+                content = request.POST.get("content", None)
+                if content is None:
+                    return HttpResponse("error")
+                work_order.content = work_order.content + "<br>" + user.username + u"：" + unicode(content)
+                work_order.save()
+                return HttpResponse("success")
+            elif operation == -1:
+                # 关闭工单
+                work_order = WorkOrder.objects.get(pk=wo_id)
+                work_order.status = u"已处理"
+                work_order.save()
+                return HttpResponse("success")
+            else:
+                return HttpResponse("error")
+        except Exception as e:
+            print(str(e))
+            return HttpResponse("error")
+
+
+@csrf_exempt
 def workorder_add(request):
     try:
         user = AppUser.objects.get(username=request.session['username'])
@@ -169,3 +219,4 @@ def workorder_add(request):
         return HttpResponse("success")
     except Exception as e:
         print(str(e))
+        return HttpResponse("error")

@@ -79,7 +79,7 @@
                   <ul>
                       {% for wo in workorder_list %}
                       <li>
-                          <a href="#" class="item-link item-content">
+                          <a href="javascript:void(0);" onclick="editWorkorder({{ wo.id }})" class="item-link item-content">
                               <div class="item-inner">
                                   <div class="item-title-row">
                                       <div class="item-title">{{ wo.type }}</div>
@@ -317,11 +317,102 @@
         </div>
     </div>
     <!-- Services Popup -->
-    <div class="popup popup-services">
+    <div class="popup popup-workorder-info">
         <div class="content-block">
-            <p>Services</p>
-            <p><a href="#" class="close-popup">Close popup</a></p>
-            <p>Lorem ipsum dolor ...</p>
+            <form id="updateWorkOrder-form" class="list-block store-data">
+              <ul>
+                  <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">类型</div>
+                            <div class="item-input">
+                                <select name="type" readonly="readonly">
+                                    <option>咨询类</option>
+                                    <option>技术服务类</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">姓名</div>
+                            <div class="item-input">
+                                <!-- Make sure that input have "name attrobute" -->
+                                <input type="text" name="username" placeholder="Your name" readonly="readonly">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                  <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">电话</div>
+                            <div class="item-input">
+                                <!-- Make sure that input have "name attrobute" -->
+                                <input type="text" name="phone" placeholder="Your phone" readonly="readonly">
+                            </div>
+                        </div>
+                    </div>
+                  </li>
+                <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title label">邮箱</div>
+                      <div class="item-input">
+                        <!-- Make sure that input have "name attrobute" -->
+                        <input type="email" name="email" placeholder="E-mail" readonly="readonly">
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                  <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">地址</div>
+                            <div class="item-input">
+                                <!-- Make sure that input have "name attrobute" -->
+                                <input type="text" name="address" placeholder="Your address" readonly="readonly">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                  <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">反馈</div>
+                            <div class="item-input">
+                               <textarea name="content_feedback" readonly="readonly"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                  <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">内容</div>
+                            <div class="item-input">
+                               <textarea name="content"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+              </ul>
+            </form>
+            <div name = "editWOBTN" class="content-block">
+                <div class="row">
+                    <div class="col-50 tablet-50" style="border: none;">
+                        <button name="updateWO" onclick="updateWorkOrder(this.id);" class="button" style="padding: 10px; height: 50px;width: 100%;">继续提交</button>
+                    </div>
+                    <div class="col-50 tablet-50" style="border: none;">
+                        <button name="closeWO" onclick="closeWorkOrder(this.id);" class="button" style="padding: 10px; height: 50px;width: 100%;border: 1px solid yellow;">关闭工单</button>
+                    </div>
+                </div>
+            </div>
+            <div class="content-block">
+                <a href="#" class="close-popup button" style="padding: 10px; height: 50px;width: 100%;border: 1px solid red;">取消</a>
+            </div>
         </div>
     </div>
 
@@ -505,6 +596,89 @@
                     window.location.href='/app/index/';
                 }else{
                     myApp.alert('请检查内容', '提交失败');
+                }
+            },
+            error:function(res){
+                myApp.alert('请稍后再试', '网络错误');
+            }
+        });
+      }
+      function editWorkorder(id){
+          var type = $("#updateWorkOrder-form").find("[name=type]");
+          var username = $("#updateWorkOrder-form").find("[name=username]");
+          var phone = $("#updateWorkOrder-form").find("[name=phone]");
+          var email = $("#updateWorkOrder-form").find("[name=email]");
+          var address = $("#updateWorkOrder-form").find("[name=address]");
+          var address = $("#updateWorkOrder-form").find("[name=content]");
+          var content_feedback = $("#updateWorkOrder-form").find("[name=content_feedback]");
+          $.ajax({
+              url:'/app/workorder/' + id + '/',
+              type: 'GET',
+              success:function(res){
+                  if(res != "error"){
+                      res = JSON.parse(res);
+                      console.log(res);
+                      type.val(res.type);
+                      username.val(res.username);
+                      phone.val(res.phone);
+                      email.val(res.email);
+                      address.val(res.address);
+                      content_feedback.val(res.content);
+                      if(res.status_tag==1){
+                          $("[name=editWOBTN]").css("display", "none");
+                          address.parent().parent().parent().css("display", "none");
+                      }else{
+                          $("[name=editWOBTN]").css("display", "block");
+                          $("[name=updateWO]").attr("id", id);
+                          $("[name=closeWO]").attr("id", id);
+                      }
+                      var myApp = new Framework7();
+                      var $$ = Dom7;
+                      myApp.popup('.popup-workorder-info');
+                  }else{
+                      myApp.alert('请稍后再试', '获取信息失败');
+                      return;
+                  }
+              },
+              error:function(res){
+                  myApp.alert('请稍后再试', '网络错误');
+                  return;
+              }
+          });
+
+      }
+      function updateWorkOrder(id){
+          var content = $("#updateWorkOrder-form").find("[name=content]").val();
+          if($.trim(content) == ""){
+              myApp.alert('请填写内容', '提交失败');
+              return;
+          }
+          $.ajax({
+            url:'/app/workorder/' + id + '/',
+            type:'POST',
+            data:{operation:1,content:content },
+            success:function(res){
+                if(res == "success"){
+                    window.location.href='/app/index/';
+                }else{
+                    myApp.alert('请检查内容', '提交失败');
+                }
+            },
+            error:function(res){
+                myApp.alert('请稍后再试', '网络错误');
+            }
+        });
+      }
+      function closeWorkOrder(id){
+          $.ajax({
+            url:'/app/workorder/' + id + '/',
+            type:'POST',
+            data:{operation:-1},
+            success:function(res){
+                if(res == "success"){
+                    window.location.href='/app/index/';
+                }else{
+                    myApp.alert('请稍后再试', '更新失败');
                 }
             },
             error:function(res){
