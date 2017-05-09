@@ -31,7 +31,7 @@ class Device(models.Model):
     device_status = models.CharField(max_length=32, default='未安装')  # 设备状态 是否投入使用
     household_flag = models.IntegerField(default=0)
     household_content = models.CharField(max_length=32, default='')
-
+    remarks = models.CharField(max_length=200, default='') #备注 显示需要提示的信息
     def __unicode__(self):
         return str(self.device_id)
 
