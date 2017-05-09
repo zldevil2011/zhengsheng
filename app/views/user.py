@@ -96,7 +96,7 @@ def admin_work_order(request):
 def admin_delete_user(request):
     # return HttpResponse("success")
     try:
-        user = Adminer.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     user_id = request.POST.get("user_id", None)
