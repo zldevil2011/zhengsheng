@@ -74,7 +74,7 @@
                                 设备所有者
                             </th>
                             <th>
-                                生产时间
+                                备注
                             </th>
                             <th>
                                 操作
@@ -89,7 +89,7 @@
                             <td>{{ device.address }}</td>
                             <td>{{ device.device_status }}</td>
                             <td>{{ device.user }}</td>
-                            <td>{{ device.manufacture_date }}</td>
+                            <td>{{ device.remarks }}</td>
                             <td><button id = "{{ device.device_id }}" class="btn btn-success" onclick="showUserInfo(this.id);">查看</button></td>
                         </tr>
                     {% endfor %}
