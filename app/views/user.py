@@ -96,7 +96,7 @@ def admin_work_order(request):
 def admin_delete_user(request):
     # return HttpResponse("success")
     try:
-        user = AppUser.objects.get(username=request.session['username'])
+        user = Adminer.objects.get(username=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
     user_id = request.POST.get("user_id", None)
@@ -106,6 +106,12 @@ def admin_delete_user(request):
     user = AppUser.objects.get(id=user_id)
     device = user.device
     device.device_status = u"未安装"
+    device.city_code=''
+    device.village_code=''
+    device.building_code=''
+    device.unit_code = ''
+    device.room_code = ''
+    device.remarks=''
     device.save()
     sys_user = user.user
     sys_user.delete()
