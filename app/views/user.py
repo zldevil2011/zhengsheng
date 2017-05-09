@@ -104,15 +104,19 @@ def admin_delete_user(request):
         return HttpResponse("error")
     user_id = int(user_id)
     user = AppUser.objects.get(id=user_id)
-    device = user.device
-    device.device_status = u"未安装"
-    device.city_code=''
-    device.village_code=''
-    device.building_code=''
-    device.unit_code = ''
-    device.room_code = ''
-    device.remarks=''
-    device.save()
+    try:
+        # 删除设备，避免用户存在，但是设备不存在
+        device = user.device
+        device.device_status = u"未安装"
+        device.city_code=''
+        device.village_code=''
+        device.building_code=''
+        device.unit_code = ''
+        device.room_code = ''
+        device.remarks=''
+        device.save()
+    except Exception as e:
+        print(str(e))
     sys_user = user.user
     sys_user.delete()
     user.delete()
