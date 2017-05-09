@@ -1015,7 +1015,7 @@ def admin_relay_data(request):
             village_list = Village.objects.filter(city=city)
         except:
             village_list = None
-        device_list = Device.objects.filter(device_id__gte=200000000, device_id__lt=300000000)
+        device_list = Device.objects.filter(device_id__gte=200000000, device_id__lt=300000000).exclude(device_status=u"未安装")
         if city_code == 0 and village_code == 0:
             pass
         elif village_code == 0:
