@@ -146,6 +146,30 @@ class DeviceUploadData(APIView):
                                 # now = datetime.now()
                                 # relay.data_time = now
                                 relay.data_time = datetime.strptime(str(val), "%Y-%m-%d %H:%M:%S")
+                            elif key == "temp1":
+                                relay.temp1 = float(val)/10.0
+                            elif key == "temp2":
+                                relay.temp2 = float(val)/10.0
+                            elif key == "temp3":
+                                relay.temp3 = float(val)/10.0
+                            elif key == "temp4":
+                                relay.temp4 = float(val)/10.0
+                            elif key == "temp5":
+                                relay.temp5 = float(val)/10.0
+                            elif key == "temp6":
+                                relay.temp6 = float(val)/10.0
+                            elif key == "temp7":
+                                relay.temp7 = float(val)/10.0
+                            elif key == "temp8":
+                                relay.temp8 = float(val)/10.0
+                            elif key == "temp9":
+                                relay.temp9 = float(val)/10.0
+                            elif key == "temp10":
+                                relay.temp10 = float(val)/10.0
+                            elif key == "temp11":
+                                relay.temp11 = float(val)/10.0
+                            elif key == "temp12":
+                                relay.temp12 = float(val)/10.0
                             else:
                                 pass
                             relay.save()

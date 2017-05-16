@@ -102,6 +102,18 @@ class Relay(models.Model):
     c_powerI = models.FloatField(null=True)           # C相无功电能
     t_powerI = models.FloatField(null=True)           # 总无功电能
     data_time = models.DateTimeField(null=True)       # 数据采集时间
+    temp1 = models.FloatField(null=True)              # 12路采集温度-1
+    temp2 = models.FloatField(null=True)              # 12路采集温度-2
+    temp3 = models.FloatField(null=True)              # 12路采集温度-3
+    temp4 = models.FloatField(null=True)              # 12路采集温度-4
+    temp5 = models.FloatField(null=True)              # 12路采集温度-5
+    temp6 = models.FloatField(null=True)              # 12路采集温度-6
+    temp7 = models.FloatField(null=True)              # 12路采集温度-7
+    temp8 = models.FloatField(null=True)              # 12路采集温度-8
+    temp9 = models.FloatField(null=True)              # 12路采集温度-9
+    temp10 = models.FloatField(null=True)             # 12路采集温度-10
+    temp11 = models.FloatField(null=True)             # 12路采集温度-11
+    temp12 = models.FloatField(null=True)             # 12路采集温度-12
 
     def __unicode__(self):
         return str(self.id)

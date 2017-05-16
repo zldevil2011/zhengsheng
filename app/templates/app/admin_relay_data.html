@@ -112,6 +112,38 @@
                     <div name="data-graph" class="row col-md-12" id="active_power_graph" style="display: block;"></div>
                     <div name="data-graph" class="row col-md-12" id="reactive_power_graph" style="display: block;"></div>
                 </div>
+                <div class="col-md-12"  style="margin-bottom:1rem;border-bottom: solid 1px #FFFFFF;height: auto;">
+                    <div class="col-md-12" style="width: 100%; height: auto !important; min-height: 30px;font-size: 14px;
+                    background-color: #544949; overflow: hidden;line-height: 30px;">
+                        <span class="">温度数据</span>
+                        <ul name = "otherParameter_temp" style="display: inline-block;margin-bottom: 0px;!important; float: right; " class="li-tab">
+                            <li name="temp1" class="li-round-sm active" style="display: inline-block;">温度1</li>
+                            <li name="temp2" class="li-round-sm" style="display: inline-block;">温度2</li>
+                            <li name="temp3" class="li-round-sm" style="display: inline-block;">温度3</li>
+                            <li name="temp4" class="li-round-sm" style="display: inline-block;">温度4</li>
+                            <li name="temp5" class="li-round-sm" style="display: inline-block;">温度5</li>
+                            <li name="temp6" class="li-round-sm" style="display: inline-block;">温度6</li>
+                            <li name="temp7" class="li-round-sm" style="display: inline-block;">温度7</li>
+                            <li name="temp8" class="li-round-sm" style="display: inline-block;">温度8</li>
+                            <li name="temp9" class="li-round-sm" style="display: inline-block;">温度9</li>
+                            <li name="temp10" class="li-round-sm" style="display: inline-block;">温度10</li>
+                            <li name="temp11" class="li-round-sm" style="display: inline-block;">温度11</li>
+                            <li name="temp12" class="li-round-sm" style="display: inline-block;">温度12</li>
+                        </ul>
+                    </div>
+                    <div name="data-graph" class="row col-md-12" id="temp1_graph" style="display: block;width: 100%;padding: 0 0 0 15px;"></div>
+                    <div name="data-graph" class="row col-md-12" id="temp2_graph" style="display: block;width: 100%;padding: 0 0 0 15px;"></div>
+                    <div name="data-graph" class="row col-md-12" id="temp3_graph" style="display: block;width: 100%;padding: 0 0 0 15px;"></div>
+                    <div name="data-graph" class="row col-md-12" id="temp4_graph" style="display: block;width: 100%;padding: 0 0 0 15px;"></div>
+                    <div name="data-graph" class="row col-md-12" id="temp5_graph" style="display: block;width: 100%;padding: 0 0 0 15px;"></div>
+                    <div name="data-graph" class="row col-md-12" id="temp6_graph" style="display: block;width: 100%;padding: 0 0 0 15px;"></div>
+                    <div name="data-graph" class="row col-md-12" id="temp7_graph" style="display: block;width: 100%;padding: 0 0 0 15px;"></div>
+                    <div name="data-graph" class="row col-md-12" id="temp8_graph" style="display: block;width: 100%;padding: 0 0 0 15px;"></div>
+                    <div name="data-graph" class="row col-md-12" id="temp9_graph" style="display: block;width: 100%;padding: 0 0 0 15px;"></div>
+                    <div name="data-graph" class="row col-md-12" id="temp10_graph" style="display: block;width: 100%;padding: 0 0 0 15px;"></div>
+                    <div name="data-graph" class="row col-md-12" id="temp11_graph" style="display: block;width: 100%;padding: 0 0 0 15px;"></div>
+                    <div name="data-graph" class="row col-md-12" id="temp12_graph" style="display: block;width: 100%;padding: 0 0 0 15px;"></div>
+                </div>
                 <div class="col-md-12">
                     <div id = "relay_month" style="width: 100%; height:400px;">当月电量数据</div>
                 </div>
@@ -147,6 +179,12 @@
             paintLatest_active_power(latest);
             paintLatest_reactive_power(latest);
             paintMonth(month_data);
+            for(var i = 1; i <= 12; ++i){
+                var name = "temp" + i;
+                var label_name = i + "路温度";
+                var div_id = "temp" + i + "_graph";
+                paintTemp(latest, name, label_name, div_id);
+            }
             var $start_time = $("#relay_data_start_time");
             $start_time.val(json_data.start_time);
             var $end_time = $("#relay_data_end_time");
@@ -161,12 +199,20 @@
             $("#"+id).css("display", "block").siblings().css("display", "none");
             $first.css("display", "block");
         });
+        $("[name=otherParameter_temp] li").on("click", function(){
+            $(this).addClass("active").siblings().removeClass("active");
+            var id = $(this).attr("name") + "_graph";
+            var $first = $($("#"+id).siblings().get(0));
+            $("#"+id).css("display", "block").siblings().css("display", "none");
+            $first.css("display", "block");
+        });
         $("[name=voltage]").click();
+        $("[name=temp1]").click();
         $("[name=relay_data_time_filter]").on("click", function() {
             var start_time = $("#relay_data_start_time").val();
             var end_time = $("#relay_data_end_time").val();
-            console.log(start_time);
-            console.log(end_time);
+{#            console.log(start_time);#}
+{#            console.log(end_time);#}
             if (start_time > end_time) {
                 alert("请选择正确的时间段");
                 return;
@@ -1038,6 +1084,111 @@
             }, {
                 name: '总有效电能',
                 data: vt
+            }]
+        });
+    }
+    function paintTemp(latest, name, label_name, div_id){
+        var active_power_max = 0;
+        var xx = new Array(), v1 = new Array(), v2 = new Array(), v3 = new Array();
+        for(var i = 0; i < latest.length; ++i){
+            xx.push(latest[i].data_time);
+            v1.push(latest[i][name]);
+            if(latest[i].a_active_power > active_power_max){
+                active_power_max = latest[i].a_active_power;
+            }
+            if(latest[i].b_active_power > active_power_max){
+                active_power_max = latest[i].b_active_power;
+            }
+            if(latest[i].c_active_power > active_power_max){
+                active_power_max = latest[i].c_active_power;
+            }
+        }
+        var time_list = xx;
+        var datas_a = new Array();
+        var len = v1.length;
+        for(var i = 0;i < len; ++i){
+            var tmp_a = new Array();
+            var _ = new Date(time_list[i].replace(/-/g, "/"));
+            var time = Date.UTC(_.getUTCFullYear(), _.getUTCMonth(), _.getUTCDate(), _.getUTCHours(), _.getUTCMinutes(), _.getUTCSeconds());
+            tmp_a.push(time);
+            tmp_a.push(v1[i]);
+            datas_a.push(tmp_a);
+        }
+        Highcharts.setOptions({
+            colors: ['#ffff00', '#00ff00', '#ff0000', '#0000ff']
+        });
+        $('#' + div_id).highcharts({
+            chart: {
+                type: 'line',
+                backgroundColor: 'rgba(80,81,95,0.1)',
+            },
+            title: {
+                text: '中继' + label_name,
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            subtitle: {
+                text: '来源:' + device_id,
+                style: {
+                    color: '#FFFFFF',
+                }
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    millisecond: '%H:%M:%S',
+                    second: '%H:%M:%S',
+                    minute: '%d %H:%M',
+                    hour: '%m-%d %H:%M',
+                    day: '%m-%d',
+                    week: '%m-%d',
+                    month: '%Y-%m',
+                    year: '%Y',
+                },
+            },
+            yAxis: {
+                max: active_power_max * 3,
+                title: {
+                    text: '有功功率（w)',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                },
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        color:'#FFFFFF',
+                    }
+                }
+            },
+            tooltip: {
+                valueSuffix: 'w',
+                dateTimeLabelFormats: {
+                    millisecond: '%Y-%m-%d %H:%M:%S',
+                    second: '%Y-%m-%d %H:%M:%S',
+                    minute: '%Y-%m-%d %H:%M:%S',
+                    hour: '%Y-%m-%d %H:%M:%S',
+                    day: '%Y-%m-%d %H:%M:%S',
+                    week: '%Y-%m-%d %H:%M:%S',
+                    month: '%Y-%m-%d %H:%M:%S',
+                    year: '%Y-%m-%d %H:%M:%S',
+                }
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                borderWidth: 0,
+                backgroundColor: '#ffffff'
+            },
+            series: [{
+                name: label_name,
+                data: datas_a,
+                color:"#ffff00"
             }]
         });
     }
