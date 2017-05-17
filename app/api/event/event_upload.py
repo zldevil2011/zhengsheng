@@ -76,7 +76,7 @@ class EventUpload(APIView):
                     text_content = u"设备（ID:" + str(event.device.device_id) + u")在" + str(event.time) + u"发生了" + str(
                         event.name) + u"事件（设备地址：" + address +  u")，请您及时查看"
                     from_email = settings.EMAIL_HOST_USER
-                    to = "34985488@qq.com"
+                    to = "929034478@qq.com"
                     try:
                         send_mail(subject, text_content, from_email, [to], fail_silently=False)
                     except:
