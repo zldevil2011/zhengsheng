@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'', include('app.urls')),
     url(r'^terminal/', include('app.terminal_urls')),
     url(r'^app/', include('app.app_urls')),
+    url(r'^phone/', include('app.phone_urls')),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     url(r'^api/v1/', include(api_urls)),
