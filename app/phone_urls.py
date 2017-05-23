@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'historical/$', historical, name="historical"),
     url(r'informationDetails/$', information_details, name="information_details"),
     url(r'myInformation/$', TemplateView.as_view(template_name="phone/myInformation.html")),
+    url(r'personal/$', TemplateView.as_view(template_name="phone/personalInformation.html")),
     url(r'user/login/$', login, name="login"),
 ]
