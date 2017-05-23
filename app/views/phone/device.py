@@ -65,7 +65,7 @@ def index(request):
 
 
 def historical(request):
-	user = AppUser.objects.get(username='zhengsheng')
+	user = AppUser.objects.get(username='u12')
 	device = user.device
 	# 获取当前用户历史采集日期的的各类数据（按照采集时间）：用电量，电压，电流，温度
 	try:
