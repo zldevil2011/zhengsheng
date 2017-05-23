@@ -27,14 +27,21 @@ def index(request):
 	for data in datas:
 		try:
 			data["tempT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["tempT"])))
+		except Exception as e:
+			print(str(e))
+		try:
 			data["powerT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["powerT"])))
+		except Exception as e:
+			print(str(e))
+		try:
 			data["tempBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["tempBT"])))
-			data["faultBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["faultBT"])))
+		except Exception as e:
+			print(str(e))
+		try:
 			# data["date_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["date_time"])))
 			data["date_time"] = 1000 * int(data["date_time"])
 		except Exception as e:
 			print(str(e))
-
 	ret_data_dic = {}
 	ret_power = []
 	ret_electricity = []
@@ -91,13 +98,22 @@ def historical(request):
 		for data in datas:
 			try:
 				data["tempT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["tempT"])))
+			except Exception as e:
+				print(str(e))
+			try:
 				data["powerT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["powerT"])))
+			except Exception as e:
+				print(str(e))
+			try:
 				data["tempBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["tempBT"])))
-				data["faultBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["faultBT"])))
+			except Exception as e:
+				print(str(e))
+			try:
 				# data["date_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["date_time"])))
 				data["date_time"] = 1000 * int(data["date_time"])
 			except Exception as e:
 				print(str(e))
+
 		ret_power = []
 		ret_electricity = []
 		ret_voltage = []
