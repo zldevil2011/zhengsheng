@@ -3,49 +3,142 @@
     {% block title %}历史数据{% endblock %}
 {% block special_css %}
     <style>
-
+        .queryForm div{
+            padding: 0;
+            margin-bottom: 5px;
+            border-left: 1px solid black;
+            color:black !important;
+        }
+        .queryForm div:hover{
+            color:black !important;
+        }
     </style>
 {% endblock %}
 {% block body_content %}
-
-    <div id="historicalData">
-        <div id="historicalElectricity">
+    <div class="row clearfix queryForm">
+        <div class="col-md-5 col-sm-6 col-xs-6">
+            <input type="date" class="btn btn-block" id="startFilterTime">
+        </div>
+        <div class="col-md-5 col-sm-6 col-xs-6">
+            <input type="date" class="btn btn-block" id="endFilterTime">
+        </div>
+        <div class="col-md-2 col-sm-12 col-xs-12">
+            <button class="btn btn-success btn-block" id="queryTime">查询</button>
+        </div>
+    </div>
+    <div id="todayData">
+        <div id="realData">
             <div style="background: rgba(30, 144, 255, 0.8); border-radius: 5px;margin-bottom: 10px;position: relative;">
-                实时电量
+                历史电量
             </div>
             <div id="container" style="min-width:400px;height:400px"></div>
         </div>
-        <div id="historicalOtherData">
+        <div id="realTemperature">
             <div style="background: rgba(30, 144, 255, 0.8); border-radius: 5px;margin-bottom: 10px;">
-                其他数据
-                <select style="float: right;background-color: #00c6ff;height: 100%;display: inline-block;">
-                    <option>电压</option>
-                    <option>电流</option>
-                    <option>温度</option>
+                历史其他数据
+                <select style="float: right;background-color: #00c6ff;height: 100%;display: inline-block;" id="otherDataChoice">
+                    <option value="Voltage">电压</option>
+                    <option value="Electricity">电流</option>
+                    <option value="Temperature">温度</option>
                 </select>
             </div>
-            <div id="container1" style="min-width:400px;height:400px"></div>
+            <div>
+                <div id="containerVoltage" style="width:100%;height:400px"></div>
+                <div id="containerElectricity" style="width:100%;height:400px;display: none;"></div>
+                <div id="containerTemperature" style="width:100%;height:400px;display: none;"></div>
+            </div>
         </div>
     </div>
 
 {% endblock %}
 {% block special_js %}
     <script>
+        $("#otherDataChoice").on("change", function(){
+            var val = $("#otherDataChoice").val();
+            var containerId = "container" + val;
+            $("#" + containerId).siblings().css("display", "none");
+            $("#" + containerId).css("display", "block");
+        });
+        $("#queryTime").on("click", function(){
+            var startFilterTime = $("#startFilterTime").val();
+            var endFilterTime = $("#endFilterTime").val();
+            if($.trim(startFilterTime) == ""){
+                $("#startFilterTime").focus();
+                return false;
+            }
+            if($.trim(endFilterTime) == ""){
+                $("#endFilterTime").focus();
+                return false;
+            }
+            var queryStr = "start_filter_time=" + startFilterTime + "&end_filter_time=" + endFilterTime;
+            window.location.href = "/phone/historical/?" + queryStr;
+        });
+        try{
+            var address = window.location.href;
+            var querys = address.split('?')[1];
+            var start_filter_time = querys.split('&')[0].split('=')[1];
+            var end_filter_time = querys.split('&')[1].split('=')[1];
+            console.log(start_filter_time);
+            console.log(end_filter_time);
+            $("#startFilterTime").val(start_filter_time);
+            $("#endFilterTime").val(end_filter_time);
+        }catch (e){
+
+        }
+    </script>
+    <script>
+    var ret_data_dic = {{ ret_data_dic|safe }};
+    var deviceId = ret_data_dic.device.device_id;
+    console.log(ret_data_dic);
+    var datasPower = new Array();
+    var datasVoltage = new Array();
+    var datasElectricity = new Array();
+    var datasTemperature = new Array();
+    var len = ret_data_dic.ret_time.length;
+    for(var i = 0; i < len; ++i){
+        var tmpPower = new Array();
+        tmpPower.push(ret_data_dic.ret_time[i] + 8*60*60*1000); //得到的时间比标准时间少8个小时，所以加上
+        tmpPower.push(ret_data_dic.ret_power[i]);
+        datasPower.push(tmpPower);
+        var tmpVoltage = new Array();
+        tmpVoltage.push(ret_data_dic.ret_time[i] + 8*60*60*1000); //得到的时间比标准时间少8个小时，所以加上
+        tmpVoltage.push(ret_data_dic.ret_voltage[i]);
+        datasVoltage.push(tmpVoltage);
+        var tmpElectricity = new Array();
+        tmpElectricity.push(ret_data_dic.ret_time[i] + 8*60*60*1000); //得到的时间比标准时间少8个小时，所以加上
+        tmpElectricity.push(ret_data_dic.ret_electricity[i]);
+        datasElectricity.push(tmpElectricity);
+        var tmpTemperature = new Array();
+        tmpTemperature.push(ret_data_dic.ret_time[i] + 8*60*60*1000); //得到的时间比标准时间少8个小时，所以加上
+        tmpTemperature.push(ret_data_dic.ret_temperature[i]);
+        datasTemperature.push(tmpTemperature);
+    }
     var chart = new Highcharts.Chart('container', {
         title: {
-            text: '不同城市的月平均气温',
+            text: deviceId + "号终端电能数据",
             x: -20
         },
         subtitle: {
-            text: '数据来源: WorldClimate.com',
+            text: '数据来源:' + deviceId + "终端",
             x: -20
         },
         xAxis: {
-            categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+            type: 'datetime',
+            dateTimeLabelFormats: { // don't display the dummy year
+                millisecond: '%H:%M:%S',
+                second: '%H:%M:%S',
+                minute: '%d %H:%M',
+                hour: '%m-%d %H:%M',
+                day: '%m-%d',
+                week: '%m-%d',
+                month: '%Y-%m',
+                year: '%Y',
+            },
+            {# categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']#}
         },
         yAxis: {
             title: {
-                text: '温度 (°C)'
+                text: '电量 (KWh)'
             },
             plotLines: [{
                 value: 0,
@@ -54,40 +147,165 @@
             }]
         },
         tooltip: {
-            valueSuffix: '°C'
+            valueSuffix: 'kwh',
+            dateTimeLabelFormats: {
+                millisecond: '%Y-%m-%d %H:%M:%S',
+                second: '%Y-%m-%d %H:%M:%S',
+                minute: '%Y-%m-%d %H:%M:%S',
+                hour: '%Y-%m-%d %H:%M:%S',
+                day: '%Y-%m-%d %H:%M:%S',
+                week: '%Y-%m-%d %H:%M:%S',
+                month: '%Y-%m-%d %H:%M:%S',
+                year: '%Y-%m-%d %H:%M:%S',
+            }
         },
         legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
+            layout: 'horizontal',
+            align: 'center',
+            verticalAlign: 'bottom',
             borderWidth: 0
         },
         series: [{
-            name: '东京',
-            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-        }, {
-            name: '纽约',
-            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-        }, {
-            name: '柏林',
-            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-        }, {
-            name: '伦敦',
-            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+            name: deviceId,
+            data: datasPower
         }]
     });
-
-    var chart1 = new Highcharts.Chart('container1', {
+    var chartVoltage = new Highcharts.Chart('containerVoltage', {
         title: {
-            text: '不同城市的月平均气温',
+            text: deviceId + "号终端电压数据",
             x: -20
         },
         subtitle: {
-            text: '数据来源: WorldClimate.com',
+            text: '数据来源:' + deviceId + "终端",
             x: -20
         },
         xAxis: {
-            categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+            type: 'datetime',
+            dateTimeLabelFormats: { // don't display the dummy year
+                millisecond: '%H:%M:%S',
+                second: '%H:%M:%S',
+                minute: '%d %H:%M',
+                hour: '%m-%d %H:%M',
+                day: '%m-%d',
+                week: '%m-%d',
+                month: '%Y-%m',
+                year: '%Y',
+            },
+            {# categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']#}
+        },
+        yAxis: {
+            title: {
+                text: '电压 (V)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: 'V',
+            dateTimeLabelFormats: {
+                millisecond: '%Y-%m-%d %H:%M:%S',
+                second: '%Y-%m-%d %H:%M:%S',
+                minute: '%Y-%m-%d %H:%M:%S',
+                hour: '%Y-%m-%d %H:%M:%S',
+                day: '%Y-%m-%d %H:%M:%S',
+                week: '%Y-%m-%d %H:%M:%S',
+                month: '%Y-%m-%d %H:%M:%S',
+                year: '%Y-%m-%d %H:%M:%S',
+            }
+        },
+        legend: {
+            layout: 'horizontal',
+            align: 'center',
+            verticalAlign: 'bottom',
+            borderWidth: 0
+        },
+        series: [{
+            name: deviceId,
+            data: datasVoltage
+        }]
+    });
+    var chartElectricity = new Highcharts.Chart('containerElectricity', {
+        title: {
+            text: deviceId + "号终端电流数据",
+            x: -20
+        },
+        subtitle: {
+            text: '数据来源:' + deviceId + "终端",
+            x: -20
+        },
+        xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats: { // don't display the dummy year
+                millisecond: '%H:%M:%S',
+                second: '%H:%M:%S',
+                minute: '%d %H:%M',
+                hour: '%m-%d %H:%M',
+                day: '%m-%d',
+                week: '%m-%d',
+                month: '%Y-%m',
+                year: '%Y',
+            },
+            {# categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']#}
+        },
+        yAxis: {
+            title: {
+                text: '电流 (A)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: 'A',
+            dateTimeLabelFormats: {
+                millisecond: '%Y-%m-%d %H:%M:%S',
+                second: '%Y-%m-%d %H:%M:%S',
+                minute: '%Y-%m-%d %H:%M:%S',
+                hour: '%Y-%m-%d %H:%M:%S',
+                day: '%Y-%m-%d %H:%M:%S',
+                week: '%Y-%m-%d %H:%M:%S',
+                month: '%Y-%m-%d %H:%M:%S',
+                year: '%Y-%m-%d %H:%M:%S',
+            }
+        },
+        legend: {
+            layout: 'horizontal',
+            align: 'center',
+            verticalAlign: 'bottom',
+            borderWidth: 0
+        },
+        series: [{
+            name: deviceId,
+            data: datasElectricity
+        }]
+    });
+    var chartTemperature = new Highcharts.Chart('containerTemperature', {
+        title: {
+            text: deviceId + "号终端温度数据",
+            x: -20
+        },
+        subtitle: {
+            text: '数据来源:' + deviceId + "终端",
+            x: -20
+        },
+        xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats: { // don't display the dummy year
+                millisecond: '%H:%M:%S',
+                second: '%H:%M:%S',
+                minute: '%d %H:%M',
+                hour: '%m-%d %H:%M',
+                day: '%m-%d',
+                week: '%m-%d',
+                month: '%Y-%m',
+                year: '%Y',
+            },
+            {# categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']#}
         },
         yAxis: {
             title: {
@@ -100,26 +318,27 @@
             }]
         },
         tooltip: {
-            valueSuffix: '°C'
+            valueSuffix: '°C',
+            dateTimeLabelFormats: {
+                millisecond: '%Y-%m-%d %H:%M:%S',
+                second: '%Y-%m-%d %H:%M:%S',
+                minute: '%Y-%m-%d %H:%M:%S',
+                hour: '%Y-%m-%d %H:%M:%S',
+                day: '%Y-%m-%d %H:%M:%S',
+                week: '%Y-%m-%d %H:%M:%S',
+                month: '%Y-%m-%d %H:%M:%S',
+                year: '%Y-%m-%d %H:%M:%S',
+            }
         },
         legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
+            layout: 'horizontal',
+            align: 'center',
+            verticalAlign: 'bottom',
             borderWidth: 0
         },
         series: [{
-            name: '东京',
-            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-        }, {
-            name: '纽约',
-            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-        }, {
-            name: '柏林',
-            data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-        }, {
-            name: '伦敦',
-            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+            name: deviceId,
+            data: datasTemperature
         }]
     });
     </script>
