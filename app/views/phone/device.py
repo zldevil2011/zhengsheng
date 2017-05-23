@@ -25,12 +25,16 @@ def index(request):
 	datas = serializer(datas)
 	data_list = []
 	for data in datas:
-		data["tempT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["tempT"])))
-		data["powerT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["powerT"])))
-		data["tempBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["tempBT"])))
-		data["faultBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["faultBT"])))
-		# data["date_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["date_time"])))
-		data["date_time"] = 1000 * int(data["date_time"])
+		try:
+			data["tempT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["tempT"])))
+			data["powerT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["powerT"])))
+			data["tempBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["tempBT"])))
+			data["faultBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["faultBT"])))
+			# data["date_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["date_time"])))
+			data["date_time"] = 1000 * int(data["date_time"])
+		except Exception as e:
+			print(str(e))
+
 	ret_data_dic = {}
 	ret_power = []
 	ret_electricity = []
@@ -85,12 +89,15 @@ def historical(request):
 		datas = serializer(datas)
 		data_list = []
 		for data in datas:
-			data["tempT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["tempT"])))
-			data["powerT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["powerT"])))
-			data["tempBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["tempBT"])))
-			data["faultBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["faultBT"])))
-			# data["date_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["date_time"])))
-			data["date_time"] = 1000 * int(data["date_time"])
+			try:
+				data["tempT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["tempT"])))
+				data["powerT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["powerT"])))
+				data["tempBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["tempBT"])))
+				data["faultBT"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["faultBT"])))
+				# data["date_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data["date_time"])))
+				data["date_time"] = 1000 * int(data["date_time"])
+			except Exception as e:
+				print(str(e))
 		ret_power = []
 		ret_electricity = []
 		ret_voltage = []
