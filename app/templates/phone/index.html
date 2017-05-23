@@ -3,14 +3,16 @@
 {% block title %}首页{% endblock %}
 {% block special_css %}
     <style>
-
+        body{
+            font-size: 1.5rem;
+        }
     </style>
 {% endblock %}
 {% block body_content %}
     <div id="header">
-        <div style="background: rgba(30, 144, 255, 0.8); border-radius: 5px;margin-bottom: 10px;">我的状态</div>
+        <div style="background: rgba(30, 144, 255, 0.8); border-radius: 5px;margin-bottom: 5px;">我的状态</div>
         <div>
-            <table class="table table-bordered">
+            <table class="table table-bordered" style="margin-bottom: 5px;">
                 <tr>
                     <td>用户名</td>
                     <td>状态</td>
@@ -30,13 +32,13 @@
     </div>
     <div id="todayData">
         <div id="realData">
-            <div style="background: rgba(30, 144, 255, 0.8); border-radius: 5px;margin-bottom: 10px;position: relative;">
+            <div style="background: rgba(30, 144, 255, 0.8); border-radius: 5px;margin-bottom: 5px;position: relative;">
                 实时电量
             </div>
             <div id="container" style="width:100%;height:400px"></div>
         </div>
         <div id="realTemperature">
-            <div style="background: rgba(30, 144, 255, 0.8); border-radius: 5px;margin-bottom: 10px;">
+            <div style="background: rgba(30, 144, 255, 0.8); border-radius: 5px;margin: 5px 0;">
                 其他数据
                 <select style="float: right;background-color: #00c6ff;height: 100%;display: inline-block;" id="otherDataChoice">
                     <option value="Voltage">电压</option>
