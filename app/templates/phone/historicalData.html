@@ -12,15 +12,27 @@
         .queryForm div:hover{
             color:black !important;
         }
+        .input-style{
+            padding: 10px 15px;
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.4;
+            border: none;
+            border-radius: 4px;
+            -webkit-transition: border .25s linear,color .25s linear,background-color .25s linear;
+            transition: border .25s linear,color .25s linear,background-color .25s linear;
+            -webkit-font-smoothing: subpixel-antialiased;
+            cursor: pointer;
+        }
     </style>
 {% endblock %}
 {% block body_content %}
     <div class="clearfix queryForm">
         <div class="col-md-5 col-sm-6 col-xs-6">
-            <input type="date" class="btn btn-block" id="startFilterTime">
+            <input type="date" class="input-style btn-block" id="startFilterTime">
         </div>
         <div class="col-md-5 col-sm-6 col-xs-6">
-            <input type="date" class="btn btn-block" id="endFilterTime">
+            <input type="date" class="input-style btn-block" id="endFilterTime">
         </div>
         <div class="col-md-2 col-sm-12 col-xs-12">
             <button class="btn btn-success btn-block" id="queryTime">查询</button>

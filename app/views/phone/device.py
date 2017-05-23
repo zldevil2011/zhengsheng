@@ -12,11 +12,10 @@ import json
 
 
 def index(request):
-	# try:
-	# 	user = AppUser.objects.get(username=request.session['username'])
-	# except:
-	# 	return HttpResponsePermanentRedirect("/phone/user/login/")
-	user = AppUser.objects.get(username='u12')
+	try:
+		user = AppUser.objects.get(username=request.session['username'])
+	except:
+		return HttpResponsePermanentRedirect("/phone/user/login/")
 	device = user.device
 	# 获取当前用户今日的各类数据（按照采集时间）：用电量，电压，电流，温度
 	today = datetime.today()
@@ -76,7 +75,10 @@ def index(request):
 
 
 def historical(request):
-	user = AppUser.objects.get(username='u12')
+	try:
+		user = AppUser.objects.get(username=request.session['username'])
+	except:
+		return HttpResponsePermanentRedirect("/phone/user/login/")
 	device = user.device
 	# 获取当前用户历史采集日期的的各类数据（按照采集时间）：用电量，电压，电流，温度
 	try:
@@ -159,7 +161,10 @@ def historical(request):
 
 
 def information_details(request):
-	user = AppUser.objects.get(username='u12')
+	try:
+		user = AppUser.objects.get(username=request.session['username'])
+	except:
+		return HttpResponsePermanentRedirect("/phone/user/login/")
 	device = user.device
 	# 获取当前用户今日的各类数据（小时级别）：用电量，电压，电流，温度
 	try:
@@ -183,15 +188,18 @@ def information_details(request):
 		for i in range(first_data.date_time.hour+1, hour):
 			idx += 1
 			time_now = datetime(today.year, today.month, today.day, i, 0)
-			tmp_data = datas.filter(date_time__gte=time_now).order_by('-date_time')[0]
-			print tmp_data
-			tmp = {}
-			tmp["time"] = i
-			tmp["power"] = float(tmp_data.powerV) - data_list[idx-1]["power"]
-			tmp["totalPower"] = tmp_data.powerV
-			tmp["temperature"] = tmp_data.temp
-			tmp["status"] = device.device_status
-			data_list.append(tmp)
+			try:
+				tmp_data = datas.filter(date_time__gte=time_now).order_by('-date_time')[0]
+				print tmp_data
+				tmp = {}
+				tmp["time"] = i
+				tmp["power"] = float(tmp_data.powerV) - data_list[idx-1]["power"]
+				tmp["totalPower"] = tmp_data.powerV
+				tmp["temperature"] = tmp_data.temp
+				tmp["status"] = device.device_status
+				data_list.append(tmp)
+			except:
+				pass
 		data_list[0]["power"] = 0
 	except Exception as e:
 		print(str(e))
