@@ -16,7 +16,7 @@ def index(request):
 	# 	user = AppUser.objects.get(username=request.session['username'])
 	# except:
 	# 	return HttpResponsePermanentRedirect("/phone/user/login/")
-	user = AppUser.objects.get(username='zhengsheng')
+	user = AppUser.objects.get(username='u12')
 	device = user.device
 	# 获取当前用户今日的各类数据（按照采集时间）：用电量，电压，电流，温度
 	today = datetime.today()
