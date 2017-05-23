@@ -156,3 +156,50 @@ def historical(request):
 		"device": device,
 		"user": user,
 	})
+
+
+def information_details(request):
+	user = AppUser.objects.get(username='u12')
+	device = user.device
+	# 获取当前用户今日的各类数据（小时级别）：用电量，电压，电流，温度
+	try:
+		today = datetime.today()
+		hour = today.hour
+		today_start = datetime(today.year, today.month, today.day, 0, 0)
+		datas = Data.objects.filter(device_id=device, date_time__gte=today_start)
+		print datas
+		first_data = datas[0]
+		# datas = serializer(datas)
+		data_list = []
+		tmp = {}
+		tmp["time"] = first_data.date_time.hour
+		tmp["power"] = first_data.powerV
+		tmp["totalPower"] = first_data.powerV
+		tmp["temperature"] = first_data.temp
+		tmp["status"] = device.device_status
+		data_list.append(tmp)
+		idx = 0
+		print first_data.date_time.hour, hour
+		for i in range(first_data.date_time.hour+1, hour):
+			idx += 1
+			time_now = datetime(today.year, today.month, today.day, i, 0)
+			tmp_data = datas.filter(date_time__gte=time_now).order_by('-date_time')[0]
+			print tmp_data
+			tmp = {}
+			tmp["time"] = i
+			tmp["power"] = float(tmp_data.powerV) - data_list[idx-1]["power"]
+			tmp["totalPower"] = tmp_data.powerV
+			tmp["temperature"] = tmp_data.temp
+			tmp["status"] = device.device_status
+			data_list.append(tmp)
+		data_list[0]["power"] = 0
+	except Exception as e:
+		print(str(e))
+		data_list = []
+		pass
+	print data_list
+	return render(request, "phone/informationDetails.html", {
+		"device": device,
+		"user": user,
+		"data_list": data_list,
+	})
