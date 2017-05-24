@@ -57,16 +57,19 @@ def index(request):
 		else:
 			ret_power.append(datas[idx]["powerV"] - datas[idx-1]["powerV"])
 	device = serializer(device)
-	device["todayPower"] = datas[len(datas) - 1]["powerV"] - datas[0]["powerV"]
-	device["voltage"] = datas[len(datas) - 1]["voltage"]
-	device["electric_current"] = datas[len(datas) - 1]["electric_current"]
-	ret_data_dic["ret_power"] = ret_power
-	ret_data_dic["ret_electricity"] = ret_electricity
-	ret_data_dic["ret_voltage"] = ret_voltage
-	ret_data_dic["ret_temperature"] = ret_temperature
-	ret_data_dic["ret_time"] = ret_time
-	ret_data_dic["device"] = device
-	ret_data_dic = json.dumps(ret_data_dic)
+	try:
+		device["todayPower"] = datas[len(datas) - 1]["powerV"] - datas[0]["powerV"]
+		device["voltage"] = datas[len(datas) - 1]["voltage"]
+		device["electric_current"] = datas[len(datas) - 1]["electric_current"]
+		ret_data_dic["ret_power"] = ret_power
+		ret_data_dic["ret_electricity"] = ret_electricity
+		ret_data_dic["ret_voltage"] = ret_voltage
+		ret_data_dic["ret_temperature"] = ret_temperature
+		ret_data_dic["ret_time"] = ret_time
+		ret_data_dic["device"] = device
+		ret_data_dic = json.dumps(ret_data_dic)
+	except:
+		pass
 	return render(request, "phone/index.html", {
 		"ret_data_dic":ret_data_dic,
 		"device":device,
