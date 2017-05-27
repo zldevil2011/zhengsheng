@@ -194,6 +194,7 @@ class Event(models.Model):
     name = models.CharField(max_length=32, default=0)
     time = models.DateTimeField(null=True)
     content = models.CharField(max_length=32, null=True)
+    read_tag = models.BooleanField(default=False)
 
     def __unicode__(self):
         return str(self.pk)

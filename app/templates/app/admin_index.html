@@ -50,48 +50,6 @@
                 </div>
             </div>
         </div>
-        <div id="warning-dialog" class="modal_warning"  style="position:fixed;right: 0;bottom: 0; height: 420px;width: 400px;background-color: white;z-index:999;color:black;overflow:auto;">
-            <button type="button" class="close" data-dismiss="modal_warning" aria-hidden="true" onclick="closeDiaglog();">×</button>
-            <div class="row clearfix">
-                <div class="col-md-12 column">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>
-                                    设备
-                                </th>
-                                <th>
-                                    名称
-                                </th>
-                                <th>
-                                    时间
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for temperature_warning in temperature_warning_list %}
-                            <tr>
-                                <td>
-                                    {{ temperature_warning.device.device_id }}
-                                </td>
-                                <td>
-                                    {{ temperature_warning.name }}
-                                </td>
-                                <td>
-                                    {{ temperature_warning.time }}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <script>
-            function closeDiaglog(){
-                $("#warning-dialog").fadeOut(2000);
-            }
-        </script>
 {#        <div name="chart-info">#}
 {#            <div class="clearfix" style="color:black;">#}
 {#                <div class="col-md-6">#}
@@ -357,7 +315,7 @@
     </script>
     <script>
         $.ajax({
-            url: 'https://api.caiyunapp.com/v2/tCJY0-YnHrHVkfXA/117.533683,30.699859/realtime.json',
+            url: 'https://api.caiyunapp.com/v2/vgAv8bUfzXZMc=ZH/117.533683,30.699859/realtime.json',
             type: 'GET',
             dataType: 'jsonp',
 {#            crossDomain: true,#}

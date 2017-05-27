@@ -238,6 +238,35 @@
             <p>安徽征圣智能科技有限公司 版权所有</p>
         </section>
     </div>
+    <div id="warning-dialog" class="modal_warning"  style="position:fixed;right: 0;bottom: 0; height: 420px;width: 400px;background-color: white;z-index:999;color:black;overflow:auto;">
+        <button type="button" class="close" data-dismiss="modal_warning" aria-hidden="true" onclick="closeDiaglog();">×</button>
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                设备
+                            </th>
+                            <th>
+                                名称
+                            </th>
+                            <th>
+                                时间
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="warningList">
+                        <tr id="template" style="display: none;">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <!--JavaScript File -->
     <script type = "text/javascript" src = "/site_media/js/jquery-2.2.1.min.js"></script>
@@ -251,6 +280,53 @@
         <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
         <script src="http://apps.bdimg.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
+        function closeDiaglog(){
+            $("#warning-dialog").fadeOut(2000);
+        }
+        function readNewEvent(){
+            $("tr[id^='event_']").remove();
+
+            $.ajax({
+                url:'/admin_get_latest_warning_event/',
+                type:'GET',
+                success:function(res){
+                    try{
+                        var data = JSON.parse(res);
+                        console.log(data);
+                        var newTag = data.new_event;
+                        if(newTag == 1){
+                            $("#warning-dialog").fadeIn(2000);
+                            var objLen = data.data.length;
+                            for(var i = 0; i < objLen; ++i){
+                                var cp = $("#template").clone();
+                                var obj = data.data[i];
+                                cp.attr("id", "event_" + obj.id);
+                                cp.css("display", "table-row");
+                                console.log(cp);
+                                $(cp.children().get(0)).html(obj.device_id);
+                                $(cp.children().get(1)).html(obj.name);
+                                $(cp.children().get(2)).html(obj.time);
+                                $("#warningList").append(cp);
+                            }
+                        }else{
+
+                        }
+                    }catch (e){
+
+                    }
+                },
+                error:function(){
+
+                },
+            })
+        }
+        readNewEvent();
+        setInterval(readNewEvent, 5*60000);
+    </script>
+    <script>
+        $("#warning-dialog").fadeOut(10);
+    </script>
     {% block special_js %}
     <script>
         $(".name-list").transition({ opacity: 1, scale: 1.0 }, 5000);

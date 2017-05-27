@@ -13,6 +13,9 @@ urlpatterns = [
     url(r'^admin_login/$', index.admin_login, name="admin_login"),
     # 管理首页
     url(r'^admin_index/$', index.admin_index, name="admin_index"),
+    # 获取最新的十条温度报警
+    url(r'^admin_get_latest_warning_event/$', index.latest_event, name="latest_event"),
+    url(r'^admin_index/$', index.admin_index, name="admin_index"),
     # 账户管理
     url(r'^admin_account/$', user.admin_account, name="admin_account"),
     url(r'^admin_account/delete/$', user.admin_delete_user, name="delete_user"),
