@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static from staticfiles %}
+    <meta charset="UTF-8">
+    <title>关于我们</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <link rel="shortcut icon" type="image/x-icon" href={% static "app/img/favicon.ico" %}/>
+    <link rel="stylesheet" href= {% static "app/css/bootstrap.min.css" %} />
+    <link rel="stylesheet" href= {% static "app/font-awesome/css/font-awesome.min.css" %}>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous">
+    <link href="https://cdn.bootcss.com/flat-ui/2.3.0/css/flat-ui.min.css" rel="stylesheet">
+    {% block special_css %}
+    {% endblock %}
+    <style>
+        body{
+            background: rgba(30, 144, 255, 0.8);
+            margin-bottom: 100px;
+            color:white;
+        }
+
+        @media (max-width: 768px){
+            body{
+                margin-bottom: 50px;
+            }
+        }
+        #footer{
+            height: 100px;
+            min-height:20px;
+            background: rgba(0,0,0,0.9);
+            position: fixed;
+            bottom: 0;
+            border-width: 1px 0 0;
+            color:#999;
+            overflow: hidden;
+            width: 100%;
+            font-size: 1.5rem;
+        }
+        #footer .row > div{
+            text-align: center;
+{#            line-height: 50px;#}
+            padding-top: 10px;
+            border-left: 2px solid white;
+            cursor: pointer;
+        }
+        #footer .col-md-12{
+            word-break:break-all;
+        }
+{#        页面加载动画#}
+        .spinner {
+          margin: 100px auto;
+          width: 50px;
+          height: 60px;
+          text-align: center;
+          font-size: 10px;
+        }
+
+        .spinner > div {
+          background-color: #67CF22;
+          height: 100%;
+          width: 6px;
+          display: inline-block;
+
+          -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+          animation: stretchdelay 1.2s infinite ease-in-out;
+        }
+
+        .spinner .rect2 {
+          -webkit-animation-delay: -1.1s;
+          animation-delay: -1.1s;
+        }
+
+        .spinner .rect3 {
+          -webkit-animation-delay: -1.0s;
+          animation-delay: -1.0s;
+        }
+
+        .spinner .rect4 {
+          -webkit-animation-delay: -0.9s;
+          animation-delay: -0.9s;
+        }
+
+        .spinner .rect5 {
+          -webkit-animation-delay: -0.8s;
+          animation-delay: -0.8s;
+        }
+
+        @-webkit-keyframes stretchdelay {
+          0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+          20% { -webkit-transform: scaleY(1.0) }
+        }
+
+        @keyframes stretchdelay {
+          0%, 40%, 100% {
+            transform: scaleY(0.4);
+            -webkit-transform: scaleY(0.4);
+          }  20% {
+            transform: scaleY(1.0);
+            -webkit-transform: scaleY(1.0);
+          }
+        }
+        .company-info p{
+            text-indent:35px;
+            font-size: 1.3rem;
+        }
+        .company-info h6{
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="company-info">
+        <h6>1、简介</h6>
+	    <p>
+            安徽京师方圆信息技术有限公司位于安徽省池州市经济开发区。是一家实现在线环境数据收集与监测分析的高新技术产品服务公司。由原武汉大学副校长博士生导师黄天戍教授带领的“无线传感器网络监测系统技术研发团队”成立，利用无线传感器网络技术和3S（GIS、RS和GPS）技术以及IPv6技术实现生态环境监测、智能智慧城市的整体解决方案和集成综合应用；提供星地空一体化社会化环境安全云产业落地与规划。注册资本1020万。
+        </p>
+        <h6>2、产品</h6>
+        <p>
+            安徽京师方圆科技主要产品服务有：
+            <p>
+                智能农业在线监控系统、养殖基地智能监控系统都可以实时远程获取场所内部数据，该系统可以实时远程获取温室大棚内部数据，通过模型分析，实现信息化、智能化远程管理，增加收益
+            </p>
+            <p>
+                远程水位在线监控系统无线水位远程监测系统是基于无线传感器网络平台研制的以监测水位、温度和湿度等环境参数信息为主的数据采集系统。
+            </p>
+            <p>
+                废水在线监控取证系统&烟气在线监控取证系统为了帮助环保局针对各类企业的污染物，排放进行有效监控。
+            </p>
+            <p>
+                空气质量在线监控系统该系统在线自动监测系统。
+            </p>
+            <p>
+                水源监控预警系统水源监控预警系统，对水源地取水口周围水质进行全面自动监测和预警。
+            </p>
+        </p>
+    </div>
+    <div id = "footer">
+        <div class="row">
+            <div class="col-md-12">© 安徽京师方圆信息技术有限公司</div>
+            <div class="col-md-12">地址：安徽省池州市经济开发区金安工业园电子综合服务楼9楼</div>
+        </div>
+    </div>
+    <div id="loading" style="position: absolute; left: 50%; top:50%; transform: translate(-50%,-50%);width: 100%;height: 100%;background: rgba(128, 128, 128, 0.5);">
+        <div class="spinner" style="">
+          <div class="rect1"></div>
+          <div class="rect2"></div>
+          <div class="rect3"></div>
+          <div class="rect4"></div>
+          <div class="rect5"></div>
+        </div>
+    </div>
+
+    <script src= "/site_media/js/jquery-2.2.1.min.js"></script>
+    <script src= "/site_media/js/bootstrap.min.js"></script>
+    <script src= "/site_media/js/highcharts.js" ></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+        var height =  $(document).height();
+        $("#slider").height(height);
+    </script>
+    <script>
+        window.onload =function()
+        {
+            console.log("Yes");
+            $("#loading").css("display", "none");
+        }
+    </script>
+
+</body>
+</html>

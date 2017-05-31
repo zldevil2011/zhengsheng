@@ -3,7 +3,7 @@ from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from dss.Serializer import serializer
-from app.models import AppUser, Adminer, WorkOrder
+from app.models import AppUser, Adminer, WorkOrder, Event
 from django.contrib.auth.hashers import check_password, make_password
 import math
 import time
@@ -103,6 +103,25 @@ def workorder(request):
 		print workorder_list
 		return render(request, "phone/workorder.html", {
 			"workorder_list":workorder_list,
+			"user": user,
+		})
+	else:
+		pass
+
+@csrf_exempt
+def warning(request):
+	try:
+		user = AppUser.objects.get(username=request.session['username'])
+	except:
+		return HttpResponseRedirect("/phone/user/login/")
+	if request.method == "GET":
+		warning_list = Event.objects.filter(device=user.device)
+		warning_list = serializer(warning_list, foreign=True)
+		for warning in warning_list:
+			warning["time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(warning["time"]))
+		print warning_list
+		return render(request, "phone/warning.html", {
+			"warning_list":warning_list,
 			"user": user,
 		})
 	else:
