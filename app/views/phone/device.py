@@ -12,7 +12,10 @@ import json
 
 
 def index(request):
-	print(request.session['username'])
+	try:
+		print(request.session['username'])
+	except Exception as e:
+		print(str(e))
 	try:
 		user = AppUser.objects.get(username=request.session['username'])
 	except:
