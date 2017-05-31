@@ -12,6 +12,7 @@ import json
 
 
 def index(request):
+	print(request.session['username'])
 	try:
 		user = AppUser.objects.get(username=request.session['username'])
 	except:
