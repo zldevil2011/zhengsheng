@@ -12,6 +12,15 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+def my_information(request):
+	try:
+		user = AppUser.objects.get(username=request.session['username'])
+	except:
+		return HttpResponseRedirect("/phone/user/login/")
+	return render(request, "phone/myInformation.html", {
+		"user_id":user.pk,
+	})
+
 @csrf_exempt
 def login(request):
 	if request.method == "GET":
@@ -53,7 +62,9 @@ def logout(request):
 @csrf_exempt
 def personal(request):
 	try:
-		user = AppUser.objects.get(username=request.session['username'])
+		user_id = int(request.GET.get("user_id"))
+		user = AppUser.objects.get(pk=user_id)
+		# user = AppUser.objects.get(username=request.session['username'])
 	except:
 		return HttpResponseRedirect("/phone/user/login/")
 	if request.method == "GET":
@@ -92,7 +103,9 @@ def personal(request):
 @csrf_exempt
 def workorder(request):
 	try:
-		user = AppUser.objects.get(username=request.session['username'])
+		user_id = int(request.GET.get("user_id"))
+		user = AppUser.objects.get(pk=user_id)
+		# user = AppUser.objects.get(username=request.session['username'])
 	except:
 		return HttpResponseRedirect("/phone/user/login/")
 	if request.method == "GET":
@@ -111,7 +124,9 @@ def workorder(request):
 @csrf_exempt
 def warning(request):
 	try:
-		user = AppUser.objects.get(username=request.session['username'])
+		user_id = int(request.GET.get("user_id"))
+		user = AppUser.objects.get(pk=user_id)
+		# user = AppUser.objects.get(username=request.session['username'])
 	except:
 		return HttpResponseRedirect("/phone/user/login/")
 	if request.method == "GET":
