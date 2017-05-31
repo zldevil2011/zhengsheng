@@ -56,7 +56,8 @@ def logout(request):
 	except:
 		return HttpResponseRedirect("/phone/user/login/")
 	del request.session['username']
-	return HttpResponseRedirect("/admin_login/")
+	return render(request, "phone/logout.html", {})
+	# return HttpResponseRedirect("/admin_login/")
 
 
 @csrf_exempt

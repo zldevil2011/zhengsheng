@@ -2,7 +2,7 @@
 from django.conf.urls import url
 from django.views.generic import TemplateView
 from app.views.phone.device import index, historical, information_details
-from app.views.phone.user import my_information, login, personal,workorder,warning
+from app.views.phone.user import my_information, login, logout, personal,workorder,warning
 urlpatterns = [
     url(r'index/$', index, name="phone_index"),
     url(r'historical/$', historical, name="historical"),
@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'workorder/$', workorder, name="workorder"),
     url(r'warning/$', warning, name="warning"),
     url(r'user/login/$', login, name="login"),
+    url(r'user/logout/$', logout, name="logout"),
     url(r'aboutUs/$', TemplateView.as_view(template_name="phone/aboutUs.html")),
 ]
