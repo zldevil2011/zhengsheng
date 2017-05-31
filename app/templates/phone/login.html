@@ -133,12 +133,31 @@
 <body>
     <script>
         try{
-            var username = window.localStorage.getItem("zhengsheng");
+            var username = window.localStorage.getItem("zhengsheng_username");
+            var password = window.localStorage.getItem("zhengsheng_password");
             window.android.loginTip(username);
-            if(username == null){
+            if(username == null || password == null){
                 //没有本地记录
             }else{
-                window.location.href="/phone/index/";
+                $.ajax({
+                url:window.location.href,
+                type:'POST',
+                data:{username:username, password:password},
+                success:function(res){
+                    alert(res);
+                    if(res == "error"){
+                        $("#errTip").css("display", "block");
+                        window.android.loginTip("用户名或密码错误");
+                    }else{
+                        window.localStorage.setItem("zhengsheng_username", username);
+                        window.localStorage.setItem("zhengsheng_password", password);
+                        window.location.href="/phone/index/";
+                    }
+                },
+                error:function(res){
+                    $("#errTip").css("display", "block");
+                }
+            })
             }
         }catch (e){
             console.log(String.valueOf(e));
@@ -215,7 +234,8 @@
                         $("#errTip").css("display", "block");
                         window.android.loginTip("用户名或密码错误");
                     }else{
-                        window.localStorage.setItem("zhengsheng", username);
+                        window.localStorage.setItem("zhengsheng_username", username);
+                        window.localStorage.setItem("zhengsheng_password", password);
                         window.location.href="/phone/index/";
                     }
                 },

@@ -133,11 +133,13 @@
 <body>
     <script>
         try{
-            var username = window.localStorage.getItem("zhengsheng");
-            if(username == null){
+            var username = window.localStorage.getItem("zhengsheng_username");
+            var password = window.localStorage.getItem("zhengsheng_password");
+            if(username == null || password == null){
                 //没有本地记录
             }else{
-                window.localStorage.removeItem("zhengsheng");
+                window.localStorage.removeItem("zhengsheng_username");
+                window.localStorage.removeItem("zhengsheng_password");
                 window.location.href="/phone/user/login/";
             }
         }catch (e){
