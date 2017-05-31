@@ -24,49 +24,55 @@
     </div>
     <div class="row clearfix" style="padding: 15px;">
 		<div class="col-md-12 column">
-			<form class="form-horizontal" role="form">
+			<form class="form-horizontal" role="form" onsubmit="return false;">
 				<div class="form-group">
                     <label for="" class="col-sm-2 col-xs-2 control-label">姓名</label>
 					<div class="col-sm-10 col-xs-10">
-						<input type="text" class="form-control" id="" />
+						<input type="text" class="form-control" id="username" value="{{ user.username }}" readonly/>
 					</div>
 				</div>
 				<div class="form-group">
                     <label for="" class="col-sm-2 col-xs-2 control-label">地址</label>
 					<div class="col-sm-10 col-xs-10">
-						<input type="text" class="form-control" id="" />
+						<input type="text" class="form-control" id="address" value="{{ user.address }}"/>
 					</div>
 				</div>
                 <div class="form-group">
                     <label for="" class="col-sm-2 col-xs-2 control-label">电话</label>
 					<div class="col-sm-10 col-xs-10">
-						<input type="text" class="form-control" id="" />
+						<input type="text" class="form-control" id="telephone" value="{{ user.telephone }}"/>
 					</div>
 				</div>
                 <div class="form-group">
                     <label for="" class="col-sm-2 col-xs-2 control-label">邮箱</label>
 					<div class="col-sm-10 col-xs-10">
-						<input type="text" class="form-control" id="" />
+						<input type="text" class="form-control" id="email" value="{{ user.email }}"/>
 					</div>
 				</div>
                 <div class="form-group">
                     <label for="" class="col-sm-2 col-xs-2 control-label">设备</label>
 					<div class="col-sm-10 col-xs-10">
-						<input type="text" class="form-control" id="" readonly/>
+						<input type="text" class="form-control" id="device" readonly value="{{ user.device.device_id }}"/>
 					</div>
 				</div>
                 <div class="form-group">
-                    <label for="" class="col-sm-2 col-xs-2 control-label">密码</label>
+                    <label for="" class="col-sm-2 col-xs-2 control-label">旧密码</label>
+					<div class="col-sm-10 col-xs-10">
+						<input type="password" class="form-control" id="oldPwd"/>
+					</div>
+				</div>
+                <div class="form-group">
+                    <label for="" class="col-sm-2 col-xs-2 control-label">新密码</label>
 					<div class="col-sm-6 col-xs-6">
-						<input type="password" class="form-control" id="" readonly/>
+						<input type="password" class="form-control" id="newPwd"/>
 					</div>
                     <span class="col-sm-4 col-xs-4 control-label" style="padding-top: 5px;">
-                        更改
+                        不填则不更改密码
                     </span>
 				</div>
                 <div class="form-group">
 					<div class="col-sm-12 col-xs-12">
-						<button class="btn btn-success btn-block">保存</button>
+						<button class="btn btn-success btn-block" onclick="updatePersonalInfo();">保存</button>
 					</div>
 				</div>
 			</form>
@@ -85,6 +91,39 @@
         {
             console.log("Yes");
             $("#loading").css("display", "none");
+        }
+    </script>
+    <script>
+        function updatePersonalInfo(){
+            var oldPwd = $("#oldPwd").val();
+            if($.trim(oldPwd) == ""){
+                $("#oldPwd").focus();
+                return false;
+            }
+            var newPwd = $("#newPwd").val();
+            var address = $("#address").val();
+            var telephone = $("#telephone").val();
+            var email = $("#email").val();
+            if($.trim(newPwd) == ""){
+                newPwd = null;
+            }
+            $.ajax({
+                url:window.location.href,
+                type:'POST',
+                data:{
+                    "oldPwd":oldPwd,
+                    "newPwd":newPwd,
+                    "address":address,
+                    "telephone":telephone,
+                    "email":email
+                },
+                success:function(res){
+                    alert(res);
+                },
+                error:function(res){
+                    alert(res);
+                }
+            })
         }
     </script>
 </body>

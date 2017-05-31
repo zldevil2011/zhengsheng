@@ -1,5 +1,5 @@
 #coding=utf-8
-from django.shortcuts import render, HttpResponse, HttpResponsePermanentRedirect, Http404
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect, Http404
 from django.views.decorators.csrf import csrf_exempt
 from app.models import AppUser, Data, Device
 from dss.Serializer import serializer
@@ -15,7 +15,7 @@ def index(request):
 	try:
 		user = AppUser.objects.get(username=request.session['username'])
 	except:
-		return HttpResponsePermanentRedirect("/phone/user/login/")
+		return HttpResponseRedirect("/phone/user/login/")
 	device = user.device
 	# 获取当前用户今日的各类数据（按照采集时间）：用电量，电压，电流，温度
 	today = datetime.today()
@@ -81,7 +81,7 @@ def historical(request):
 	try:
 		user = AppUser.objects.get(username=request.session['username'])
 	except:
-		return HttpResponsePermanentRedirect("/phone/user/login/")
+		return HttpResponseRedirect("/phone/user/login/")
 	device = user.device
 	# 获取当前用户历史采集日期的的各类数据（按照采集时间）：用电量，电压，电流，温度
 	try:
@@ -167,7 +167,7 @@ def information_details(request):
 	try:
 		user = AppUser.objects.get(username=request.session['username'])
 	except:
-		return HttpResponsePermanentRedirect("/phone/user/login/")
+		return HttpResponseRedirect("/phone/user/login/")
 	device = user.device
 	# 获取当前用户今日的各类数据（小时级别）：用电量，电压，电流，温度
 	try:

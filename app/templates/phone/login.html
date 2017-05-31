@@ -197,10 +197,11 @@
                 type:'POST',
                 data:{username:username, password:password},
                 success:function(res){
+                    alert(res);
                     if(res == "error"){
                         $("#errTip").css("display", "block");
                     }else{
-                        window.location.href="/phone/index/"
+                        window.location.href="/phone/index/";
                     }
                 },
                 error:function(res){
