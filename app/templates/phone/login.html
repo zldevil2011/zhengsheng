@@ -135,10 +135,12 @@
         try{
             var username = window.localStorage.getItem("zhengsheng_username");
             var password = window.localStorage.getItem("zhengsheng_password");
-            window.android.loginTip(username);
+
             if(username == null || password == null){
+                window.android.loginTip("没有缓存");
                 //没有本地记录
             }else{
+                window.android.loginTip(username + password);
                 $.ajax({
                 url:window.location.href,
                 type:'POST',
