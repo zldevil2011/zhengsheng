@@ -92,6 +92,9 @@
         datasTemperature.push(tmpTemperature);
     }
     var chart = new Highcharts.Chart('container', {
+        chart: {
+                type: 'spline'
+            },
         title: {
             text: deviceId + "号终端电能数据",
             x: -20
@@ -149,6 +152,9 @@
         }]
     });
     var chartVoltage = new Highcharts.Chart('containerVoltage', {
+        chart: {
+                type: 'spline'
+            },
         title: {
             text: deviceId + "号终端电压数据",
             x: -20
@@ -206,6 +212,9 @@
         }]
     });
     var chartElectricity = new Highcharts.Chart('containerElectricity', {
+        chart: {
+                type: 'spline'
+            },
         title: {
             text: deviceId + "号终端电流数据",
             x: -20
@@ -263,6 +272,9 @@
         }]
     });
     var chartTemperature = new Highcharts.Chart('containerTemperature', {
+        chart: {
+                type: 'spline'
+            },
         title: {
             text: deviceId + "号终端温度数据",
             x: -20
