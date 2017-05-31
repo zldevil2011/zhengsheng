@@ -170,10 +170,10 @@
             var password = window.localStorage.getItem("zhengsheng_password");
 
             if(username == null || password == null){
-                window.android.loginTip("没有缓存");
+{#                window.android.loginTip("没有缓存");#}
                 //没有本地记录
             }else{
-                window.android.loginTip(username + password);
+{#                window.android.loginTip(username + password);#}
                 $.ajax({
                     url:window.location.href,
                     type:'POST',
