@@ -2,9 +2,11 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from app.models import AppUser, Adminer
+from dss.Serializer import serializer
+from app.models import AppUser, Adminer, WorkOrder
 from django.contrib.auth.hashers import check_password, make_password
 import math
+import time
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -86,3 +88,22 @@ def personal(request):
 				return HttpResponse("密码或个人信息不正确")
 		except Exception as e:
 			return HttpResponse(str(e))
+
+@csrf_exempt
+def workorder(request):
+	try:
+		user = AppUser.objects.get(username=request.session['username'])
+	except:
+		return HttpResponseRedirect("/phone/user/login/")
+	if request.method == "GET":
+		workorder_list = WorkOrder.objects.filter(appuser=user)
+		workorder_list = serializer(workorder_list, foreign=True)
+		for work in workorder_list:
+			work["time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(work["time"]))
+		print workorder_list
+		return render(request, "phone/workorder.html", {
+			"workorder_list":workorder_list,
+			"user": user,
+		})
+	else:
+		pass
