@@ -304,7 +304,7 @@
                                 cp.attr("id", "event_" + obj.id);
                                 cp.css("display", "table-row");
                                 console.log(cp);
-                                $(cp.children().get(0)).html(obj.device_id);
+                                $(cp.children().get(0)).html(obj.device.device_id);
                                 $(cp.children().get(1)).html(obj.name);
                                 $(cp.children().get(2)).html(obj.time);
                                 $("#warningList").append(cp);
