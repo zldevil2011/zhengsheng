@@ -25,9 +25,9 @@ def area_list(request):
     print village_code
     if city_code == 0 and village_code == 0:
         try:
-            city = City.objects.all()[0]
+            city = City.objects.filter(adminer=user)[0]
             village_list = Village.objects.filter(city=city)
-            city_list = City.objects.all()
+            city_list = City.objects.filter(adminer=user)
             city_code = city.city_code
         except:
             city_list = None
@@ -37,7 +37,7 @@ def area_list(request):
         try:
             city = City.objects.get(city_code = city_code)
             village_list = Village.objects.filter(city=city)
-            city_list = City.objects.all()
+            city_list = City.objects.filter(adminer=user)
             city_code = city.city_code
         except:
             city_list = None
@@ -72,6 +72,7 @@ def city_add(request):
             return HttpResponse("error")
         try:
             city = City()
+            city.adminer = user
             city.city_code = city_code
             city.city_name = city_name
             city.save()

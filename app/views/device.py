@@ -32,7 +32,7 @@ def admin_device(request):
     print("CV_code:")
     print(city_code)
     print(village_code)
-    city_list = City.objects.all()
+    city_list = City.objects.filter(adminer=user)
     try:
         city = City.objects.get(city_code=city_code)
         village_list = Village.objects.filter(city=city)
@@ -42,7 +42,7 @@ def admin_device(request):
     print(city_list)
     print(village_list)
 
-    device_list = Device.objects.exclude(device_status=u"未安装")
+    device_list = Device.objects.exclude(device_status=u"未安装").filter(adminer=user)
     if city_code == 0 and village_code == 0:
         pass
     elif village_code == 0:
@@ -114,7 +114,7 @@ def admin_device_filter(request):
         print type(start_time)
         print end_time
         print key
-        device_list = Device.objects.exclude(device_status=u"未安装")
+        device_list = Device.objects.exclude(device_status=u"未安装").filter(adminer=user)
         if device_id is not None and device_id != "":
             print("ok")
             device_list = device_list.filter(device_id__icontains=device_id)
@@ -156,8 +156,12 @@ def admin_device_add(request):
     except:
         return HttpResponseRedirect("/admin_login/")
     if request.method == "GET":
-        city_list = City.objects.all()
-        village_list = Village.objects.filter(city=city_list[0])
+        try:
+            city_list = City.objects.filter(adminer=user)
+            village_list = Village.objects.filter(city=city_list[0])
+        except:
+            city_list = []
+            village_list = []
         return render(request, 'app/admin_deviceAdd.html', {
             "city_list":city_list,
             "village_list":village_list,
@@ -265,7 +269,7 @@ def admin_device_remove(request):
         print("CV_code:")
         print(city_code)
         print(village_code)
-        city_list = City.objects.all()
+        city_list = City.objects.filter(adminer=user)
         try:
             city = City.objects.get(city_code=city_code)
             village_list = Village.objects.filter(city=city)
@@ -275,7 +279,7 @@ def admin_device_remove(request):
         print(city_list)
         print(village_list)
 
-        device_list = Device.objects.exclude(device_status=u"未安装")
+        device_list = Device.objects.exclude(device_status=u"未安装").filter(adminer=user)
         if city_code == 0 and village_code == 0:
             pass
         elif village_code == 0:
@@ -369,7 +373,7 @@ def admin_device_maintain(request):
         print("CV_code:")
         print(city_code)
         print(village_code)
-        city_list = City.objects.all()
+        city_list = City.objects.filter(adminer=user)
         try:
             city = City.objects.get(city_code=city_code)
             village_list = Village.objects.filter(city=city)
@@ -379,7 +383,7 @@ def admin_device_maintain(request):
         print(city_list)
         print(village_list)
 
-        repair_list = Repairing.objects.all().order_by('-time')
+        repair_list = Repairing.objects.filter(adminer=user).order_by('-time')
         if city_code == 0 and village_code == 0:
             pass
         elif village_code == 0:
@@ -519,7 +523,7 @@ def admin_device_temperature(request):
         city_code = int(request.GET.get("city_code", 0))
         village_code = int(request.GET.get("village_code", 0))
 
-        city_list = City.objects.all()
+        city_list = City.objects.filter(adminer=user)
         try:
             city = City.objects.get(city_code=city_code)
             village_list = Village.objects.filter(city=city)
@@ -529,7 +533,7 @@ def admin_device_temperature(request):
         today = datetime.today()
         today = datetime(today.year, today.month, today.day)
         # print today
-        device_list = Device.objects.exclude(device_status=u"未安装")
+        device_list = Device.objects.exclude(device_status=u"未安装").filter(adminer=user)
         try:
             if city_code == 0 and village_code == 0:
                 pass
@@ -646,7 +650,7 @@ def admin_device_health(request):
     city_code = int(request.GET.get("city_code", 0))
     village_code = int(request.GET.get("village_code", 0))
 
-    city_list = City.objects.all()
+    city_list = City.objects.filter(adminer=user)
     try:
         city = City.objects.get(city_code=city_code)
         village_list = Village.objects.filter(city=city)
@@ -656,7 +660,7 @@ def admin_device_health(request):
     today = datetime.today()
     today = datetime(today.year, today.month, today.day)
     print today
-    device_list = Data.objects.filter().order_by('-date_time')
+    device_list = Data.objects.filter(device_id__adminer=user).order_by('-date_time')
     total_page = int(math.ceil(len(device_list)/15.0))
     if total_page < 1:
         total_page = 1
@@ -731,7 +735,7 @@ def list(request):
     except:
         return HttpResponseRedirect("/admin_login/")
     page = request.GET.get("page")
-    page_num = int(math.ceil(len(Device.objects.all()) / 10.0))
+    page_num = int(math.ceil(len(Device.objects.filter(adminer=user)) / 10.0))
     print page
     if page is None:
         page = 1
@@ -744,7 +748,7 @@ def list(request):
     start_num = (page - 1) * 10
     end_num = page * 10
     try:
-        device_list = Device.objects.all().order_by('-id')[start_num:end_num]
+        device_list = Device.objects.filter(adminer=user).order_by('-id')[start_num:end_num]
         device_list = serializer(device_list)
         for device in device_list:
             device_id = str(device["device_id"])
@@ -810,6 +814,7 @@ def instock(request):
         for i in range(device_number):
             start_num += 1
             device = Device()
+            device.adminer = user
             device.device_id = start_num
             device.device_status = u"未安装"
             now = time.localtime()
@@ -876,13 +881,13 @@ def admin_device_gateway_parameter(request):
             village_code = int(request.GET.get("village_code"))
         except:
             village_code = 0
-        city_list = City.objects.all()
+        city_list = City.objects.filter(adminer=user)
         try:
             city = City.objects.get(city_code=city_code)
             village_list = Village.objects.filter(city=city)
         except:
             village_list = None
-        gateway_list = Parameter.objects.filter()
+        gateway_list = Parameter.objects.filter(device__adminer=user)
         if city_code == 0 and village_code == 0:
             pass
         elif village_code == 0:
@@ -1009,13 +1014,13 @@ def admin_relay_data(request):
             village_code = int(request.GET.get("village_code"))
         except:
             village_code = 0
-        city_list = City.objects.all()
+        city_list = City.objects.filter(adminer=user)
         try:
             city = City.objects.get(city_code=city_code)
             village_list = Village.objects.filter(city=city)
         except:
             village_list = None
-        device_list = Device.objects.filter(device_id__gte=200000000, device_id__lt=300000000).exclude(device_status=u"未安装")
+        device_list = Device.objects.filter(device_id__gte=200000000, device_id__lt=300000000, adminer=user).exclude(device_status=u"未安装")
         if city_code == 0 and village_code == 0:
             pass
         elif village_code == 0:

@@ -15,7 +15,7 @@ def index(request):
         user = Adminer.objects.get(name=request.session['username'])
     except:
         return HttpResponseRedirect("/admin_login/")
-    work_order_list = WorkOrder.objects.all().order_by('-time')
+    work_order_list = WorkOrder.objects.filter(adminer=user).order_by('-time')
     page = int(request.GET.get("page", 1))
     if page < 1:
         return HttpResponseRedirect("/admin_work_order?page=1")

@@ -19,6 +19,7 @@ class Adminer(models.Model):
 
 # 设备信息
 class Device(models.Model):
+    adminer = models.ForeignKey(Adminer, related_name="device", null=True)
     device_id = models.IntegerField(default=0)  # 设备ID
     city_code = models.SmallIntegerField(null=True)  # 省市代码
     village_code = models.SmallIntegerField(null=True)  # 小区代码
@@ -38,6 +39,7 @@ class Device(models.Model):
 
 # 用户表，存储用户的相关信息
 class AppUser(models.Model):
+    adminer = models.ForeignKey(Adminer, related_name="appuser", null=True)
     user = models.OneToOneField(User)
     username = models.CharField(max_length=16)
     address = models.CharField(max_length=128)
@@ -134,6 +136,7 @@ class Parameter(models.Model):
 
 # 城市编码
 class City(models.Model):
+    adminer = models.ForeignKey(Adminer, related_name="city", null=True)
     city_code = models.IntegerField(null=True)     # 城市代码
     city_name = models.CharField(max_length=32, null=True)     # 城市名称
 
@@ -153,6 +156,7 @@ class Village(models.Model):
 
 # 工单
 class WorkOrder(models.Model):
+    adminer = models.ForeignKey(Adminer, related_name="workorder", null=True)
     num = models.CharField(max_length=36, null=True)
     type = models.CharField(max_length=32, null=True)
     appuser = models.ForeignKey(AppUser, related_name='workOrder')
@@ -166,6 +170,7 @@ class WorkOrder(models.Model):
 
 # 维修
 class Repairing(models.Model):
+    adminer = models.ForeignKey(Adminer, related_name="repairing", null=True)
     num = models.CharField(max_length=36, null=True)
     device = models.ForeignKey(Device, related_name='repairing')
     status = models.CharField(max_length=32, null=True)
@@ -177,6 +182,7 @@ class Repairing(models.Model):
 
 # 费用管理
 class Fund(models.Model):
+    adminer = models.ForeignKey(Adminer, related_name="fund", null=True)
     appuser = models.ForeignKey(AppUser, related_name="fund")
     num = models.FloatField(default=0.0)
     total_num = models.FloatField(default=0.0)
@@ -189,6 +195,7 @@ class Fund(models.Model):
 
 # 事件管理
 class Event(models.Model):
+    adminer = models.ForeignKey(Adminer, related_name="event", null=True)
     name_no = models.IntegerField(default=0)
     device = models.ForeignKey(Device, related_name='event', null=True)
     name = models.CharField(max_length=32, default=0)
@@ -201,6 +208,7 @@ class Event(models.Model):
 
 
 class Feedback(models.Model):
+    adminer = models.ForeignKey(Adminer, related_name="feedback", null=True)
     email = models.CharField(max_length=50, null=True)
     content = models.TextField(default='')
     time = models.DateTimeField(auto_now_add=True)
