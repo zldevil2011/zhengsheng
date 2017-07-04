@@ -162,10 +162,12 @@ def admin_device_add(request):
         except:
             city_list = []
             village_list = []
+        adminer_list = Adminer.objects.all()
         return render(request, 'app/admin_deviceAdd.html', {
             "city_list":city_list,
             "village_list":village_list,
             "user": user,
+            "adminer_list": adminer_list,
         })
     else:
         city_code = request.POST.get("city_code", None)
@@ -191,42 +193,47 @@ def admin_device_add(request):
             print "xyxyxyxyyx"
             try:
                 device_id = request.POST.get("device_id", None)
+                adminer_id = int(request.POST.get("adminer", None))
+                adminer = Adminer.objects.get(pk=adminer_id)
                 if device_id is None:
                     return HttpResponse("error")
                 device = Device.objects.get(device_id=int(device_id))
                 device.device_status = u"正常"
+                device.adminer = adminer
                 device.save()
                 try:
                     # 如果设备对应的用户存在，则对用户信息进行更新
                     appuser = AppUser.objects.get(device=device)
-                    user = appuser.user
-                    user.username = request.POST.get('username').strip()
+                    auth_user = appuser.user
+                    auth_user.username = request.POST.get('username').strip()
                     password = request.POST.get('telephone', '123456').strip()
                     if len(password) == 0:
                         password = '123456'
                     print "password", password
                     secret_password = make_password(password, None, 'pbkdf2_sha256')
-                    user.password = secret_password
-                    user.save()
+                    auth_user.password = secret_password
+                    auth_user.save()
                     appuser.username = request.POST.get('username').strip()
                     appuser.address = request.POST.get('address', '').strip()
                     appuser.register_time = datetime.now()
                     appuser.telephone = request.POST.get('telephone', '').strip()
                     appuser.email = request.POST.get('email', '').strip()
                     appuser.password = password
+                    appuser.adminer = adminer
                     appuser.save()
                 except:
                     # 否则则创建新的用户
-                    user = User()
-                    user.username = request.POST.get('username').strip()
+                    auth_user = User()
+                    auth_user.username = request.POST.get('username').strip()
                     password = request.POST.get('telephone', '123456').strip()
                     if len(password) == 0:
                         password = '123456'
                     secret_password = make_password(password, None, 'pbkdf2_sha256')
-                    user.password = secret_password
-                    user.save()
+                    auth_user.password = secret_password
+                    auth_user.save()
                     appuser = AppUser()
-                    appuser.user = user
+                    appuser.adminer = adminer
+                    appuser.user = auth_user
                     appuser.username = request.POST.get('username').strip()
                     appuser.address = request.POST.get('address','').strip()
                     appuser.register_time = datetime.now()
@@ -334,9 +341,11 @@ def admin_device_remove(request):
         try:
             device_id = int(device_id)
             device = Device.objects.get(device_id = device_id)
-            appuser = AppUser.objects.get(device=device)
-            appuser.device = None
-            appuser.save()
+
+            if device_id < 200000000:
+                appuser = AppUser.objects.get(device=device)
+                appuser.device = None
+                appuser.save()
             device.device_status = u"未安装"
             device.save()
             return HttpResponse("success")

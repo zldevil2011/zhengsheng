@@ -21,6 +21,7 @@
                     <li class="list-group-item" onclick="window.location.href='/admin_account/'"><span class="icon-user"></span><span>账户管理</span></li>
                     <li class="list-group-item" onclick="window.location.href='/admin_work_order/'"><span class="icon-calendar"></span><span>工单管理</span></li>
                     <li class="list-group-item" onclick="window.location.href='/admin_event/'"><span class="icon-calendar"></span><span>事件管理</span></li>
+                    {% ifequal user.level 0 %}
                     <li class="list-group-item">
                         <span class="icon-menu"></span><span data-toggle="collapse" data-parent="" href="#deviceChild">设备管理</span>
                         <div id="deviceChild" class="panel-collapse collapse">
@@ -36,6 +37,7 @@
                           </div>
                         </div>
                     </li>
+                    {% endifequal %}
                     <li class="list-group-item" onclick="window.location.href='/admin_data/'"><span class="icon-information"></span><span>终端数据</span></li>
                     <li class="list-group-item" onclick="window.location.href='/admin_relay/data/'"><span class="icon-information"></span><span>中继数据</span></li>
                     <li class="list-group-item" onclick="window.location.href='/admin_device/temperature/'"><span class="icon-information"></span><span>温度监测</span></li>
@@ -61,7 +63,9 @@
               <div class="panel-body">
                 <ul class="list-group panel-item">
                     <li class="list-group-item" onclick="window.location.href='/admin_device/gateway/parameter/'"><span class="icon-download"></span><span>网关参数</span></li>
+                    {% ifequal user.level 0 %}
                     <li class="list-group-item" onclick="window.location.href='/admin_info/user/'"><span class="icon-download"></span><span>管理员信息</span></li>
+                    {% endifequal %}
                     <li class="list-group-item" onclick="window.location.href='/admin_area/list/'"><span class="icon-export"></span><span>地区管理</span></li>
                 </ul>
               </div>
@@ -120,4 +124,3 @@
 
     </div>
 </div>
-

@@ -21,8 +21,8 @@ class Adminer(models.Model):
 class Device(models.Model):
     adminer = models.ForeignKey(Adminer, related_name="device", null=True)
     device_id = models.IntegerField(default=0)  # 设备ID
-    city_code = models.SmallIntegerField(null=True)  # 省市代码
-    village_code = models.SmallIntegerField(null=True)  # 小区代码
+    city_code = models.IntegerField(null=True)  # 省市代码
+    village_code = models.IntegerField(null=True)  # 小区代码
     building_code = models.SmallIntegerField(null=True)  # 楼栋编码
     unit_code = models.SmallIntegerField(null=True)  # 单元编码
     room_code = models.SmallIntegerField(null=True)  # 房间编码
@@ -147,7 +147,7 @@ class City(models.Model):
 # 小区编码
 class Village(models.Model):
     city = models.ForeignKey(City, related_name = 'village')        # 所属城市外键
-    village_code = models.SmallIntegerField(null=True)      # 小区编码
+    village_code = models.IntegerField(null=True)      # 小区编码
     village_name = models.CharField(max_length=32,null=True)      # 小区名称
 
     def __unicode__(self):
