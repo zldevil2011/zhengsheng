@@ -27,7 +27,11 @@ def admin_login(request):
 
 
 def latest_event(request):
-    temperature_warning_list = Event.objects.filter(name_no=13).order_by('-time')[0:10]
+    try:
+        user = Adminer.objects.get(name=request.session['username'])
+    except:
+        return HttpResponseRedirect("/admin_login/")
+    temperature_warning_list = Event.objects.filter(name_no=13, adminer=user).order_by('-time')[0:10]
     new_event = 0
     for twl in temperature_warning_list:
         if twl.read_tag is False:
