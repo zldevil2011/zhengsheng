@@ -29,7 +29,10 @@ def admin_data(request):
     print("CV_code:")
     print(city_code)
     print(village_code)
-    city_list = City.objects.filter(adminer=user)
+    if user.level == 0:
+        city_list = City.objects.filter()
+    else:
+        city_list = City.objects.filter(adminer=user)
     try:
         city = City.objects.get(city_code=city_code)
         village_list = Village.objects.filter(city=city)
@@ -38,8 +41,10 @@ def admin_data(request):
     print("CV:")
     print(city_list)
     print(village_list)
-
-    device_list = Device.objects.exclude(device_status=u"未安装").filter(device_id__lt=200000000,adminer=user)
+    if user.level == 0:
+        device_list = Device.objects.exclude(device_status=u"未安装").filter(device_id__lt=200000000)
+    else:
+        device_list = Device.objects.exclude(device_status=u"未安装").filter(device_id__lt=200000000,adminer=user)
     if city_code == 0 and village_code == 0:
         pass
     elif village_code == 0:

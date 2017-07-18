@@ -25,9 +25,15 @@ def area_list(request):
     print village_code
     if city_code == 0 and village_code == 0:
         try:
-            city = City.objects.filter(adminer=user)[0]
+            if user.level == 0:
+                city = City.objects.filter()[0]
+            else:
+                city = City.objects.filter(adminer=user)[0]
             village_list = Village.objects.filter(city=city)
-            city_list = City.objects.filter(adminer=user)
+            if user.level == 0:
+                city_list = City.objects.filter()
+            else:
+                city_list = City.objects.filter(adminer=user)
             city_code = city.city_code
         except:
             city_list = None
@@ -37,7 +43,10 @@ def area_list(request):
         try:
             city = City.objects.get(city_code = city_code)
             village_list = Village.objects.filter(city=city)
-            city_list = City.objects.filter(adminer=user)
+            if user.level == 0:
+                city_list = City.objects.filter()
+            else:
+                city_list = City.objects.filter(adminer=user)
             city_code = city.city_code
         except:
             city_list = None

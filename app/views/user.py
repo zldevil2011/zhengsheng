@@ -69,7 +69,10 @@ def admin_account(request):
         return HttpResponseRedirect("/admin_account?page=1")
     start_num = (page - 1) * 10
     end_num = page * 10
-    userlist = AppUser.objects.filter(adminer=user)
+    if user.level == 0:
+        userlist = AppUser.objects.filter()
+    else:
+        userlist = AppUser.objects.filter(adminer=user)
     total_page = int(math.ceil(userlist.count()/10.0))
     if total_page < 1:
         total_page = 1
