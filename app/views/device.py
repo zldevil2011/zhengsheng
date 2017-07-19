@@ -1089,7 +1089,7 @@ def admin_relay_data(request):
                 pass
         start_num = (page - 1) * 15
         end_num = page * 15
-        total_page = int(math.ceil(len(device_list)) / 15.0)
+        total_page = int(math.ceil(len(device_list) / 15.0))
         device_list = device_list[start_num:end_num]
         device_list = serializer(device_list)
         for device in device_list:
