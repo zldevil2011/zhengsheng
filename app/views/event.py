@@ -26,7 +26,7 @@ def admin_event(request):
     if user.level == 0:
         event_list = Event.objects.filter().order_by('-time')
     else:
-        event_list = Event.objects.filter(adminer=user).order_by('-time')
+        event_list = Event.objects.filter(device__adminer=user).order_by('-time')
     total_page = int(math.ceil(event_list.count() / 10.0))
     if total_page < 1:
         total_page = 1
